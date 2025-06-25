@@ -23,3 +23,87 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
+  book:
+    depends_on: 
+      - kafka
+    image: adoptopenjdk/maven-openjdk11:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    command: mvn spring-boot:run
+    ports:
+      - 8082:8082
+    working_dir: /usr/src
+    volumes:
+      - ./book:/usr/src
+      - ./maven-repo:/root/.m2
+      
+  subscribe:
+    depends_on: 
+      - kafka
+    image: adoptopenjdk/maven-openjdk11:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    command: mvn spring-boot:run
+    ports:
+      - 0:0
+    working_dir: /usr/src
+    volumes:
+      - ./subscribe:/usr/src
+      - ./maven-repo:/root/.m2
+      
+  user:
+    depends_on: 
+      - kafka
+    image: adoptopenjdk/maven-openjdk11:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    command: mvn spring-boot:run
+    ports:
+      - 0:0
+    working_dir: /usr/src
+    volumes:
+      - ./user:/usr/src
+      - ./maven-repo:/root/.m2
+      
+  manage:
+    depends_on: 
+      - kafka
+    image: adoptopenjdk/maven-openjdk11:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    command: mvn spring-boot:run
+    ports:
+      - 0:0
+    working_dir: /usr/src
+    volumes:
+      - ./manage:/usr/src
+      - ./maven-repo:/root/.m2
+      
+  plan:
+    depends_on: 
+      - kafka
+    image: adoptopenjdk/maven-openjdk11:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    command: mvn spring-boot:run
+    ports:
+      - 0:0
+    working_dir: /usr/src
+    volumes:
+      - ./plan:/usr/src
+      - ./maven-repo:/root/.m2
+      
+  ai 출간 서비스:
+    depends_on: 
+      - kafka
+    image: adoptopenjdk/maven-openjdk11:latest
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    command: mvn spring-boot:run
+    ports:
+      - 0:0
+    working_dir: /usr/src
+    volumes:
+      - ./ai 출간 서비스:/usr/src
+      - ./maven-repo:/root/.m2
+      

@@ -20,6 +20,12 @@ cd /bin
 ## Run the backend micro-services
 See the README.md files inside the each microservices directory:
 
+- book
+- subscribe
+- user
+- manage
+- plan
+- ai 출간 서비스
 
 
 ## Run API Gateway (Spring Gateway)
@@ -29,6 +35,30 @@ mvn spring-boot:run
 ```
 
 ## Test by API
+- book
+```
+ http :8088/ 
+```
+- subscribe
+```
+ http :8088/ 
+```
+- user
+```
+ http :8088/ 
+```
+- manage
+```
+ http :8088/ 
+```
+- plan
+```
+ http :8088/ 
+```
+- ai 출간 서비스
+```
+ http :8088/ 
+```
 
 
 ## Run the frontend

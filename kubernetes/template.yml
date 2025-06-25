@@ -1,0 +1,342 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book
+  labels:
+    app: book
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book
+  template:
+    metadata:
+      labels:
+        app: book
+    spec:
+      containers:
+        - name: book
+          image: username/book:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscribe
+  labels:
+    app: subscribe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subscribe
+  template:
+    metadata:
+      labels:
+        app: subscribe
+    spec:
+      containers:
+        - name: subscribe
+          image: username/subscribe:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  labels:
+    app: user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+        - name: user
+          image: username/user:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: manage
+  labels:
+    app: manage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: manage
+  template:
+    metadata:
+      labels:
+        app: manage
+    spec:
+      containers:
+        - name: manage
+          image: username/manage:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plan
+  labels:
+    app: plan
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plan
+  template:
+    metadata:
+      labels:
+        app: plan
+    spec:
+      containers:
+        - name: plan
+          image: username/plan:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai 출간 서비스
+  labels:
+    app: ai 출간 서비스
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai 출간 서비스
+  template:
+    metadata:
+      labels:
+        app: ai 출간 서비스
+    spec:
+      containers:
+        - name: ai 출간 서비스
+          image: username/ai 출간 서비스:latest
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            httpGet:
+              path: '/actuator/health'
+              port: 8080
+            initialDelaySeconds: 120
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: book
+  labels:
+    app: book
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: book
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: subscribe
+  labels:
+    app: subscribe
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: subscribe
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+  labels:
+    app: user
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: user
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: manage
+  labels:
+    app: manage
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: manage
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: plan
+  labels:
+    app: plan
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: plan
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai 출간 서비스
+  labels:
+    app: ai 출간 서비스
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: ai 출간 서비스
+
