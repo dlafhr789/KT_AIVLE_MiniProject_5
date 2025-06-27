@@ -69,15 +69,10 @@ public class Book {
     //<<< Clean Arch / Port Method
     public void openBook(OpenBookCommand openBookCommand) {
         // 1) view 증가
-        if (this.view == null) {
-            this.view = 0;
-        }
+        this.view = (this.view == null) ? 0 : this.view;
         this.view++;
-
-        // 2) 엔티티 상태 저장
         repository().save(this);
 
-        // 3) 이벤트 생성·발행
         BookOpened bookOpened = new BookOpened(this);
         bookOpened.publishAfterCommit();
     }
@@ -88,63 +83,30 @@ public class Book {
     public static void publish(
         GenerateRequestCompleted generateRequestCompleted
     ) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
         Book book = new Book();
+        book.setTitle(generateRequestCompleted.getGeneratedTitle());
+        book.setContent(generateRequestCompleted.getGeneratedContent());
+        book.setUserId(generateRequestCompleted.getUserId());
+        book.setState("PUBLISHED");
+        book.setPublishedAt(new Date());
         repository().save(book);
 
-        Published published = new Published(book);
-        published.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-        // if generateRequestCompleted.genAiId exists, use it
-        
-        // ObjectMapper mapper = new ObjectMapper();
-        // Map<, Object> genDataMap = mapper.convertValue(generateRequestCompleted.getGenAiId(), Map.class);
-
-        repository().findById(generateRequestCompleted.get???()).ifPresent(book->{
-            
-            book // do something
-            repository().save(book);
-
-            Published published = new Published(book);
-            published.publishAfterCommit();
-
-         });
-        */
-
+        Published pub = new Published(book);
+        pub.publishAfterCommit();
     }
 
     //>>> Clean Arch / Port Method
     //<<< Clean Arch / Port Method
     public static void subscribed(SubscriptionAccepted subscriptionAccepted) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Book book = new Book();
-        repository().save(book);
-
-        IncreasedSubscriber increasedSubscriber = new IncreasedSubscriber(book);
-        increasedSubscriber.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(subscriptionAccepted.get???()).ifPresent(book->{
-            
-            book // do something
+        repository().findById(subscriptionAccepted.getBookId()).ifPresent(book -> {
+            book.setSubscribers(
+                (book.getSubscribers() == null) ? 1 : book.getSubscribers() + 1
+            );
             repository().save(book);
 
-            IncreasedSubscriber increasedSubscriber = new IncreasedSubscriber(book);
-            increasedSubscriber.publishAfterCommit();
-
-         });
-        */
-
+            IncreasedSubscriber inc = new IncreasedSubscriber(book);
+            inc.publishAfterCommit();
+        });
     }
     //>>> Clean Arch / Port Method
 

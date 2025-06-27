@@ -21,6 +21,13 @@ public class IncreasedSubscriber extends AbstractEvent {
 
     public IncreasedSubscriber(Book aggregate) {
         super(aggregate);
+        this.id = aggregate.getId();
+        this.userId = aggregate.getUserId();
+        this.title = aggregate.getTitle();
+        this.content = aggregate.getContent();
+        this.publishedAt = aggregate.getPublishedAt();
+        this.view = (aggregate.getView() == null) ? 0 : aggregate.getView();
+        this.subscribers = (aggregate.getSubscribers() == null) ? 0 : aggregate.getSubscribers();
     }
 
     public IncreasedSubscriber() {
