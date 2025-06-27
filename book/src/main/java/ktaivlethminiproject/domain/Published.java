@@ -21,6 +21,13 @@ public class Published extends AbstractEvent {
 
     public Published(Book aggregate) {
         super(aggregate);
+        this.id = aggregate.getId();
+        this.title = aggregate.getTitle();
+        this.content = aggregate.getContent();
+        this.userId = aggregate.getUserId();
+        this.state = aggregate.getState();
+        this.view = (aggregate.getView() == null) ? 0 : aggregate.getView();
+        this.publishedAt = aggregate.getPublishedAt();
     }
 
     public Published() {
