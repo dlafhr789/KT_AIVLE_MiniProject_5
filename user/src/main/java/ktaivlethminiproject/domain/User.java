@@ -45,8 +45,21 @@ public class User {
 
     //<<< Clean Arch / Port Method
     public void signUp(SignUpCommand signUpCommand) {
-        //implement business logic here:
+        // 1. 기본 포인트 지급
+        this.point = 1000;
 
+        // 2. telecom이 "KT"면 추가 포인트 지급
+        if ("KT".equalsIgnoreCase(signUpCommand.getTelecom())) {
+            this.point += 5000;
+        }
+
+        this.name = signUpCommand.getName();
+        this.email = signUpCommand.getEmail();
+        this.telecom = signUpCommand.getTelecom();
+        this.password = signUpCommand.getPassword();
+
+        User.repository().save(this);
+        
         SignedUp signedUp = new SignedUp(this);
         signedUp.publishAfterCommit();
     }
