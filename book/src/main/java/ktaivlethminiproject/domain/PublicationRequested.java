@@ -18,6 +18,10 @@ public class PublicationRequested extends AbstractEvent {
 
     public PublicationRequested(Book aggregate) {
         super(aggregate);
+        this.id = aggregate.getId();
+        this.title = aggregate.getTitle();
+        this.content = aggregate.getContent();
+        this.userId = aggregate.getUserId();
     }
 
     public PublicationRequested() {
