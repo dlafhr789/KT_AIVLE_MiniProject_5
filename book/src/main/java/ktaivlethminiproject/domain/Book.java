@@ -39,6 +39,8 @@ public class Book {
 
     private Integer subscribers;
 
+    private String imageUrl;  // 임록님만 믿겠습니다 이미지  url 화이팅
+
     @PostPersist
     public void onPostPersist() {
         PublicationRequested publicationRequested = new PublicationRequested(
@@ -83,12 +85,13 @@ public class Book {
     public static void publish(
         GenerateRequestCompleted generateRequestCompleted
     ) {
-        Book book = new Book();
+         Book book = new Book();
         book.setTitle(generateRequestCompleted.getGeneratedTitle());
         book.setContent(generateRequestCompleted.getGeneratedContent());
         book.setUserId(generateRequestCompleted.getUserId());
         book.setState("PUBLISHED");
         book.setPublishedAt(new Date());
+        book.setImageUrl(generateRequestCompleted.getImageUrl()); // URL 사용
         repository().save(book);
 
         Published pub = new Published(book);
