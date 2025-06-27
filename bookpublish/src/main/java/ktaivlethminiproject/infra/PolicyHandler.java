@@ -50,6 +50,18 @@ public class PolicyHandler {
         // 5. 카테고리 선정
 
         // Sample Logic //
+
+        final GenDataRepository genDataRepository;
+
+        final Long bookId = event.getId();
+        final String bookTitle = event.getTitle();
+        final String bookContent = event.getContent();
+        
+        final Long userId = event.getUserId();
+
+        // 1. AI 표지 생성
+        
+
         GenData.requireAccepted(event);
     }
 }
