@@ -33,7 +33,7 @@ public class Book {
 
     private Date publishedAt;
 
-    private String state;
+    private boolean state;
 
     private Integer view;
 
