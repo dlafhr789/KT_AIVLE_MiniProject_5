@@ -7,46 +7,51 @@ import {
 
 <template>
     <ul>
-        <VerticalNavSectionTitle :item="{ heading: 'Book' }" />
+        <VerticalNavSectionTitle :item="{ heading: '도서 관리' }" />
         <VerticalNavLink
             :item="{
-                title: '',
-                to: '/',
+                title: 'Book',
+                to: '/books',
             }"
         />
-        <VerticalNavSectionTitle :item="{ heading: 'Subscribe' }" />
+        <VerticalNavSectionTitle :item="{ heading: '유저 관리' }" />
         <VerticalNavLink
             :item="{
-                title: '',
-                to: '/',
+                title: 'User',
+                to: '/users',
             }"
         />
-        <VerticalNavSectionTitle :item="{ heading: 'User' }" />
         <VerticalNavLink
             :item="{
-                title: '',
-                to: '/',
+                title: 'Subscribe',
+                to: '/subscribes',
             }"
         />
-        <VerticalNavSectionTitle :item="{ heading: 'Manage' }" />
+        <VerticalNavSectionTitle :item="{ heading: '도서 출간 서비스 관리' }" />
         <VerticalNavLink
             :item="{
-                title: '',
-                to: '/',
+                title: 'GenData',
+                to: '/genData',
             }"
         />
-        <VerticalNavSectionTitle :item="{ heading: 'Plan' }" />
+        <VerticalNavSectionTitle :item="{ heading: '작가 관리' }" />
         <VerticalNavLink
             :item="{
-                title: '',
-                to: '/',
+                title: 'Author',
+                to: '/authors',
             }"
         />
-        <VerticalNavSectionTitle :item="{ heading: 'Ai출간서비스' }" />
+        <VerticalNavSectionTitle :item="{ heading: '대쉬보드' }" />
         <VerticalNavLink
             :item="{
-                title: '',
-                to: '/',
+                title: '구독 모니터링',
+                to: '/subscribeMonitors',
+            }"
+        />
+        <VerticalNavLink
+            :item="{
+                title: '도서목록',
+                to: '/booklists',
             }"
         />
     </ul>

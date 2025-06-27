@@ -12,6 +12,15 @@ import lombok.*;
 public class SignedUp extends AbstractEvent {
 
     private Long id;
+    private String role;
+    private String name;
+    private String email;
+    private Integer point;
+    private String plan;
+
+    public SignedUp(User aggregate) {
+        super(aggregate);
+    }
 
     public SignedUp() {
         super();

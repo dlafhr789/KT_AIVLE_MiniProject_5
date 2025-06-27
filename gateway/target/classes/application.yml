@@ -12,27 +12,23 @@ spring:
         - id: book
           uri: http://localhost:8082
           predicates:
-            - Path=/undefined/**, 
-        - id: subscribe
-          uri: http://localhost:0
-          predicates:
-            - Path=/undefined/**, 
+            - Path=/books/**, 
         - id: user
-          uri: http://localhost:0
+          uri: http://localhost:8083
           predicates:
-            - Path=/undefined/**, 
-        - id: manage
-          uri: http://localhost:0
+            - Path=/users/**, /subscribes/**, 
+        - id: openai
+          uri: http://localhost:8084
           predicates:
-            - Path=/undefined/**, 
-        - id: plan
-          uri: http://localhost:0
+            - Path=/genData/**, 
+        - id: author
+          uri: http://localhost:8085
           predicates:
-            - Path=/undefined/**, 
-        - id: ai 출간 서비스
-          uri: http://localhost:0
+            - Path=/authors/**, 
+        - id: 대쉬보드
+          uri: http://localhost:8086
           predicates:
-            - Path=/undefined/**, 
+            - Path=, /subscribeMonitors/**, /booklists/**
         - id: frontend
           uri: http://localhost:8080
           predicates:
@@ -60,27 +56,23 @@ spring:
         - id: book
           uri: http://book:8080
           predicates:
-            - Path=/undefined/**, 
-        - id: subscribe
-          uri: http://subscribe:8080
-          predicates:
-            - Path=/undefined/**, 
+            - Path=/books/**, 
         - id: user
           uri: http://user:8080
           predicates:
-            - Path=/undefined/**, 
-        - id: manage
-          uri: http://manage:8080
+            - Path=/users/**, /subscribes/**, 
+        - id: openai
+          uri: http://openai:8080
           predicates:
-            - Path=/undefined/**, 
-        - id: plan
-          uri: http://plan:8080
+            - Path=/genData/**, 
+        - id: author
+          uri: http://author:8080
           predicates:
-            - Path=/undefined/**, 
-        - id: ai 출간 서비스
-          uri: http://ai출간서비스:8080
+            - Path=/authors/**, 
+        - id: 대쉬보드
+          uri: http://대쉬보드:8080
           predicates:
-            - Path=/undefined/**, 
+            - Path=, 
         - id: frontend
           uri: http://frontend:8080
           predicates:

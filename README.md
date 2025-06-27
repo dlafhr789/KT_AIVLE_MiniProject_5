@@ -21,11 +21,10 @@ cd /bin
 See the README.md files inside the each microservices directory:
 
 - book
-- subscribe
 - user
-- manage
-- plan
-- ai 출간 서비스
+- openai
+- author
+- 대쉬보드
 
 
 ## Run API Gateway (Spring Gateway)
@@ -37,27 +36,23 @@ mvn spring-boot:run
 ## Test by API
 - book
 ```
- http :8088/ 
-```
-- subscribe
-```
- http :8088/ 
+ http :8088/books id="id"title="title"content="content"userId="user_id"publishedAt="published_at"state="state"view="view"subscribers="subscribers"
 ```
 - user
 ```
- http :8088/ 
+ http :8088/users id="id"role="role"name="name"email="email"point="point"plan="plan"state="state"
+ http :8088/subscribes id="id"bookId="book_id"userId="user_id"state="state"
 ```
-- manage
+- openai
 ```
- http :8088/ 
+ http :8088/genData bookId="book_id"coverUrl="cover_url"summary="summary"downloadUrl="download_url"point="point"category="category"
 ```
-- plan
+- author
 ```
- http :8088/ 
+ http :8088/authors userId="user_id"state="state"portfolio="portfolio"profile="profile"
 ```
-- ai 출간 서비스
+- 대쉬보드
 ```
- http :8088/ 
 ```
 
 

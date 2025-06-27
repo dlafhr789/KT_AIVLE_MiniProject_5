@@ -37,20 +37,6 @@ services:
       - ./book:/usr/src
       - ./maven-repo:/root/.m2
       
-  subscribe:
-    depends_on: 
-      - kafka
-    image: adoptopenjdk/maven-openjdk11:latest
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    command: mvn spring-boot:run
-    ports:
-      - 0:0
-    working_dir: /usr/src
-    volumes:
-      - ./subscribe:/usr/src
-      - ./maven-repo:/root/.m2
-      
   user:
     depends_on: 
       - kafka
@@ -59,13 +45,13 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     command: mvn spring-boot:run
     ports:
-      - 0:0
+      - 8083:8083
     working_dir: /usr/src
     volumes:
       - ./user:/usr/src
       - ./maven-repo:/root/.m2
       
-  manage:
+  openai:
     depends_on: 
       - kafka
     image: adoptopenjdk/maven-openjdk11:latest
@@ -73,13 +59,13 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     command: mvn spring-boot:run
     ports:
-      - 0:0
+      - 8084:8084
     working_dir: /usr/src
     volumes:
-      - ./manage:/usr/src
+      - ./openai:/usr/src
       - ./maven-repo:/root/.m2
       
-  plan:
+  author:
     depends_on: 
       - kafka
     image: adoptopenjdk/maven-openjdk11:latest
@@ -87,13 +73,13 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     command: mvn spring-boot:run
     ports:
-      - 0:0
+      - 8085:8085
     working_dir: /usr/src
     volumes:
-      - ./plan:/usr/src
+      - ./author:/usr/src
       - ./maven-repo:/root/.m2
       
-  ai 출간 서비스:
+  대쉬보드:
     depends_on: 
       - kafka
     image: adoptopenjdk/maven-openjdk11:latest
@@ -101,9 +87,9 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     command: mvn spring-boot:run
     ports:
-      - 0:0
+      - 8086:8086
     working_dir: /usr/src
     volumes:
-      - ./ai 출간 서비스:/usr/src
+      - ./대쉬보드:/usr/src
       - ./maven-repo:/root/.m2
       

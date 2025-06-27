@@ -30,11 +30,10 @@ jobs:
       - name: Build Maven Projects
         run: |
           mvn clean package -f ./book/pom.xml
-          mvn clean package -f ./subscribe/pom.xml
           mvn clean package -f ./user/pom.xml
-          mvn clean package -f ./manage/pom.xml
-          mvn clean package -f ./plan/pom.xml
-          mvn clean package -f ./ai 출간 서비스/pom.xml
+          mvn clean package -f ./openai/pom.xml
+          mvn clean package -f ./author/pom.xml
+          mvn clean package -f ./대쉬보드/pom.xml
 
       - name: Docker Build and push for Book
         uses: docker/build-push-action@v4
@@ -46,16 +45,6 @@ jobs:
             ghcr.io/${{ github.repository }}/book:latest
             ghcr.io/${{ github.repository }}/book:${{ github.ref_name }}
             
-      - name: Docker Build and push for Subscribe
-        uses: docker/build-push-action@v4
-        with:
-          context: ./subscribe
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository }}/subscribe:latest
-            ghcr.io/${{ github.repository }}/subscribe:${{ github.ref_name }}
-            
       - name: Docker Build and push for User
         uses: docker/build-push-action@v4
         with:
@@ -66,33 +55,33 @@ jobs:
             ghcr.io/${{ github.repository }}/user:latest
             ghcr.io/${{ github.repository }}/user:${{ github.ref_name }}
             
-      - name: Docker Build and push for Manage
+      - name: Docker Build and push for Openai
         uses: docker/build-push-action@v4
         with:
-          context: ./manage
+          context: ./openai
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/manage:latest
-            ghcr.io/${{ github.repository }}/manage:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}/openai:latest
+            ghcr.io/${{ github.repository }}/openai:${{ github.ref_name }}
             
-      - name: Docker Build and push for Plan
+      - name: Docker Build and push for Author
         uses: docker/build-push-action@v4
         with:
-          context: ./plan
+          context: ./author
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/plan:latest
-            ghcr.io/${{ github.repository }}/plan:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}/author:latest
+            ghcr.io/${{ github.repository }}/author:${{ github.ref_name }}
             
-      - name: Docker Build and push for Ai출간서비스
+      - name: Docker Build and push for 대쉬보드
         uses: docker/build-push-action@v4
         with:
-          context: ./ai 출간 서비스
+          context: ./대쉬보드
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/ai-출간-서비스:latest
-            ghcr.io/${{ github.repository }}/ai-출간-서비스:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}/대쉬보드:latest
+            ghcr.io/${{ github.repository }}/대쉬보드:${{ github.ref_name }}
             

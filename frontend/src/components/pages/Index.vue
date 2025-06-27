@@ -33,28 +33,32 @@ export default {
   data: () => ({
     cards: [
       {
-          text: "",
-          link: "/",
+          text: "Book",
+          link: "/books",
       },
       {
-          text: "",
-          link: "/",
+          text: "User",
+          link: "/users",
       },
       {
-          text: "",
-          link: "/",
+          text: "Subscribe",
+          link: "/subscribes",
       },
       {
-          text: "",
-          link: "/",
+          text: "GenData",
+          link: "/genData",
       },
       {
-          text: "",
-          link: "/",
+          text: "Author",
+          link: "/authors",
       },
       {
-          text: "",
-          link: "/",
+          text: "구독 모니터링",
+          link: "/subscribeMonitors",
+      },
+      {
+          text: "도서목록",
+          link: "/booklists",
       },
     ],
   }),

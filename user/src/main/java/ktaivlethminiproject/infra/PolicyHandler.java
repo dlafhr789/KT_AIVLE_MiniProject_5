@@ -18,9 +18,46 @@ import org.springframework.stereotype.Service;
 public class PolicyHandler {
 
     @Autowired
-    Repository Repository;
+    UserRepository userRepository;
+
+    @Autowired
+    SubscribeRepository subscribeRepository;
 
     @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString) {}
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='SubscriptionAccepted'"
+    )
+    public void wheneverSubscriptionAccepted_PointsDecrease(
+        @Payload SubscriptionAccepted subscriptionAccepted
+    ) {
+        SubscriptionAccepted event = subscriptionAccepted;
+        System.out.println(
+            "\n\n##### listener PointsDecrease : " +
+            subscriptionAccepted +
+            "\n\n"
+        );
+
+        // Sample Logic //
+        User.pointsDecrease(event);
+    }
+
+    @StreamListener(
+        value = KafkaProcessor.INPUT,
+        condition = "headers['type']=='AuthorApproved'"
+    )
+    public void wheneverAuthorApproved_UpdateRole(
+        @Payload AuthorApproved authorApproved
+    ) {
+        AuthorApproved event = authorApproved;
+        System.out.println(
+            "\n\n##### listener UpdateRole : " + authorApproved + "\n\n"
+        );
+
+        // Sample Logic //
+        User.updateRole(event);
+    }
 }
 //>>> Clean Arch / Inbound Adaptor
