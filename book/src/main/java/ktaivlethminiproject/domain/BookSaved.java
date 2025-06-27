@@ -19,6 +19,12 @@ public class BookSaved extends AbstractEvent {
 
     public BookSaved(Book aggregate) {
         super(aggregate);
+        this.id = aggregate.getId();
+        this.userId = aggregate.getUserId();
+        this.title = aggregate.getTitle();
+        this.content = aggregate.getContent();
+        this.view = (aggregate.getView() == null) ? 0 : aggregate.getView();
+    }
     }
 
     public BookSaved() {
