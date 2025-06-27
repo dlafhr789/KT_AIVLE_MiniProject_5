@@ -68,8 +68,16 @@ public class Book {
 
     //<<< Clean Arch / Port Method
     public void openBook(OpenBookCommand openBookCommand) {
-        //implement business logic here:
+        // 1) view 증가
+        if (this.view == null) {
+            this.view = 0;
+        }
+        this.view++;
 
+        // 2) 엔티티 상태 저장
+        repository().save(this);
+
+        // 3) 이벤트 생성·발행
         BookOpened bookOpened = new BookOpened(this);
         bookOpened.publishAfterCommit();
     }
