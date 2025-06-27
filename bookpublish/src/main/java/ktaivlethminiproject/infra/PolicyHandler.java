@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 // openai api
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.images.Image;
 import com.openai.models.images.ImageGenerateParams;
 import com.openai.models.images.ImageModel;
@@ -50,8 +53,6 @@ public class PolicyHandler {
             "\n\n"
         );
 
-        Dotenv dotenv = Dotenv.configure().directory("./").load();  // .env 로드
-        final String openAIApiKey = dotenv.get("OPENAI_API_KEY"); // .env에서 openai api key 가져오기
 
         // REST Request Sample
 
@@ -59,8 +60,8 @@ public class PolicyHandler {
 
         // Comments //
         //출간 요청 받을 시, 아래 기능을 수행
-        // 1. AI 표지 생성
-        // 2. AI 내용 요약
+        // 1. AI 내용 요약
+        // 2. AI 표지 생성
         // 3. ePuB, PDF 생성
         // 4. 가격 책정
         // 5. 카테고리 선정
@@ -75,10 +76,45 @@ public class PolicyHandler {
         
         final Long userId = event.getUserId();
 
-        // 1. AI 표지 생성
+        Dotenv dotenv = Dotenv.configure().directory("./").load();  // .env 로드
+        final String openAIApiKey = dotenv.get("OPENAI_API_KEY"); // .env에서 openai api key 가져오기
 
+        OpenAIClient client = OpenAIOkHttpClient.builder()
+            .apiKey(openAIApiKey)
+            .build();
 
-        GenData.requireAccepted(event);
+        // openai-java doc : https://github.com/openai/openai-java?tab=readme-ov-file
+        // 1. AI 내용 요약
+
+        /*
+         * ai-summary 프롬프트
+         * 당신은 책의 거부할 수 없는 티저 블러를 쓰는 최고 수준의 한국 카피라이터입니다. 
+         * 전체 줄거리 구조를 드러내지 않고 독자의 호기심을 자극하는 것이 목표입니다. 
+         * 스포일러나 완전한 시작-중간 아크는 절대 포함하지 마세요. 
+         * 생생하면서도 간결한 언어(한국어로 2~4개의 짧은 문장)를 사용하면 사람들이 계속 읽고 싶게 만드는 훅으로 끝납니다.
+         */
+        final String summary_prompt = "You are a top-tier Korean copywriter who writes irresistible teaser blurbs for books. Your goal is to spark the reader’s curiosity without revealing the full plot structure. Never include spoilers or the complete beginning-middle-end arc. Use vivid yet concise language (2-4 short sentences in Korean), end with a hook that makes people want to keep reading.";
+
+        ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
+            .model(ChatModel.GPT_4O_MINI)
+            .addSystemMessage(summary_prompt)
+            .addUserMessage("Title : \n" + bookTitle + "\n\nContent : \n" + bookContent)
+            .temperature(0.7)
+            .build();
+
+        ChatCompletion chat = client.chat().completions().create(params);
+        String answer = chat.choices().get(0).message().content().orElse("empty");
+        
+
+        // 2. AI 표지 생성
+
+        // final String cover_prompt = "";
+
+        // ImageGenerateParams params = ImageGenerateParams.builder()
+        //     .model(ImageModel.DALL_E_3.asString())
+        //     .
+
+        // GenData.requireAccepted(event);
     }
 }
 //>>> Clean Arch / Inbound Adaptor
