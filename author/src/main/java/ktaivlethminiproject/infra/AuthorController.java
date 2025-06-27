@@ -4,21 +4,40 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import ktaivlethminiproject.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 //<<< Clean Arch / Inbound Adaptor
 
 @RestController
-// @RequestMapping(value="/authors")
+@RequestMapping("/authors")
+@RequiredArgsConstructor
 @Transactional
 public class AuthorController {
 
     @Autowired
     AuthorRepository authorRepository;
+
+    //작가 등록 요청
+    // @PostMapping("/authors")
+    // public ResponseEntity<Void> register(@Valid @RequestBody AuthorRegisterCommand cmd) {
+
+    //     Author author = new Author(
+    //         cmd.getUserId(),
+    //         cmd.getPortfolio(),
+    //         cmd.getProfile()
+    //     );
+    //     authorRepository.save(author);   // @PostPersist -> AuthorRegistrationRequested 이벤트 발행
+
+    //     return ResponseEntity.accepted().build();
+    // }
 
     @RequestMapping(
         value = "/authors/{id}/authorapprove",
