@@ -30,6 +30,8 @@ public class SubscribeMonitorViewHandler {
             subscribeMonitor.setUserId(subscriptionAccepted.getUserId());
             subscribeMonitor.setBookId(subscriptionAccepted.getBookId());
             subscribeMonitor.setUserName(subscriptionAccepted.getUserName());
+            subscribeMonitor.setState(subscriptionAccepted.getState());
+            subscribeMonitor.setExpiredAt(subscriptionAccepted.getExpiredAt());
             // view 레파지 토리에 save
             subscribeMonitorRepository.save(subscribeMonitor);
         } catch (Exception e) {
