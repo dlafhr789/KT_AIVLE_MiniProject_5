@@ -12,6 +12,19 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
+// openai api
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.images.Image;
+import com.openai.models.images.ImageGenerateParams;
+import com.openai.models.images.ImageModel;
+import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseCreateParams;
+
+// dotenv
+import io.github.cdimascio.dotenv.Dotenv;
+
+
 //<<< Clean Arch / Inbound Adaptor
 @Service
 @Transactional
@@ -37,6 +50,9 @@ public class PolicyHandler {
             "\n\n"
         );
 
+        Dotenv dotenv = Dotenv.configure().directory("./").load();  // .env 로드
+        final String openAIApiKey = dotenv.get("OPENAI_API_KEY"); // .env에서 openai api key 가져오기
+
         // REST Request Sample
 
         // bookService.getBook(/** mapping value needed */);
@@ -60,7 +76,7 @@ public class PolicyHandler {
         final Long userId = event.getUserId();
 
         // 1. AI 표지 생성
-        
+
 
         GenData.requireAccepted(event);
     }
