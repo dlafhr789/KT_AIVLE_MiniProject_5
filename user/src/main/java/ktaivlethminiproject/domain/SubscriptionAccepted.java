@@ -15,6 +15,8 @@ public class SubscriptionAccepted extends AbstractEvent {
     private Long bookId;
     private Long userId;
     private String userName;
+    private String state;
+    private Date expiredAt;
 
     public SubscriptionAccepted(Subscribe aggregate) {
         super(aggregate);

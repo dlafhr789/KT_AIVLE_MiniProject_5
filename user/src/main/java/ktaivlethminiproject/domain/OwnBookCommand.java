@@ -5,4 +5,4 @@ import java.util.*;
 import lombok.Data;
 
 @Data
-public class SubscribeCommand {}
+public class OwnBookCommand {}

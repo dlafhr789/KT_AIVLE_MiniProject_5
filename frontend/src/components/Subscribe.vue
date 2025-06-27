@@ -15,6 +15,11 @@
             v-model="value.state"
             :editMode="editMode"
         />
+        <Date
+            label="ExpiredAt"
+            v-model="value.expiredAt"
+            :editMode="editMode"
+        />
         <v-row class="ma-0 pa-0">
             <v-spacer></v-spacer>
             <v-btn width="64px" color="primary" @click="save">

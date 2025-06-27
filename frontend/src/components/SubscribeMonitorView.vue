@@ -30,6 +30,8 @@ export default {
             { title: "userName", key: "userName" },
             { title: "bookId", key: "bookId" },
             { title: "bookTitle", key: "bookTitle" },
+            { title: "state", key: "state" },
+            { title: "expiredAt", key: "expiredAt" },
         ]);
 
         const items = ref([]);

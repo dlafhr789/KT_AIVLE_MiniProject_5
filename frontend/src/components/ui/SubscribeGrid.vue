@@ -18,8 +18,11 @@
                 <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="openEditDialog()" class="contrast-primary-text" small color="primary">
                     <v-icon small>mdi-pencil</v-icon>수정
                 </v-btn>
-                <v-btn style="margin-left: 5px;" @click="subscribe" class="contrast-primary-text" small color="primary" :disabled="!hasRole('User')">
-                    <v-icon small>mdi-minus-circle-outline</v-icon>구독
+                <v-btn style="margin-left: 5px;" @click="borrowBook" class="contrast-primary-text" small color="primary" :disabled="!hasRole('User')">
+                    <v-icon small>mdi-minus-circle-outline</v-icon>대여
+                </v-btn>
+                <v-btn style="margin-left: 5px;" @click="ownBook" class="contrast-primary-text" small color="primary" >
+                    <v-icon small>mdi-minus-circle-outline</v-icon>소장
                 </v-btn>
             </div>
             <div class="mb-5 text-lg font-bold"></div>
@@ -31,6 +34,7 @@
                         <th>BookId</th>
                         <th>UserId</th>
                         <th>State</th>
+                        <th>ExpiredAt</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,6 +47,7 @@
                             <td class="whitespace-nowrap" label="BookId">{{ val.bookId }}</td>
                             <td class="whitespace-nowrap" label="UserId">{{ val.userId }}</td>
                             <td class="whitespace-nowrap" label="State">{{ val.state }}</td>
+                            <td class="whitespace-nowrap" label="ExpiredAt">{{ val.expiredAt }}</td>
                             <v-row class="ma-0 pa-4 align-center">
                                 <v-spacer></v-spacer>
                                 <Icon style="cursor: pointer;" icon="mi:delete" @click="deleteRow(val)" />
@@ -107,6 +112,7 @@
                             <Number label="BookId" v-model="selectedRow.bookId" :editMode="true"/>
                             <Number label="UserId" v-model="selectedRow.userId" :editMode="true"/>
                             <String label="State" v-model="selectedRow.state" :editMode="true"/>
+                            <Date label="ExpiredAt" v-model="selectedRow.expiredAt" :editMode="true"/>
                             <v-divider class="border-opacity-100 my-divider"></v-divider>
                             <v-layout row justify-end>
                                 <v-btn
@@ -142,12 +148,27 @@ export default {
     watch: {
     },
     methods:{
-        async subscribe(){
+        async borrowBook(){
             try{
-                var path = "subscribe".toLowerCase();
+                var path = "borrowBook".toLowerCase();
                 var temp = await this.repository.invoke(this.selectedRow, path, null)
                 // 스넥바 관련 수정 필요
-                // this.$EventBus.$emit('show-success','subscribe 성공적으로 처리되었습니다.')
+                // this.$EventBus.$emit('show-success','borrowBook 성공적으로 처리되었습니다.')
+                for(var i = 0; i< this.value.length; i++){
+                    if(this.value[i] == this.selectedRow){
+                        this.value[i] = temp.data
+                    }
+                }
+            }catch(e){
+                console.log(e)
+            }
+        },
+        async ownBook(){
+            try{
+                var path = "ownBook".toLowerCase();
+                var temp = await this.repository.invoke(this.selectedRow, path, null)
+                // 스넥바 관련 수정 필요
+                // this.$EventBus.$emit('show-success','ownBook 성공적으로 처리되었습니다.')
                 for(var i = 0; i< this.value.length; i++){
                     if(this.value[i] == this.selectedRow){
                         this.value[i] = temp.data

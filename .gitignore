@@ -15,6 +15,9 @@ lerna-debug.log
 .tmp
 .sass-cache
 
+kubectl
+init.sh
+
 # build artifacts
 .terraform/
 *.tfstate
@@ -30,9 +33,6 @@ components/versions/versions.json
 .npm-packages-offline-cache
 .helm-chart-release
 *.tgz
-
-init.sh
-kubectl
 
 
 # Symbolic links created by scripts for building docker images
