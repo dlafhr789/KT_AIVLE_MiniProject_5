@@ -65,6 +65,8 @@ public class User {
     public void planPurchase(PlanPurchaseCommand planPurchaseCommand) {
         //implement business logic here:
 
+        this.plan = planPurchaseCommand.getPlan();
+
         PlanPurchased planPurchased = new PlanPurchased(this);
         planPurchased.publishAfterCommit();
     }
