@@ -17,6 +17,7 @@ public class SignedUp extends AbstractEvent {
     private String email;
     private Integer point;
     private String plan;
+    private String telecom;
 
     public SignedUp(User aggregate) {
         super(aggregate);

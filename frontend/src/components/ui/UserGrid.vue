@@ -18,6 +18,27 @@
                 <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="openEditDialog()" class="contrast-primary-text" small color="primary">
                     <v-icon small>mdi-pencil</v-icon>수정
                 </v-btn>
+                <v-btn style="margin-left: 5px;" @click="signUpDialog = true" class="contrast-primary-text" small color="primary" :disabled="!hasRole('User')">
+                    <v-icon small>mdi-minus-circle-outline</v-icon>회원 가입
+                </v-btn>
+                <v-dialog v-model="signUpDialog" width="500">
+                    <SignUp
+                        @closeDialog="signUpDialog = false"
+                        @signUp="signUp"
+                    ></SignUp>
+                </v-dialog>
+                <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="planCancel" class="contrast-primary-text" small color="primary" :disabled="!hasRole('User')">
+                    <v-icon small>mdi-minus-circle-outline</v-icon>플랜 취소
+                </v-btn>
+                <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="planPurchaseDialog = true" class="contrast-primary-text" small color="primary" :disabled="!hasRole('User')">
+                    <v-icon small>mdi-minus-circle-outline</v-icon>플랜 구매
+                </v-btn>
+                <v-dialog v-model="planPurchaseDialog" width="500">
+                    <PlanPurchase
+                        @closeDialog="planPurchaseDialog = false"
+                        @planPurchase="planPurchase"
+                    ></PlanPurchase>
+                </v-dialog>
             </div>
             <div class="mb-5 text-lg font-bold"></div>
             <div class="table-responsive">
@@ -31,6 +52,8 @@
                         <th>Point</th>
                         <th>Plan</th>
                         <th>State</th>
+                        <th>Telecom</th>
+                        <th>Password</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,6 +69,8 @@
                             <td class="whitespace-nowrap" label="Point">{{ val.point }}</td>
                             <td class="whitespace-nowrap" label="Plan">{{ val.plan }}</td>
                             <td class="whitespace-nowrap" label="State">{{ val.state }}</td>
+                            <td class="whitespace-nowrap" label="Telecom">{{ val.telecom }}</td>
+                            <td class="whitespace-nowrap" label="Password">{{ val.password }}</td>
                             <v-row class="ma-0 pa-4 align-center">
                                 <v-spacer></v-spacer>
                                 <Icon style="cursor: pointer;" icon="mi:delete" @click="deleteRow(val)" />
@@ -113,6 +138,8 @@
                             <Number label="Point" v-model="selectedRow.point" :editMode="true"/>
                             <String label="Plan" v-model="selectedRow.plan" :editMode="true"/>
                             <String label="State" v-model="selectedRow.state" :editMode="true"/>
+                            <String label="Telecom" v-model="selectedRow.telecom" :editMode="true"/>
+                            <String label="Password" v-model="selectedRow.password" :editMode="true"/>
                             <v-divider class="border-opacity-100 my-divider"></v-divider>
                             <v-layout row justify-end>
                                 <v-btn
@@ -144,10 +171,59 @@ export default {
     },
     data: () => ({
         path: 'users',
+        signUpDialog: false,
+        planPurchaseDialog: false,
     }),
     watch: {
     },
     methods:{
+        async signUp(params){
+            try{
+                var path = "signUp".toLowerCase();
+                var temp = await this.repository.invoke(this.selectedRow, path, params)
+                // 스넥바 관련 수정 필요
+                // this.$EventBus.$emit('show-success','signUp 성공적으로 처리되었습니다.')
+                for(var i = 0; i< this.value.length; i++){
+                    if(this.value[i] == this.selectedRow){
+                        this.value[i] = temp.data
+                    }
+                }
+                this.signUpDialog = false
+            }catch(e){
+                console.log(e)
+            }
+        },
+        async planCancel(){
+            try{
+                var path = "planCancel".toLowerCase();
+                var temp = await this.repository.invoke(this.selectedRow, path, null)
+                // 스넥바 관련 수정 필요
+                // this.$EventBus.$emit('show-success','planCancel 성공적으로 처리되었습니다.')
+                for(var i = 0; i< this.value.length; i++){
+                    if(this.value[i] == this.selectedRow){
+                        this.value[i] = temp.data
+                    }
+                }
+            }catch(e){
+                console.log(e)
+            }
+        },
+        async planPurchase(params){
+            try{
+                var path = "planPurchase".toLowerCase();
+                var temp = await this.repository.invoke(this.selectedRow, path, params)
+                // 스넥바 관련 수정 필요
+                // this.$EventBus.$emit('show-success','planPurchase 성공적으로 처리되었습니다.')
+                for(var i = 0; i< this.value.length; i++){
+                    if(this.value[i] == this.selectedRow){
+                        this.value[i] = temp.data
+                    }
+                }
+                this.planPurchaseDialog = false
+            }catch(e){
+                console.log(e)
+            }
+        },
     }
 }
 

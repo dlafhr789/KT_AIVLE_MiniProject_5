@@ -19,5 +19,65 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @RequestMapping(
+        value = "/users/signup",
+        method = RequestMethod.POST,
+        produces = "application/json;charset=UTF-8"
+    )
+    public User signUp(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        @RequestBody SignUpCommand signUpCommand
+    ) throws Exception {
+        System.out.println("##### /user/signUp  called #####");
+        User user = new User();
+        user.signUp(signUpCommand);
+        userRepository.save(user);
+        return user;
+    }
+
+    @RequestMapping(
+        value = "/users/{id}/plancancel",
+        method = RequestMethod.PUT,
+        produces = "application/json;charset=UTF-8"
+    )
+    public User planCancel(
+        @PathVariable(value = "id") Long id,
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws Exception {
+        System.out.println("##### /user/planCancel  called #####");
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        optionalUser.orElseThrow(() -> new Exception("No Entity Found"));
+        User user = optionalUser.get();
+        user.planCancel();
+
+        userRepository.save(user);
+        return user;
+    }
+
+    @RequestMapping(
+        value = "/users/{id}/planpurchase",
+        method = RequestMethod.PUT,
+        produces = "application/json;charset=UTF-8"
+    )
+    public User planPurchase(
+        @PathVariable(value = "id") Long id,
+        @RequestBody PlanPurchaseCommand planPurchaseCommand,
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws Exception {
+        System.out.println("##### /user/planPurchase  called #####");
+        Optional<User> optionalUser = userRepository.findById(id);
+
+        optionalUser.orElseThrow(() -> new Exception("No Entity Found"));
+        User user = optionalUser.get();
+        user.planPurchase(planPurchaseCommand);
+
+        userRepository.save(user);
+        return user;
+    }
 }
 //>>> Clean Arch / Inbound Adaptor

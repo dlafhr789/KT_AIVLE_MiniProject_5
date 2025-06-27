@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
 import ktaivlethminiproject.UserApplication;
-import ktaivlethminiproject.domain.SubscriptionAccepted;
-import ktaivlethminiproject.domain.SubscriptionDenied;
 import lombok.Data;
 
 @Entity
@@ -28,22 +26,26 @@ public class Subscribe {
 
     private String state;
 
-    @PostPersist
-    public void onPostPersist() {
-        SubscriptionAccepted subscriptionAccepted = new SubscriptionAccepted(
-            this
-        );
-        subscriptionAccepted.publishAfterCommit();
-
-        SubscriptionDenied subscriptionDenied = new SubscriptionDenied(this);
-        subscriptionDenied.publishAfterCommit();
-    }
-
     public static SubscribeRepository repository() {
         SubscribeRepository subscribeRepository = UserApplication.applicationContext.getBean(
             SubscribeRepository.class
         );
         return subscribeRepository;
     }
+
+    //<<< Clean Arch / Port Method
+    public void subscribe() {
+        //implement business logic here:
+
+        SubscriptionAccepted subscriptionAccepted = new SubscriptionAccepted(
+            this
+        );
+        subscriptionAccepted.setBookId(subscribeCommand.get());
+        subscriptionAccepted.publishAfterCommit();
+        SubscriptionDenied subscriptionDenied = new SubscriptionDenied(this);
+        subscriptionDenied.publishAfterCommit();
+    }
+    //>>> Clean Arch / Port Method
+
 }
 //>>> DDD / Aggregate Root

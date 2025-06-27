@@ -83,22 +83,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: openai
+  name: bookpublish
   labels:
-    app: openai
+    app: bookpublish
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: openai
+      app: bookpublish
   template:
     metadata:
       labels:
-        app: openai
+        app: bookpublish
     spec:
       containers:
-        - name: openai
-          image: username/openai:latest
+        - name: bookpublish
+          image: username/bookpublish:latest
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -163,22 +163,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 대쉬보드
+  name: dashboard
   labels:
-    app: 대쉬보드
+    app: dashboard
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: 대쉬보드
+      app: dashboard
   template:
     metadata:
       labels:
-        app: 대쉬보드
+        app: dashboard
     spec:
       containers:
-        - name: 대쉬보드
-          image: username/대쉬보드:latest
+        - name: dashboard
+          image: username/dashboard:latest
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -239,15 +239,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: openai
+  name: bookpublish
   labels:
-    app: openai
+    app: bookpublish
 spec:
   ports:
     - port: 8080
       targetPort: 8080
   selector:
-    app: openai
+    app: bookpublish
 
 
 ---
@@ -273,13 +273,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: 대쉬보드
+  name: dashboard
   labels:
-    app: 대쉬보드
+    app: dashboard
 spec:
   ports:
     - port: 8080
       targetPort: 8080
   selector:
-    app: 대쉬보드
+    app: dashboard
 

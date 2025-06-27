@@ -12,6 +12,12 @@ public class SubscribeHateoasProcessor
 
     @Override
     public EntityModel<Subscribe> process(EntityModel<Subscribe> model) {
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/subscribe")
+                .withRel("subscribe")
+        );
+
         return model;
     }
 }

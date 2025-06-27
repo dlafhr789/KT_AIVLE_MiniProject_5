@@ -18,6 +18,9 @@
                 <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="openEditDialog()" class="contrast-primary-text" small color="primary">
                     <v-icon small>mdi-pencil</v-icon>수정
                 </v-btn>
+                <v-btn style="margin-left: 5px;" @click="subscribe" class="contrast-primary-text" small color="primary" :disabled="!hasRole('User')">
+                    <v-icon small>mdi-minus-circle-outline</v-icon>구독
+                </v-btn>
             </div>
             <div class="mb-5 text-lg font-bold"></div>
             <div class="table-responsive">
@@ -139,6 +142,21 @@ export default {
     watch: {
     },
     methods:{
+        async subscribe(){
+            try{
+                var path = "subscribe".toLowerCase();
+                var temp = await this.repository.invoke(this.selectedRow, path, null)
+                // 스넥바 관련 수정 필요
+                // this.$EventBus.$emit('show-success','subscribe 성공적으로 처리되었습니다.')
+                for(var i = 0; i< this.value.length; i++){
+                    if(this.value[i] == this.selectedRow){
+                        this.value[i] = temp.data
+                    }
+                }
+            }catch(e){
+                console.log(e)
+            }
+        },
     }
 }
 

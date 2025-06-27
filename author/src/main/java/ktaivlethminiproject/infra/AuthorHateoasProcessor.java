@@ -12,6 +12,17 @@ public class AuthorHateoasProcessor
 
     @Override
     public EntityModel<Author> process(EntityModel<Author> model) {
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/authorapprove")
+                .withRel("authorapprove")
+        );
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/authordeny")
+                .withRel("authordeny")
+        );
+
         return model;
     }
 }

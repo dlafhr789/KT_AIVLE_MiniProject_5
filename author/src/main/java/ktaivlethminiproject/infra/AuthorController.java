@@ -19,5 +19,49 @@ public class AuthorController {
 
     @Autowired
     AuthorRepository authorRepository;
+
+    @RequestMapping(
+        value = "/authors/{id}/authorapprove",
+        method = RequestMethod.PUT,
+        produces = "application/json;charset=UTF-8"
+    )
+    public Author authorApprove(
+        @PathVariable(value = "id") String id,
+        @RequestBody AuthorApproveCommand authorApproveCommand,
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws Exception {
+        System.out.println("##### /author/authorApprove  called #####");
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+
+        optionalAuthor.orElseThrow(() -> new Exception("No Entity Found"));
+        Author author = optionalAuthor.get();
+        author.authorApprove(authorApproveCommand);
+
+        authorRepository.save(author);
+        return author;
+    }
+
+    @RequestMapping(
+        value = "/authors/{id}/authordeny",
+        method = RequestMethod.PUT,
+        produces = "application/json;charset=UTF-8"
+    )
+    public Author authorDeny(
+        @PathVariable(value = "id") String id,
+        @RequestBody AuthorDenyCommand authorDenyCommand,
+        HttpServletRequest request,
+        HttpServletResponse response
+    ) throws Exception {
+        System.out.println("##### /author/authorDeny  called #####");
+        Optional<Author> optionalAuthor = authorRepository.findById(id);
+
+        optionalAuthor.orElseThrow(() -> new Exception("No Entity Found"));
+        Author author = optionalAuthor.get();
+        author.authorDeny(authorDenyCommand);
+
+        authorRepository.save(author);
+        return author;
+    }
 }
 //>>> Clean Arch / Inbound Adaptor

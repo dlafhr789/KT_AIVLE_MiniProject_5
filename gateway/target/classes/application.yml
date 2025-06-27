@@ -17,7 +17,7 @@ spring:
           uri: http://localhost:8083
           predicates:
             - Path=/users/**, /subscribes/**, 
-        - id: openai
+        - id: bookpublish
           uri: http://localhost:8084
           predicates:
             - Path=/genData/**, 
@@ -25,7 +25,7 @@ spring:
           uri: http://localhost:8085
           predicates:
             - Path=/authors/**, 
-        - id: 대쉬보드
+        - id: dashboard
           uri: http://localhost:8086
           predicates:
             - Path=, /subscribeMonitors/**, /booklists/**
@@ -61,16 +61,16 @@ spring:
           uri: http://user:8080
           predicates:
             - Path=/users/**, /subscribes/**, 
-        - id: openai
-          uri: http://openai:8080
+        - id: bookpublish
+          uri: http://bookpublish:8080
           predicates:
             - Path=/genData/**, 
         - id: author
           uri: http://author:8080
           predicates:
             - Path=/authors/**, 
-        - id: 대쉬보드
-          uri: http://대쉬보드:8080
+        - id: dashboard
+          uri: http://dashboard:8080
           predicates:
             - Path=, 
         - id: frontend

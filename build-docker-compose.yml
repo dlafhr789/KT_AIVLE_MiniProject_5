@@ -51,7 +51,7 @@ services:
       - ./user:/usr/src
       - ./maven-repo:/root/.m2
       
-  openai:
+  bookpublish:
     depends_on: 
       - kafka
     image: adoptopenjdk/maven-openjdk11:latest
@@ -62,7 +62,7 @@ services:
       - 8084:8084
     working_dir: /usr/src
     volumes:
-      - ./openai:/usr/src
+      - ./bookpublish:/usr/src
       - ./maven-repo:/root/.m2
       
   author:
@@ -79,7 +79,7 @@ services:
       - ./author:/usr/src
       - ./maven-repo:/root/.m2
       
-  대쉬보드:
+  dashboard:
     depends_on: 
       - kafka
     image: adoptopenjdk/maven-openjdk11:latest
@@ -90,6 +90,6 @@ services:
       - 8086:8086
     working_dir: /usr/src
     volumes:
-      - ./대쉬보드:/usr/src
+      - ./dashboard:/usr/src
       - ./maven-repo:/root/.m2
       

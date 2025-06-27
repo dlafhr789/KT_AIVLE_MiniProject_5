@@ -77,7 +77,9 @@ public class Book {
     //>>> Clean Arch / Port Method
 
     //<<< Clean Arch / Port Method
-    public static void publish(GenerateSucceeded generateSucceeded) {
+    public static void publish(
+        GenerateRequestCompleted generateRequestCompleted
+    ) {
         //implement business logic here:
 
         /** Example 1:  new item 
@@ -90,12 +92,12 @@ public class Book {
 
         /** Example 2:  finding and process
         
-        // if generateSucceeded.genAiId exists, use it
+        // if generateRequestCompleted.genAiId exists, use it
         
         // ObjectMapper mapper = new ObjectMapper();
-        // Map<, Object> genDataMap = mapper.convertValue(generateSucceeded.getGenAiId(), Map.class);
+        // Map<, Object> genDataMap = mapper.convertValue(generateRequestCompleted.getGenAiId(), Map.class);
 
-        repository().findById(generateSucceeded.get???()).ifPresent(book->{
+        repository().findById(generateRequestCompleted.get???()).ifPresent(book->{
             
             book // do something
             repository().save(book);

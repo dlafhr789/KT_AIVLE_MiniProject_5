@@ -25,14 +25,14 @@ public class PolicyHandler {
 
     @StreamListener(
         value = KafkaProcessor.INPUT,
-        condition = "headers['type']=='GenerateSucceeded'"
+        condition = "headers['type']=='GenerateRequestCompleted'"
     )
-    public void wheneverGenerateSucceeded_Publish(
-        @Payload GenerateSucceeded generateSucceeded
+    public void wheneverGenerateRequestCompleted_Publish(
+        @Payload GenerateRequestCompleted generateRequestCompleted
     ) {
-        GenerateSucceeded event = generateSucceeded;
+        GenerateRequestCompleted event = generateRequestCompleted;
         System.out.println(
-            "\n\n##### listener Publish : " + generateSucceeded + "\n\n"
+            "\n\n##### listener Publish : " + generateRequestCompleted + "\n\n"
         );
 
         // Sample Logic //

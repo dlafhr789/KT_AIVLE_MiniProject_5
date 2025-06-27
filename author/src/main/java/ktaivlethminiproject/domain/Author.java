@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
 import ktaivlethminiproject.AuthorApplication;
-import ktaivlethminiproject.domain.AuthorApproved;
-import ktaivlethminiproject.domain.AuthorDenied;
 import ktaivlethminiproject.domain.AuthorRegistrationRequested;
 import lombok.Data;
 
@@ -34,12 +32,6 @@ public class Author {
             this
         );
         authorRegistrationRequested.publishAfterCommit();
-
-        AuthorApproved authorApproved = new AuthorApproved(this);
-        authorApproved.publishAfterCommit();
-
-        AuthorDenied authorDenied = new AuthorDenied(this);
-        authorDenied.publishAfterCommit();
     }
 
     public static AuthorRepository repository() {
@@ -48,5 +40,24 @@ public class Author {
         );
         return authorRepository;
     }
+
+    //<<< Clean Arch / Port Method
+    public void authorApprove(AuthorApproveCommand authorApproveCommand) {
+        //implement business logic here:
+
+        AuthorApproved authorApproved = new AuthorApproved(this);
+        authorApproved.publishAfterCommit();
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public void authorDeny(AuthorDenyCommand authorDenyCommand) {
+        //implement business logic here:
+
+        AuthorDenied authorDenied = new AuthorDenied(this);
+        authorDenied.publishAfterCommit();
+    }
+    //>>> Clean Arch / Port Method
+
 }
 //>>> DDD / Aggregate Root

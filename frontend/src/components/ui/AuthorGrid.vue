@@ -18,6 +18,24 @@
                 <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="openEditDialog()" class="contrast-primary-text" small color="primary">
                     <v-icon small>mdi-pencil</v-icon>수정
                 </v-btn>
+                <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="authorApproveDialog = true" class="contrast-primary-text" small color="primary" :disabled="!hasRole('Manager')">
+                    <v-icon small>mdi-minus-circle-outline</v-icon>작가 승인
+                </v-btn>
+                <v-dialog v-model="authorApproveDialog" width="500">
+                    <AuthorApprove
+                        @closeDialog="authorApproveDialog = false"
+                        @authorApprove="authorApprove"
+                    ></AuthorApprove>
+                </v-dialog>
+                <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="authorDenyDialog = true" class="contrast-primary-text" small color="primary" :disabled="!hasRole('Manager')">
+                    <v-icon small>mdi-minus-circle-outline</v-icon>작가 승인 거부
+                </v-btn>
+                <v-dialog v-model="authorDenyDialog" width="500">
+                    <AuthorDeny
+                        @closeDialog="authorDenyDialog = false"
+                        @authorDeny="authorDeny"
+                    ></AuthorDeny>
+                </v-dialog>
             </div>
             <div class="mb-5 text-lg font-bold"></div>
             <div class="table-responsive">
@@ -136,10 +154,44 @@ export default {
     },
     data: () => ({
         path: 'authors',
+        authorApproveDialog: false,
+        authorDenyDialog: false,
     }),
     watch: {
     },
     methods:{
+        async authorApprove(params){
+            try{
+                var path = "authorApprove".toLowerCase();
+                var temp = await this.repository.invoke(this.selectedRow, path, params)
+                // 스넥바 관련 수정 필요
+                // this.$EventBus.$emit('show-success','AuthorApprove 성공적으로 처리되었습니다.')
+                for(var i = 0; i< this.value.length; i++){
+                    if(this.value[i] == this.selectedRow){
+                        this.value[i] = temp.data
+                    }
+                }
+                this.authorApproveDialog = false
+            }catch(e){
+                console.log(e)
+            }
+        },
+        async authorDeny(params){
+            try{
+                var path = "authorDeny".toLowerCase();
+                var temp = await this.repository.invoke(this.selectedRow, path, params)
+                // 스넥바 관련 수정 필요
+                // this.$EventBus.$emit('show-success','AuthorDeny 성공적으로 처리되었습니다.')
+                for(var i = 0; i< this.value.length; i++){
+                    if(this.value[i] == this.selectedRow){
+                        this.value[i] = temp.data
+                    }
+                }
+                this.authorDenyDialog = false
+            }catch(e){
+                console.log(e)
+            }
+        },
     }
 }
 

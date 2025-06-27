@@ -30,18 +30,18 @@ public class PolicyHandler {
         value = KafkaProcessor.INPUT,
         condition = "headers['type']=='SubscriptionAccepted'"
     )
-    public void wheneverSubscriptionAccepted_PointsDecrease(
+    public void wheneverSubscriptionAccepted_DecreasePoint(
         @Payload SubscriptionAccepted subscriptionAccepted
     ) {
         SubscriptionAccepted event = subscriptionAccepted;
         System.out.println(
-            "\n\n##### listener PointsDecrease : " +
+            "\n\n##### listener DecreasePoint : " +
             subscriptionAccepted +
             "\n\n"
         );
 
         // Sample Logic //
-        User.pointsDecrease(event);
+        User.decreasePoint(event);
     }
 
     @StreamListener(

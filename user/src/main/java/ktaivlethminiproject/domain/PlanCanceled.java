@@ -12,7 +12,6 @@ import lombok.*;
 public class PlanCanceled extends AbstractEvent {
 
     private Long id;
-    private String plan;
 
     public PlanCanceled(User aggregate) {
         super(aggregate);

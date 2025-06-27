@@ -12,6 +12,22 @@ public class UserHateoasProcessor
 
     @Override
     public EntityModel<User> process(EntityModel<User> model) {
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/signup")
+                .withRel("signup")
+        );
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/plancancel")
+                .withRel("plancancel")
+        );
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/planpurchase")
+                .withRel("planpurchase")
+        );
+
         return model;
     }
 }

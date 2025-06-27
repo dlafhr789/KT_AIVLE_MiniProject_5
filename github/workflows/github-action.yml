@@ -31,9 +31,9 @@ jobs:
         run: |
           mvn clean package -f ./book/pom.xml
           mvn clean package -f ./user/pom.xml
-          mvn clean package -f ./openai/pom.xml
+          mvn clean package -f ./bookpublish/pom.xml
           mvn clean package -f ./author/pom.xml
-          mvn clean package -f ./대쉬보드/pom.xml
+          mvn clean package -f ./dashboard/pom.xml
 
       - name: Docker Build and push for Book
         uses: docker/build-push-action@v4
@@ -55,15 +55,15 @@ jobs:
             ghcr.io/${{ github.repository }}/user:latest
             ghcr.io/${{ github.repository }}/user:${{ github.ref_name }}
             
-      - name: Docker Build and push for Openai
+      - name: Docker Build and push for Bookpublish
         uses: docker/build-push-action@v4
         with:
-          context: ./openai
+          context: ./bookpublish
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/openai:latest
-            ghcr.io/${{ github.repository }}/openai:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}/bookpublish:latest
+            ghcr.io/${{ github.repository }}/bookpublish:${{ github.ref_name }}
             
       - name: Docker Build and push for Author
         uses: docker/build-push-action@v4
@@ -75,13 +75,13 @@ jobs:
             ghcr.io/${{ github.repository }}/author:latest
             ghcr.io/${{ github.repository }}/author:${{ github.ref_name }}
             
-      - name: Docker Build and push for 대쉬보드
+      - name: Docker Build and push for Dashboard
         uses: docker/build-push-action@v4
         with:
-          context: ./대쉬보드
+          context: ./dashboard
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/대쉬보드:latest
-            ghcr.io/${{ github.repository }}/대쉬보드:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}/dashboard:latest
+            ghcr.io/${{ github.repository }}/dashboard:${{ github.ref_name }}
             

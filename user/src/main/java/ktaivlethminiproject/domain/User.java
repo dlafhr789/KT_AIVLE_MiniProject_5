@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
 import ktaivlethminiproject.UserApplication;
-import ktaivlethminiproject.domain.PlanCanceled;
-import ktaivlethminiproject.domain.PlanPurchased;
-import ktaivlethminiproject.domain.SignedUp;
 import lombok.Data;
 
 @Entity
@@ -35,17 +32,9 @@ public class User {
 
     private String state;
 
-    @PostPersist
-    public void onPostPersist() {
-        PlanPurchased planPurchased = new PlanPurchased(this);
-        planPurchased.publishAfterCommit();
+    private String telecom;
 
-        SignedUp signedUp = new SignedUp(this);
-        signedUp.publishAfterCommit();
-
-        PlanCanceled planCanceled = new PlanCanceled(this);
-        planCanceled.publishAfterCommit();
-    }
+    private String password;
 
     public static UserRepository repository() {
         UserRepository userRepository = UserApplication.applicationContext.getBean(
@@ -55,7 +44,35 @@ public class User {
     }
 
     //<<< Clean Arch / Port Method
-    public static void pointsDecrease(
+    public void signUp(SignUpCommand signUpCommand) {
+        //implement business logic here:
+
+        SignedUp signedUp = new SignedUp(this);
+        signedUp.publishAfterCommit();
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public void planCancel() {
+        //implement business logic here:
+
+        PlanCanceled planCanceled = new PlanCanceled(this);
+        planCanceled.publishAfterCommit();
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public void planPurchase(PlanPurchaseCommand planPurchaseCommand) {
+        //implement business logic here:
+
+        PlanPurchased planPurchased = new PlanPurchased(this);
+        planPurchased.publishAfterCommit();
+    }
+
+    //>>> Clean Arch / Port Method
+
+    //<<< Clean Arch / Port Method
+    public static void decreasePoint(
         SubscriptionAccepted subscriptionAccepted
     ) {
         //implement business logic here:

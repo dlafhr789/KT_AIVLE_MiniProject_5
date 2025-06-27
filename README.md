@@ -22,9 +22,9 @@ See the README.md files inside the each microservices directory:
 
 - book
 - user
-- openai
+- bookpublish
 - author
-- 대쉬보드
+- dashboard
 
 
 ## Run API Gateway (Spring Gateway)
@@ -40,10 +40,10 @@ mvn spring-boot:run
 ```
 - user
 ```
- http :8088/users id="id"role="role"name="name"email="email"point="point"plan="plan"state="state"
+ http :8088/users id="id"role="role"name="name"email="email"point="point"plan="plan"state="state"telecom="telecom"password="password"
  http :8088/subscribes id="id"bookId="book_id"userId="user_id"state="state"
 ```
-- openai
+- bookpublish
 ```
  http :8088/genData bookId="book_id"coverUrl="cover_url"summary="summary"downloadUrl="download_url"point="point"category="category"
 ```
@@ -51,7 +51,7 @@ mvn spring-boot:run
 ```
  http :8088/authors userId="user_id"state="state"portfolio="portfolio"profile="profile"
 ```
-- 대쉬보드
+- dashboard
 ```
 ```
 
