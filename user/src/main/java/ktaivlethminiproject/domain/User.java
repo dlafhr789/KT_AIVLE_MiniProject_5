@@ -56,6 +56,8 @@ public class User {
     public void planCancel() {
         //implement business logic here:
 
+        this.plan = null;
+
         PlanCanceled planCanceled = new PlanCanceled(this);
         planCanceled.publishAfterCommit();
     }
