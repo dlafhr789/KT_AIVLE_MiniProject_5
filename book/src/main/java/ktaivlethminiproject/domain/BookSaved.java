@@ -25,7 +25,6 @@ public class BookSaved extends AbstractEvent {
         this.content = aggregate.getContent();
         this.view = (aggregate.getView() == null) ? 0 : aggregate.getView();
     }
-    }
 
     public BookSaved() {
         super();
