@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 //<<< Clean Arch / Inbound Adaptor
 
 @RestController
-@RequestMapping("/authors")
 @RequiredArgsConstructor
 @Transactional
 public class AuthorController {
@@ -46,7 +45,7 @@ public class AuthorController {
     )
     public Author authorApprove(
         @PathVariable(value = "id") String id,
-        @RequestBody AuthorApproveCommand authorApproveCommand,
+        @RequestBody(required = false) AuthorApproveCommand authorApproveCommand,
         HttpServletRequest request,
         HttpServletResponse response
     ) throws Exception {
@@ -68,7 +67,7 @@ public class AuthorController {
     )
     public Author authorDeny(
         @PathVariable(value = "id") String id,
-        @RequestBody AuthorDenyCommand authorDenyCommand,
+        @RequestBody(required = false) AuthorDenyCommand authorDenyCommand,
         HttpServletRequest request,
         HttpServletResponse response
     ) throws Exception {
