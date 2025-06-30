@@ -48,7 +48,7 @@ public class Book {
         published.publishAfterCommit();
     }
 
-    public void Subscribed() {
+    public void subscribed() {
         this.subscribers++;
 
         // 실제 구독자 증가 행위가 일어났을 때 이벤트 발행

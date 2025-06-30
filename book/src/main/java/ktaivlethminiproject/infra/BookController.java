@@ -24,7 +24,7 @@ public class BookController {
 
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new Exception("No Entity Found"));
-        book.open();
+        book.openBook();
         return book;
     }
 

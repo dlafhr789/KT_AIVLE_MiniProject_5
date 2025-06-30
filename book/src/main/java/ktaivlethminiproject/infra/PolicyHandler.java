@@ -36,10 +36,8 @@ public class PolicyHandler {
             "\n\n##### listener Publish : " + generateRequestCompleted + "\n\n"
         );
 
-//        Book.publish(event);
-        bookRepository.findById(GenerationRequestCompleted.getBookId()).ifPresent(book -> {
+        bookRepository.findById(generateRequestCompleted.getId()).ifPresent(book -> {
             book.publish(generateRequestCompleted.getImageUrl());
-//            bookRepository.save(book);
         });
     }
 
@@ -51,15 +49,12 @@ public class PolicyHandler {
     public void wheneverSubscriptionAccepted_Subscribed(
         @Payload SubscriptionAccepted subscriptionAccepted
     ) {
-//        SubscriptionAccepted event = subscriptionAccepted;
         System.out.println(
             "\n\n##### listener Subscribed : " + subscriptionAccepted + "\n\n"
         );
 
-//        Book.subscribed(event);
         bookRepository.findById(subscriptionAccepted.getId()).ifPresent(book -> {
-            book.increaseSubscriber();
-//            bookRepository.save(book);
+            book.subscribed();
         });
     }
 }
