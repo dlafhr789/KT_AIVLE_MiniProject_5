@@ -6,9 +6,10 @@ import ktaivlethminiproject.domain.*;
 import ktaivlethminiproject.infra.AbstractEvent;
 import lombok.*;
 
-//<<< DDD / Domain Event
-@Data
+@Getter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class PublicationRequested extends AbstractEvent {
 
     private Long id;
@@ -17,15 +18,10 @@ public class PublicationRequested extends AbstractEvent {
     private Long userId;
 
     public PublicationRequested(Book aggregate) {
-        super(aggregate);
+        super();
         this.id = aggregate.getId();
         this.title = aggregate.getTitle();
         this.content = aggregate.getContent();
         this.userId = aggregate.getUserId();
     }
-
-    public PublicationRequested() {
-        super();
-    }
 }
-//>>> DDD / Domain Event
