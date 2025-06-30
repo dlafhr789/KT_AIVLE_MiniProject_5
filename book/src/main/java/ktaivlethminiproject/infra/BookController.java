@@ -104,17 +104,24 @@
 
 package ktaivlethminiproject.infra;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import ktaivlethminiproject.config.kafka.KafkaProcessor;
 import ktaivlethminiproject.domain.*;
 import ktaivlethminiproject.service.Subscription;
 import ktaivlethminiproject.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional; // 1. Spring의 Transactional만 사용합니다.
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/books")
-@Transactional // Spring의 Transactional 어노테이션이 적용됩니다.
+@Transactional
 public class BookController {
 
     @Autowired
@@ -122,6 +129,9 @@ public class BookController {
 
     @Autowired(required = false)
     SubscriptionService subscriptionService;
+
+    @Autowired
+    KafkaProcessor kafkaProcessor;
 
     /**
      * 새 책 저장 API
@@ -131,7 +141,7 @@ public class BookController {
         Book book = new Book();
         book.setTitle(requestPayload.getTitle());
         book.setContent(requestPayload.getContent());
-        book.setUserId(requestPayload.getUserId()); // 3. userId가 저장되도록 주석 해제
+        book.setUserId(requestPayload.getUserId());
         bookRepository.save(book);
         return book;
     }
@@ -139,12 +149,12 @@ public class BookController {
     /**
      * 책 열람 API
      */
-    @PutMapping("/{id}/open")
+    @PutMapping("/{id}/openbook")
     public Book openBook(@PathVariable(value = "id") Long id) throws Exception {
         Book book = bookRepository.findById(id)
             .orElseThrow(() -> new Exception("No Entity Found"));
         
-        book.open(); // 4. 올바른 메소드 이름으로 수정
+        book.openBook();
         
         return book;
     }
@@ -152,7 +162,7 @@ public class BookController {
     /**
      * 기존 책 출간 요청 API
      */
-    @PostMapping("/{id}/request-publication") // 5. 역할을 명확히 하는 경로로 수정
+    @PostMapping("/{id}")
     public void requestPublication(@PathVariable(value = "id") Long id) throws Exception {
         Book book = bookRepository.findById(id)
             .orElseThrow(() -> new Exception("No Entity Found"));
@@ -170,18 +180,18 @@ public class BookController {
     /**
      * 임시 테스트용 API: SubscriptionAccepted 이벤트를 강제로 발행
      */
-    @GetMapping("/{id}/test-subscription")
-    public String testSubscription(@PathVariable(value = "id") Long id) {
-        // 2. 이벤트를 생성하고, 이벤트 스스로 발행하도록 하는 원래의 방식으로 복구
-        SubscriptionAccepted event = new SubscriptionAccepted();
-        event.setSubscriptionId(1L);
-        event.setBookId(id);
-        event.setUserId(999L);
-        event.setUserName("TestUser");
-        event.setState("ACTIVE");
+    // @GetMapping("/{id}/test-subscription")
+    // public String testSubscription(@PathVariable(value = "id") Long id) {
+    //     // 2. 이벤트를 생성하고, 이벤트 스스로 발행하도록 하는 원래의 방식으로 복구
+    //     SubscriptionAccepted event = new SubscriptionAccepted();
+    //     event.setSubscriptionId(1L);
+    //     event.setBookId(id);
+    //     event.setUserId(999L);
+    //     event.setUserName("TestUser");
+    //     event.setState("ACTIVE");
         
-        event.publish(); // AbstractEvent를 상속받는 DTO의 publish() 메소드 호출
+    //     event.publish(); // AbstractEvent를 상속받는 DTO의 publish() 메소드 호출
 
-        return "SubscriptionAccepted event published for bookId: " + id;
-    }
+    //     return "SubscriptionAccepted event published for bookId: " + id;
+    // }
 }
