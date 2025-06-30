@@ -138,7 +138,7 @@ public class PolicyHandler {
             .model("dall-e-3")
             .prompt(coverPrompt + "\n\n title : " + bookTitle + "\ncontent :\n" + bookContent)
             .n(1)
-            .size(ImageGenerateParams.Size._1024X1536)  // 4:6 비율
+            .size(ImageGenerateParams.Size._1024X1792)  // 4:6 비율
             .style(ImageGenerateParams.Style.VIVID)
             .quality(ImageGenerateParams.Quality.HD)
             .responseFormat(ImageGenerateParams.ResponseFormat.B64_JSON)
