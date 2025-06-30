@@ -80,13 +80,16 @@ public class PolicyHandler {
 
         // Sample Logic //
 
-        final GenDataRepository genDataRepository;
+        // final GenDataRepository genDataRepository;
 
         final Long bookId = event.getId();
         final String bookTitle = event.getTitle();
         final String bookContent = event.getContent();
         
         final Long userId = event.getUserId();
+
+        GenData genData = new GenData();
+        genData.setBookId(bookId);
 
         Dotenv dotenv = Dotenv.configure().directory("./").load();  // .env 로드
         final String openAIApiKey = dotenv.get("OPENAI_API_KEY"); // .env에서 openai api key 가져오기
@@ -95,8 +98,10 @@ public class PolicyHandler {
             .apiKey(openAIApiKey)
             .build();
 
+        // =======================
         // openai-java doc : https://github.com/openai/openai-java?tab=readme-ov-file
         // 1. AI 내용 요약
+        // =======================
 
         /*
          * ai-summary 프롬프트
@@ -116,15 +121,19 @@ public class PolicyHandler {
 
         ChatCompletion chat = client.chat().completions().create(summaryParams);
         String answer = chat.choices().get(0).message().content().orElse("empty");
-        
 
+        genData.setSummary(answer);
+        System.out.println("Generated Book Summary : " + answer);
+
+        // =======================
         // 2. AI 표지 생성
+        // =======================
 
-        final String coverPrompt = "";
+        final String coverPrompt = "다음 도서의 제목과 내용에 맞는 표지를 생성하라.";
 
         ImageGenerateParams coverParams = ImageGenerateParams.builder()
             .model("dall-e-3")
-            .prompt(coverPrompt)
+            .prompt(coverPrompt + "\n\n title : " + bookTitle + "\ncontent :\n" + bookContent)
             .n(1)
             .size(ImageGenerateParams.Size._1024X1536)  // 4:6 비율
             .style(ImageGenerateParams.Style.VIVID)
@@ -137,7 +146,7 @@ public class PolicyHandler {
 
         // 저장 경로 + 이미지 이름
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        String createdImagePath = "book_covers/" + userId + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + ".png";
+        String createdImagePath = "bookpublish/book_covers/" + userId + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + ".png";
 
         for (int i = 0; i < images.size(); i++) {
             // B64 문자열 -> PNG 바이트
@@ -152,6 +161,7 @@ public class PolicyHandler {
                 System.out.println("AI Generated Book Cover Write Error : " + err);
             }
         }
+        genData.setCoverUrl(createdImagePath);
 
         GenData.requireAccepted(event);
     }
