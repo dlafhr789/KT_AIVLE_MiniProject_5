@@ -149,16 +149,25 @@ public class PolicyHandler {
 
         // 저장 경로 + 이미지 이름
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        String name = userId + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        String createdImagePath = "bookpublish/book_covers/" + name + ".png";
+        String name = userId + "_" + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String createDir = "book_covers";
+        String fileName = name + ".png";
+        String createdImagePath = createDir + "/" + fileName;
 
-        for (int i = 0; i < images.size(); i++) {
+
+        for (int i = 0; i < 1; i++) {
             // B64 문자열 -> PNG 바이트
             String b64 = images.get(i).b64Json().orElseThrow();
             byte[] png = Base64.getDecoder().decode(b64);
 
             // 파일로 저장
-            Path out = Path.of(createdImagePath);
+            Path out = Path.of(createDir, fileName);
+            try {
+                Files.createDirectories(out.getParent());
+            } catch (IOException e) {
+                throw new IllegalStateException("표지 저장용 디렉터리 생성 실패" + e);
+            }
+
             try {
                 Files.write(out, png);
             } catch (IOException err) {
