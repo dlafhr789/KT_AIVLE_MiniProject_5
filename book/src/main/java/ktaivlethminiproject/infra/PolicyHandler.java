@@ -12,7 +12,8 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
-//<<< Clean Arch / Inbound Adaptor
+import java.awt.print.Book;
+
 @Service
 @Transactional
 public class PolicyHandler {
@@ -23,6 +24,7 @@ public class PolicyHandler {
     @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString) {}
 
+    // AI 생성 완료 시 책을 (생성하고) 출간 상태로 만듦
     @StreamListener(
         value = KafkaProcessor.INPUT,
         condition = "headers['type']=='GenerateRequestCompleted'"
@@ -35,10 +37,19 @@ public class PolicyHandler {
             "\n\n##### listener Publish : " + generateRequestCompleted + "\n\n"
         );
 
-        // Sample Logic //
-        Book.publish(event);
+//        Book.publish(event);
+        // book 엔티티 생성
+        Book book = new Book();
+        book.setTitle(generateRequestCompleted.getGeneratedTitle());
+        book.setContent(generateRequestCompleted.getGeneratedContent());
+        book.setUserId(generateRequestCompleted.getUserId());
+
+        bookRepository.save(book);
+        book.publish(generateRequestCompleted.getImageUrl);
+        bookRepository.save(book);
     }
 
+    // 구독 이벤트 수신 시 구독자 수 증가시킴
     @StreamListener(
         value = KafkaProcessor.INPUT,
         condition = "headers['type']=='SubscriptionAccepted'"
@@ -46,13 +57,15 @@ public class PolicyHandler {
     public void wheneverSubscriptionAccepted_Subscribed(
         @Payload SubscriptionAccepted subscriptionAccepted
     ) {
-        SubscriptionAccepted event = subscriptionAccepted;
+//        SubscriptionAccepted event = subscriptionAccepted;
         System.out.println(
             "\n\n##### listener Subscribed : " + subscriptionAccepted + "\n\n"
         );
 
-        // Sample Logic //
-        Book.subscribed(event);
+//        Book.subscribed(event);
+        bookRepository.findById(subscriptionAccepted.getBookId()).ifPresent(book -> {
+            book.increaseSubscriber();
+            bookRepository.save(book);
+        });
     }
 }
-//>>> Clean Arch / Inbound Adaptor
