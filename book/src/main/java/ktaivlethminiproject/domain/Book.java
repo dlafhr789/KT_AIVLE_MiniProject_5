@@ -55,4 +55,9 @@ public class Book {
         IncreasedSubscriber increasedSubscriber = new IncreasedSubscriber(this);
         increasedSubscriber.publishAfterCommit();
     }
+
+    public void requestPublication() {
+        PublicationRequested publicationRequested = new PublicationRequested(this);
+        publicationRequested.publishAfterCommit();
+    }
 }
