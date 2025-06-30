@@ -20,6 +20,10 @@ const router = createRouter({
       component: () => import('../components/ui/SubscribeGrid.vue'),
     },
     {
+      path: '/bookPoints',
+      component: () => import('../components/BookPointView.vue'),
+    },
+    {
       path: '/genData',
       component: () => import('../components/ui/GenDataGrid.vue'),
     },

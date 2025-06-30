@@ -37,7 +37,7 @@ public class SubscribeController {
     @RequestMapping(value = "/subscribes/ownbook/{bookId}",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public Subscribe ownBook(@PathVariable Long bookId, HttpServletRequest request, HttpServletResponse response
+    public Subscribe ownBook(HttpServletRequest request, HttpServletResponse response
         ) throws Exception {
             System.out.println("##### /subscribe/ownBook  called #####");
             
