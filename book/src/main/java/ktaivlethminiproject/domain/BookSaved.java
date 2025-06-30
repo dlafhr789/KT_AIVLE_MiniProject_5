@@ -6,27 +6,24 @@ import ktaivlethminiproject.domain.*;
 import ktaivlethminiproject.infra.AbstractEvent;
 import lombok.*;
 
-//<<< DDD / Domain Event
-@Data
+@Getter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookSaved extends AbstractEvent {
 
     private Long id;
     private Long userId;
     private String title;
     private String content;
-    private String view;
+    private Integer view;
 
     public BookSaved(Book aggregate) {
-        super(aggregate);
+        super();
         this.id = aggregate.getId();
         this.userId = aggregate.getUserId();
         this.title = aggregate.getTitle();
         this.content = aggregate.getContent();
-        this.view = (aggregate.getView() == null) ? 0 : aggregate.getView();
-    }
-
-    public BookSaved() {
-        super();
+        this.view = aggregate.getView();
     }
 }
-//>>> DDD / Domain Event
