@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class AuthorApproveCommand {
 
-    private String userId;
-    private String state;
+    //private String userId;
+    //private String state;
 }

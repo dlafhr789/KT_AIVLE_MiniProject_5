@@ -31,12 +31,12 @@ spring:
         event-in:
           group: author
 #<<< EDA / Topic Name
-          destination: ktaivlethminiproject
+          destination: author-events
 #>>> EDA / Topic Name
           contentType: application/json
         event-out:
 #<<< EDA / Topic Name
-          destination: ktaivlethminiproject
+          destination: author-events
 #>>> EDA / Topic Name
           contentType: application/json
 
@@ -75,10 +75,10 @@ spring:
       bindings:
         event-in:
           group: author
-          destination: ktaivlethminiproject
+          destination: author-events
           contentType: application/json
         event-out:
-          destination: ktaivlethminiproject
+          destination: author-events
           contentType: application/json
 
 
