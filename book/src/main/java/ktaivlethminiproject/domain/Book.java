@@ -3,22 +3,20 @@ package ktaivlethminiproject.domain;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.Collections;
-//import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
-import ktaivlethminiproject.BookApplication;
-import ktaivlethminiproject.domain.BookOpenFailed;
-import ktaivlethminiproject.domain.BookSaved;
-import ktaivlethminiproject.domain.IncreasedSubscriber;
-import ktaivlethminiproject.domain.PublicationRequested;
-import ktaivlethminiproject.domain.Published;
+//import ktaivlethminiproject.BookApplication;
+//import ktaivlethminiproject.domain.BookOpenFailed;
+//import ktaivlethminiproject.domain.BookSaved;
+//import ktaivlethminiproject.domain.IncreasedSubscriber;
+//import ktaivlethminiproject.domain.PublicationRequested;
+//import ktaivlethminiproject.domain.Published;
 import lombok.Data;
 
 @Entity
 @Table(name = "Book_table")
 @Data
-//<<< DDD / Aggregate Root
 public class Book {
 
     @Id
@@ -26,40 +24,34 @@ public class Book {
     private Long id;
 
     private String title;
-
     private String content;
-
     private Long userId;
-
-    private Date publishedAt;
-
-    private boolean state;
-
-    private Integer view;
-
-    private Integer subscribers;
+    private LocalDateTime publishedAt;
+    private Boolean state = false;
+    private Integer view = 0;
+    private Integer subscribers = 0;
 
     private String imageUrl;  // 임록님만 믿겠습니다 이미지  url 화이팅
 
-    @PostPersist
-    public void onPostPersist() {
-        PublicationRequested publicationRequested = new PublicationRequested(
-            this
-        );
-        publicationRequested.publishAfterCommit();
-
-        BookSaved bookSaved = new BookSaved(this);
-        bookSaved.publishAfterCommit();
-
-        BookOpenFailed bookOpenFailed = new BookOpenFailed(this);
-        bookOpenFailed.publishAfterCommit();
-
-        Published published = new Published(this);
-        published.publishAfterCommit();
-
-        IncreasedSubscriber increasedSubscriber = new IncreasedSubscriber(this);
-        increasedSubscriber.publishAfterCommit();
-    }
+//    @PostPersist
+//    public void onPostPersist() {
+//        PublicationRequested publicationRequested = new PublicationRequested(
+//            this
+//        );
+//        publicationRequested.publishAfterCommit();
+//
+//        BookSaved bookSaved = new BookSaved(this);
+//        bookSaved.publishAfterCommit();
+//
+//        BookOpenFailed bookOpenFailed = new BookOpenFailed(this);
+//        bookOpenFailed.publishAfterCommit();
+//
+//        Published published = new Published(this);
+//        published.publishAfterCommit();
+//
+//        IncreasedSubscriber increasedSubscriber = new IncreasedSubscriber(this);
+//        increasedSubscriber.publishAfterCommit();
+//    }
 
     public static BookRepository repository() {
         BookRepository bookRepository = BookApplication.applicationContext.getBean(
@@ -68,24 +60,16 @@ public class Book {
         return bookRepository;
     }
 
-    //<<< Clean Arch / Port Method
     public void openBook(OpenBookCommand openBookCommand) {
-        // 1) view 증가
-        this.view = (this.view == null) ? 0 : this.view;
         this.view++;
-        repository().save(this);
+//        repository().save(this);
 
         BookOpened bookOpened = new BookOpened(this);
         bookOpened.publishAfterCommit();
     }
 
-    //>>> Clean Arch / Port Method
-
-    //<<< Clean Arch / Port Method
-    public static void publish(
-        GenerateRequestCompleted generateRequestCompleted
-    ) {
-         Book book = new Book();
+    public void publish(GenerateRequestCompleted generateRequestCompleted) {
+        Book book = new Book();
         book.setTitle(generateRequestCompleted.getGeneratedTitle());
         book.setContent(generateRequestCompleted.getGeneratedContent());
         book.setUserId(generateRequestCompleted.getUserId());
@@ -98,8 +82,6 @@ public class Book {
         pub.publishAfterCommit();
     }
 
-    //>>> Clean Arch / Port Method
-    //<<< Clean Arch / Port Method
     public static void subscribed(SubscriptionAccepted subscriptionAccepted) {
         repository().findById(subscriptionAccepted.getBookId()).ifPresent(book -> {
             book.setSubscribers(
@@ -111,7 +93,12 @@ public class Book {
             inc.publishAfterCommit();
         });
     }
-    //>>> Clean Arch / Port Method
 
+    public void increaseSubscribers() {
+        this.subscribers++;
+
+        // 실제 구독자 증가 행위가 일어났을 때 이벤트 발행
+        IncreasedSubscriber increasedSubscriber = new IncreasedSubscriber(this);
+        increasedSubscriber.publishAfterCommit();
+    }
 }
-//>>> DDD / Aggregate Root
