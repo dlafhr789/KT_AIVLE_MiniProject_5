@@ -20,14 +20,25 @@ public class SubscribeController {
     @Autowired
     SubscribeRepository subscribeRepository;
 
-    @RequestMapping(value = "/subscribes/subscribe",
+    @RequestMapping(value = "/subscribes/borrowbook",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public Subscribe subscribe(HttpServletRequest request, HttpServletResponse response, 
+    public Subscribe borrowBook(HttpServletRequest request, HttpServletResponse response, 
         ) throws Exception {
-            System.out.println("##### /subscribe/subscribe  called #####");
+            System.out.println("##### /subscribe/borrowBook  called #####");
             Subscribe subscribe = new Subscribe();
-            subscribe.subscribe();
+            subscribe.borrowBook();
+            subscribeRepository.save(subscribe);
+            return subscribe;
+    }
+    @RequestMapping(value = "/subscribes/ownbook",
+            method = RequestMethod.POST,
+            produces = "application/json;charset=UTF-8")
+    public Subscribe ownBook(HttpServletRequest request, HttpServletResponse response, 
+        ) throws Exception {
+            System.out.println("##### /subscribe/ownBook  called #####");
+            Subscribe subscribe = new Subscribe();
+            subscribe.ownBook();
             subscribeRepository.save(subscribe);
             return subscribe;
     }

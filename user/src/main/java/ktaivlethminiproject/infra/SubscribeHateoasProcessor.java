@@ -14,8 +14,13 @@ public class SubscribeHateoasProcessor
     public EntityModel<Subscribe> process(EntityModel<Subscribe> model) {
         model.add(
             Link
-                .of(model.getRequiredLink("self").getHref() + "/subscribe")
-                .withRel("subscribe")
+                .of(model.getRequiredLink("self").getHref() + "/borrowbook")
+                .withRel("borrowbook")
+        );
+        model.add(
+            Link
+                .of(model.getRequiredLink("self").getHref() + "/ownbook")
+                .withRel("ownbook")
         );
 
         return model;

@@ -26,6 +26,8 @@ public class Subscribe {
 
     private String state;
 
+    private Date expiredAt;
+
     public static SubscribeRepository repository() {
         SubscribeRepository subscribeRepository = UserApplication.applicationContext.getBean(
             SubscribeRepository.class
@@ -34,13 +36,25 @@ public class Subscribe {
     }
 
     //<<< Clean Arch / Port Method
-    public void subscribe() {
+    public void borrowBook() {
         //implement business logic here:
 
         SubscriptionAccepted subscriptionAccepted = new SubscriptionAccepted(
             this
         );
-        subscriptionAccepted.setBookId(subscribeCommand.get());
+        subscriptionAccepted.publishAfterCommit();
+        SubscriptionDenied subscriptionDenied = new SubscriptionDenied(this);
+        subscriptionDenied.publishAfterCommit();
+    }
+
+    //>>> Clean Arch / Port Method
+    //<<< Clean Arch / Port Method
+    public void ownBook() {
+        //implement business logic here:
+
+        SubscriptionAccepted subscriptionAccepted = new SubscriptionAccepted(
+            this
+        );
         subscriptionAccepted.publishAfterCommit();
         SubscriptionDenied subscriptionDenied = new SubscriptionDenied(this);
         subscriptionDenied.publishAfterCommit();

@@ -41,7 +41,7 @@ mvn spring-boot:run
 - user
 ```
  http :8088/users id="id"role="role"name="name"email="email"point="point"plan="plan"state="state"telecom="telecom"password="password"
- http :8088/subscribes id="id"bookId="book_id"userId="user_id"state="state"
+ http :8088/subscribes id="id"bookId="book_id"userId="user_id"state="state"expiredAt="expired_at"
 ```
 - bookpublish
 ```

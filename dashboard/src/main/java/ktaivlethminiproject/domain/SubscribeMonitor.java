@@ -20,4 +20,6 @@ public class SubscribeMonitor {
     private String userName;
     private Long bookId;
     private String bookTitle;
+    private String state;
+    private Date expiredAt;
 }
