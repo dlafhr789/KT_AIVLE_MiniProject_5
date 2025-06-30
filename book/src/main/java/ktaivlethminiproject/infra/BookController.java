@@ -18,6 +18,19 @@ public class BookController {
     @Autowired
     BookRepository bookRepository;
 
+    @PostMapping
+    public Book saveBook(@RequestBody BookSaved requestPayload) {
+        Book book = new Book();
+        book.setId(requestPayload.getId());
+        book.setTitle(requestPayload.getTitle());
+        book.setContent(requestPayload.getContent());
+        book.setUserId(requestPayload.getUserId());
+
+        bookRepository.save(book);
+
+        return book;
+    }
+
     @PutMapping("/{id}/openbook")
     public Book openBook(@PathVariable(value = "id") Long id) throws Exception {
         System.out.println("##### /book/openBook  called #####");
