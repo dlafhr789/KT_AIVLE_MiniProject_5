@@ -17,7 +17,7 @@ public class AuthorApproved extends AbstractEvent {
 
     public AuthorApproved(Author aggregate) {
         super(aggregate);
-        this.userId = aggregate.getUserId();
+        this.userId = String.valueOf(aggregate.getUserId());
         this.state = aggregate.getState();
     }
 
