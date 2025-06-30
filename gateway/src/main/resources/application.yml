@@ -12,19 +12,19 @@ spring:
         - id: book
           uri: http://localhost:8082
           predicates:
-            - Path=/books/**, 
+            - Path=/books/**
         - id: user
           uri: http://localhost:8083
           predicates:
-            - Path=/users/**, /subscribes/**, 
+            - Path=/users/**, /subscribes/**
         - id: bookpublish
           uri: http://localhost:8084
           predicates:
-            - Path=/genData/**, 
+            - Path=/genData/**
         - id: author
           uri: http://localhost:8085
           predicates:
-            - Path=/authors/**, 
+            - Path=/authors/**
         - id: dashboard
           uri: http://localhost:8086
           predicates:
@@ -56,19 +56,19 @@ spring:
         - id: book
           uri: http://book:8080
           predicates:
-            - Path=/books/**, 
+            - Path=/books/**
         - id: user
           uri: http://user:8080
           predicates:
-            - Path=/users/**, /subscribes/**, 
+            - Path=/users/**, /subscribes/**
         - id: bookpublish
           uri: http://bookpublish:8080
           predicates:
-            - Path=/genData/**, 
+            - Path=/genData/**
         - id: author
           uri: http://author:8080
           predicates:
-            - Path=/authors/**, 
+            - Path=/authors/**
         - id: dashboard
           uri: http://dashboard:8080
           predicates:
