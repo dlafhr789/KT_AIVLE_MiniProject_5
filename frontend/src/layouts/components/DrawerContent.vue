@@ -27,6 +27,12 @@ import {
                 to: '/subscribes',
             }"
         />
+        <VerticalNavLink
+            :item="{
+                title: '도서 포인트 조회',
+                to: '/bookPoints',
+            }"
+        />
         <VerticalNavSectionTitle :item="{ heading: '도서 출간 서비스 관리' }" />
         <VerticalNavLink
             :item="{

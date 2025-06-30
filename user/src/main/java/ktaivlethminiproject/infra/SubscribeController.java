@@ -23,7 +23,7 @@ public class SubscribeController {
     @RequestMapping(value = "/subscribes/borrowbook",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public Subscribe borrowBook(HttpServletRequest request, HttpServletResponse response
+    public Subscribe borrowBook(HttpServletRequest request, HttpServletResponse response, 
         ) throws Exception {
             System.out.println("##### /subscribe/borrowBook  called #####");
             Subscribe subscribe = new Subscribe();
@@ -34,7 +34,7 @@ public class SubscribeController {
     @RequestMapping(value = "/subscribes/ownbook",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public Subscribe ownBook(HttpServletRequest request, HttpServletResponse response
+    public Subscribe ownBook(HttpServletRequest request, HttpServletResponse response, 
         ) throws Exception {
             System.out.println("##### /subscribe/ownBook  called #####");
             Subscribe subscribe = new Subscribe();
