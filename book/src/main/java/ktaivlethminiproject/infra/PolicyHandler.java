@@ -39,14 +39,10 @@ public class PolicyHandler {
 
 //        Book.publish(event);
         // book 엔티티 생성
-        Book book = new Book();
-        book.setTitle(generateRequestCompleted.getGeneratedTitle());
-        book.setContent(generateRequestCompleted.getGeneratedContent());
-        book.setUserId(generateRequestCompleted.getUserId());
-
-        bookRepository.save(book);
-        book.publish(generateRequestCompleted.getImageUrl);
-        bookRepository.save(book);
+        bookRepository.findById(subscriptionAccepted.getBookId()).ifPresent(book -> {
+            book.publish(generateRequestCompleted.getImageUrl());
+            bookRepository.save(book);
+        });
     }
 
     // 구독 이벤트 수신 시 구독자 수 증가시킴
