@@ -27,5 +27,4 @@ public class SubscriptionAccepted {
     private Long id;
     private Long userId;
     private Boolean state;
-//    private LocalDateTime expiredAt;
 }

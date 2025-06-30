@@ -31,7 +31,7 @@ public class BookController {
 
     @PutMapping("/{id}/openbook")
     public Book openBook(@PathVariable(value = "id") Long id) throws Exception {
-        System.out.println("##### /book/openBook  called #####");
+        System.out.println("##### /books/" + id + "/openbook called #####");
 
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new Exception("No Entity Found"));

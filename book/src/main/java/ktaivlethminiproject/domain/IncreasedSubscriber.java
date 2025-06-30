@@ -13,22 +13,13 @@ import lombok.*;
 public class IncreasedSubscriber extends AbstractEvent {
 
     private Long id;
-    private Long userId;
+//    private Long userId;
     private Integer subscribers;
-//    private String title;
-//    private String content;
-//    private LocalDateTime publishedAt;
-//    private Integer view;
-
 
     public IncreasedSubscriber(Book aggregate) {
         super();
         this.id = aggregate.getId();
-        this.userId = aggregate.getUserId();
+//        this.userId = aggregate.getUserId();
         this.subscribers = aggregate.getSubscribers();
-//        this.title = aggregate.getTitle();
-//        this.content = aggregate.getContent();
-//        this.publishedAt = aggregate.getPublishedAt();
-//        this.view = aggregate.getView();
     }
 }

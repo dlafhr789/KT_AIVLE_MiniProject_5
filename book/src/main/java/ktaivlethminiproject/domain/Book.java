@@ -1,10 +1,10 @@
 package ktaivlethminiproject.domain;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+//import java.util.Collections;
+//import java.util.List;
+//import java.util.Map;
 import javax.persistence.*;
 //import ktaivlethminiproject.BookApplication;
 //import ktaivlethminiproject.domain.BookOpenFailed;
@@ -12,13 +12,15 @@ import javax.persistence.*;
 //import ktaivlethminiproject.domain.IncreasedSubscriber;
 //import ktaivlethminiproject.domain.PublicationRequested;
 //import ktaivlethminiproject.domain.Published;
-import lombok.Data;
+import lombok.*
 
 @Entity
 @Table(name = "Book_table")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -30,7 +32,7 @@ public class Book {
     private Boolean state = false;
     private Integer view = 0;
     private Integer subscribers = 0;
-    private String imageUrl;  // 임록님만 믿겠습니다 이미지  url 화이팅
+    private String imageUrl;
 
     public void openBook() {
         this.view++;
@@ -51,7 +53,6 @@ public class Book {
     public void subscribed() {
         this.subscribers++;
 
-        // 실제 구독자 증가 행위가 일어났을 때 이벤트 발행
         IncreasedSubscriber increasedSubscriber = new IncreasedSubscriber(this);
         increasedSubscriber.publishAfterCommit();
     }
@@ -65,7 +66,5 @@ public class Book {
     public void onPostPersist() {
         BookSaved bookSaved = new BookSaved(this);
         bookSaved.publishAfterCommit();
-
-//        System.out.println(bookSaved.toString());
     }
 }
