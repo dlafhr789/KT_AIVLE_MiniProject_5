@@ -70,11 +70,13 @@ public class Subscribe {
     public void ownBook() {
         //implement business logic here:
         User user = User.repository().findById(this.userId).orElseThrow(() -> new RuntimeException("User not found"));
-        // 책 포인트를 어떻게 가져옴? 새로운 읽기모델?
-        BookPoint bookPoint = bookPointRepository().findById(bookId).orElseThrow(() -> new RuntimeException("BookPoint not found"));
+        // 일단 하드코딩으로 연결하기전에 bookid 1 point 1100으로 설정하기 위해 주석처리함
+        // BookPoint bookPoint = bookPointRepository().findById(bookId).orElseThrow(() -> new RuntimeException("BookPoint not found"));
         
         int userPoint = user.getPoint() != null ? user.getPoint() : 0;
-        int bookPointValue = bookPoint.getPoint() != null ? bookPoint.getPoint() : 0;
+        // 하드코딩으로 포인트 넣기
+        // int bookPointValue = bookPoint.getPoint() != null ? bookPoint.getPoint() : 0;
+        int bookPointValue = 1100;
 
         if (userPoint < bookPointValue) {
             this.state = "거부";
