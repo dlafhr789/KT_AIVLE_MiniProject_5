@@ -16,7 +16,7 @@ spring:
         - id: user
           uri: http://localhost:8083
           predicates:
-            - Path=/users/**, /subscribes/**, 
+            - Path=/users/**, /subscribes/**, /bookPoints/**
         - id: bookpublish
           uri: http://localhost:8084
           predicates:
