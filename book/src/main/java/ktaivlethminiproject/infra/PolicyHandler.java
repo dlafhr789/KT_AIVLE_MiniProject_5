@@ -2,8 +2,7 @@ package ktaivlethminiproject.infra;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.naming.NameParser;
-import javax.naming.NameParser;
+//import javax.naming.NameParser;
 import javax.transaction.Transactional;
 import ktaivlethminiproject.config.kafka.KafkaProcessor;
 import ktaivlethminiproject.domain.*;
@@ -12,7 +11,7 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
+//import java.awt.print.Book;
 
 @Service
 @Transactional
@@ -38,10 +37,9 @@ public class PolicyHandler {
         );
 
 //        Book.publish(event);
-        // book 엔티티 생성
-        bookRepository.findById(subscriptionAccepted.getBookId()).ifPresent(book -> {
+        bookRepository.findById(GenerationRequestCompleted.getBookId()).ifPresent(book -> {
             book.publish(generateRequestCompleted.getImageUrl());
-            bookRepository.save(book);
+//            bookRepository.save(book);
         });
     }
 
@@ -59,9 +57,9 @@ public class PolicyHandler {
         );
 
 //        Book.subscribed(event);
-        bookRepository.findById(subscriptionAccepted.getBookId()).ifPresent(book -> {
+        bookRepository.findById(subscriptionAccepted.getId()).ifPresent(book -> {
             book.increaseSubscriber();
-            bookRepository.save(book);
+//            bookRepository.save(book);
         });
     }
 }
