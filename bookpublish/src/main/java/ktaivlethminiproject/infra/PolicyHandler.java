@@ -119,11 +119,11 @@ public class PolicyHandler {
             .temperature(0.7)
             .build();
 
-        ChatCompletion chat = client.chat().completions().create(summaryParams);
-        String answer = chat.choices().get(0).message().content().orElse("empty");
+        ChatCompletion summaryChat = client.chat().completions().create(summaryParams);
+        String summaryAnswer = summaryChat.choices().get(0).message().content().orElse("empty");
 
-        genData.setSummary(answer);
-        System.out.println("Generated Book Summary : " + answer);
+        genData.setSummary(summaryAnswer);
+        System.out.println("Generated Book Summary : " + summaryAnswer);
 
         // =======================
         // 2. AI 표지 생성
@@ -162,6 +162,30 @@ public class PolicyHandler {
             }
         }
         genData.setCoverUrl(createdImagePath);
+
+        // =======================
+        // 3. AI 가격 책정
+        // =======================
+        final String pricingPrompt = "다음 도서의 제목과 내용을 보고 가격을 책정하세요. 반드시 100 - 1000 사이의 정수 하나만 출력해야합니다. 단위, 쉼표, 기호, 텍스트 절대 금지.";
+
+        ChatCompletionCreateParams pricingParams = ChatCompletionCreateParams.builder()
+            .model(ChatModel.GPT_4O_MINI)
+            .addSystemMessage(pricingPrompt)
+            .addUserMessage("Title : \n" + bookTitle + "\n\nContent : \n" + bookContent)
+            .temperature(0.7)
+            .build();
+
+        ChatCompletion pricingChat = client.chat().completions().create(pricingParams);
+        String pricingAnswer = pricingChat.choices().get(0).message().content().orElse("1000");
+        
+        pricingAnswer = pricingAnswer.replaceAll("[^0-9]", ""); // 숫자 아닌 값은 필터링
+
+        genData.setPoint(Integer.parseInt(pricingAnswer));
+        System.out.println("Generated Book Price : " + pricingAnswer);
+
+        // =======================
+        // 4. ai 카테고리 선정
+        // =======================
 
         GenData.requireAccepted(event);
     }
