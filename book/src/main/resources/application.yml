@@ -80,5 +80,3 @@ spring:
         event-out:
           destination: ktaivlethminiproject
           contentType: application/json
-
-

@@ -1,57 +1,26 @@
-version: '2'  #
-services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-    - 22181:2181
+# docker-compose.yml (Bitnami KRaft 모드 최종 버전)
 
+services:
   kafka:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - zookeeper
+    image: bitnami/kafka:latest
     container_name: kafka
     ports:
-      - "9092:9092"   # 클라이언트 통신용
-    environment:  #
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      - '9092:9092'
+    environment:
+      # === Bitnami KRaft 모드 환경 변수 설정 ===
 
-      # KRaft 모드 필수 설정
-      CLUSTER_ID: "kraft-cluster-01"
-      KAFKA_KRAFT_MODE: "true"
-      KAFKA_PROCESS_ROLES: "broker,controller"
-      KAFKA_NODE_ID: "1"
-      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
-
-      # 리스너 설정
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-
-      # 기타 필수 설정
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_LOG_RETENTION_HOURS: 168
-      KAFKA_LOG_DIRS: "/var/lib/kafka/data"
-    volumes:
-      - kafka-data:/var/lib/kafka/data
-
-    healthcheck:
-      test: ["CMD-SHELL", "kafka-topics --list --bootstrap-server localhost:9092 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-volumes:
-  kafka-data:
+      # 1. KRaft 모드 활성화 및 역할 부여
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller # 👈 에러가 요구했던 바로 그 설정!
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      
+      # 2. 리스너 설정
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      
+      # 3. PLAINTEXT 리스너 사용 허용 (필수)
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      
+      # 4. 자동 토픽 생성 활성화
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
