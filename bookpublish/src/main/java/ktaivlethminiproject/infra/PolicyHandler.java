@@ -186,6 +186,20 @@ public class PolicyHandler {
         // =======================
         // 4. ai 카테고리 선정
         // =======================
+        final String categoryPrompt = "다음 도서를 보고 주어진 카테고리 중 적합한 카테고리를 선택하세요. '철학', '종교', '사회과학', '자연과학', '기술과학', '예술', '언어', '문학', '역사' 중 하나를 선택해야하며 반드시 주어진 카테고리만 답변해야 합니다. 예를 들어 사회과학 카테고리를 선택한 경우, '사회과학 카테고리에 적합합니다' 라고 답변하면 안되고 '사회과학' 이라고만 답변해야합니다. 이외의 말이나 띄어쓰기 기호 등은 절대 금지합니다.";
+
+        ChatCompletionCreateParams categoryParams = ChatCompletionCreateParams.builder()
+            .model(ChatModel.GPT_4O_MINI)
+            .addSystemMessage(categoryPrompt)
+            .addUserMessage("Title : \n" + bookTitle + "\n\nContent : \n" + bookContent)
+            .temperature(0.7)
+            .build();
+
+        ChatCompletion categoryChat = client.chat().completions().create(categoryParams);
+        String categoryAnswer = categoryChat.choices().get(0).message().content().orElse("empty");
+
+        genData.setCategory(categoryAnswer);
+        System.out.println("Generated Book Category : " + categoryAnswer);
 
         GenData.requireAccepted(event);
     }
