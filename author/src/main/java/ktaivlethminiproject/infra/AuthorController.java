@@ -44,7 +44,7 @@ public class AuthorController {
         produces = "application/json;charset=UTF-8"
     )
     public Author authorApprove(
-        @PathVariable(value = "id") String id,
+        @PathVariable(value = "id") Integer id,
         @RequestBody(required = false) AuthorApproveCommand authorApproveCommand,
         HttpServletRequest request,
         HttpServletResponse response
@@ -66,7 +66,7 @@ public class AuthorController {
         produces = "application/json;charset=UTF-8"
     )
     public Author authorDeny(
-        @PathVariable(value = "id") String id,
+        @PathVariable(value = "id") Integer id,
         @RequestBody(required = false) AuthorDenyCommand authorDenyCommand,
         HttpServletRequest request,
         HttpServletResponse response

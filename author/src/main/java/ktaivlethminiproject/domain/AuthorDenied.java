@@ -12,7 +12,7 @@ import lombok.*;
 @Getter
 public class AuthorDenied extends AbstractEvent {
 
-    private String userId;
+    private Long userId;
     private AuthorState state;
 
     public AuthorDenied(Author aggregate) {

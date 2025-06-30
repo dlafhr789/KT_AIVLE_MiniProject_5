@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 public class AuthorRegisterCommand {
 
     @NotBlank
-    private String userId;
+    private Long userId;
 
     private String portfolio;
     private String profile;

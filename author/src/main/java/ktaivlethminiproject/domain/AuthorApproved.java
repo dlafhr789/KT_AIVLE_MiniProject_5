@@ -12,12 +12,12 @@ import lombok.*;
 @Getter
 public class AuthorApproved extends AbstractEvent {
 
-    private String userId;
+    private Long userId;
     private AuthorState state;
 
     public AuthorApproved(Author aggregate) {
         super(aggregate);
-        this.userId = String.valueOf(aggregate.getUserId());
+        this.userId = aggregate.getUserId();
         this.state = aggregate.getState();
     }
 

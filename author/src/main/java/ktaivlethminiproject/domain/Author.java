@@ -21,7 +21,10 @@ import lombok.RequiredArgsConstructor;
 public class Author {
 
     @Id
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     private AuthorState state = AuthorState.PENDING;
