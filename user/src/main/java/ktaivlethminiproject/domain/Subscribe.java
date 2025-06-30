@@ -1,8 +1,11 @@
 package ktaivlethminiproject.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -50,9 +53,10 @@ public class Subscribe {
         }
 
         this.state = "대여";
-        this.expiredAt = Date.from(LocalDate.now().plusDays(30).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        this.expiredAt = Date.from(Instant.now().plus(7, ChronoUnit.DAYS));
 
         SubscriptionAccepted accepted = new SubscriptionAccepted(this);
+        accepted.setPointToDeduct(0);
         accepted.publishAfterCommit();
     }
 
@@ -78,6 +82,7 @@ public class Subscribe {
         this.expiredAt = null;
 
         SubscriptionAccepted accepted = new SubscriptionAccepted(this);
+        accepted.setPointToDeduct(bookPoint);
         accepted.publishAfterCommit();
     }
     //>>> Clean Arch / Port Method

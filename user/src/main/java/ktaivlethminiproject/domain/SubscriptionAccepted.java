@@ -22,6 +22,7 @@ public class SubscriptionAccepted extends AbstractEvent {
 
     public SubscriptionAccepted(Subscribe aggregate) {
         super(aggregate);
+        this.pointToDeduct = pointToDeduct;
     }
 
     public SubscriptionAccepted() {
