@@ -18,25 +18,13 @@ public class BookController {
     @Autowired
     BookRepository bookRepository;
 
-    @RequestMapping(
-        value = "/books/{id}/openbook",
-        method = RequestMethod.PUT,
-        produces = "application/json;charset=UTF-8"
-    )
-    public Book openBook(
-        @PathVariable(value = "id") Long id,
-        @RequestBody OpenBookCommand openBookCommand,
-        HttpServletRequest request,
-        HttpServletResponse response
-    ) throws Exception {
+    @PutMapping("/{id}/openbook")
+    public Book openBook(@PathVariable(value = "id") Long id) throws Exception {
         System.out.println("##### /book/openBook  called #####");
-        Optional<Book> optionalBook = bookRepository.findById(id);
 
-        optionalBook.orElseThrow(() -> new Exception("No Entity Found"));
-        Book book = optionalBook.get();
-        book.openBook(openBookCommand);
-
-        bookRepository.save(book);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new Exception("No Entity Found"));
+        book.open();
         return book;
     }
 }
