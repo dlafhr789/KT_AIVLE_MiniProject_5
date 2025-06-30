@@ -59,6 +59,14 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 8080,
+    proxy: {
+      // '/books'로 시작하는 모든 API 요청을
+      '/books': {
+        // 백엔드 서버 주소인 http://localhost:8080 으로 보냅니다.
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      }
+    }
   },
   css: {
     preprocessorOptions: {

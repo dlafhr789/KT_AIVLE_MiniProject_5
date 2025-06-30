@@ -32,8 +32,4 @@ public class Published extends AbstractEvent {
 //        this.state = aggregate.getState();
 //        this.view = aggregate.getView();
     }
-
-    public Published() {
-        super();
-    }
 }

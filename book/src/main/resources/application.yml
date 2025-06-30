@@ -80,3 +80,8 @@ spring:
         event-out:
           destination: ktaivlethminiproject
           contentType: application/json
+
+feign:
+  client:
+    url:
+      subscription: http://localhost:8082

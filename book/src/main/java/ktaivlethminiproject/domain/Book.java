@@ -12,7 +12,7 @@ import javax.persistence.*;
 //import ktaivlethminiproject.domain.IncreasedSubscriber;
 //import ktaivlethminiproject.domain.PublicationRequested;
 //import ktaivlethminiproject.domain.Published;
-import lombok.*
+import lombok.*;
 
 @Entity
 @Table(name = "Book_table")
