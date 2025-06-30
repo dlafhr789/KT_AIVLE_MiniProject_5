@@ -1,8 +1,8 @@
 package ktaivlethminiproject.infra;
 
-import java.util.Optional;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+//import java.util.Optional;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import ktaivlethminiproject.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,10 @@ public class BookController {
     BookRepository bookRepository;
 
     @PostMapping
-    public Book saveBook(@RequestBody BookSaved requestPayload) {
+    public Book saveBook(@RequestBody BookSaved bookSaved) {
         Book book = new Book();
-        // book.setId(requestPayload.getId());
-        book.setTitle(requestPayload.getTitle());
-        book.setContent(requestPayload.getContent());
-        book.setUserId(requestPayload.getUserId());
+        book.setTitle(bookSaved.getTitle());
+        book.setContent(bookSaved.getContent());
 
         bookRepository.save(book);
 

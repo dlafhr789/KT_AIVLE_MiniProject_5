@@ -60,4 +60,12 @@ public class Book {
         PublicationRequested publicationRequested = new PublicationRequested(this);
         publicationRequested.publishAfterCommit();
     }
+
+    @PostPersist
+    public void onPostPersist() {
+        BookSaved bookSaved = new BookSaved(this);
+        bookSaved.publishAfterCommit();
+
+//        System.out.println(bookSaved.toString());
+    }
 }
