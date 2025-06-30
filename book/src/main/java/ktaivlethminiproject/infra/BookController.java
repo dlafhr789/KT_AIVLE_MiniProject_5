@@ -21,7 +21,7 @@ public class BookController {
     @PostMapping
     public Book saveBook(@RequestBody BookSaved requestPayload) {
         Book book = new Book();
-        book.setId(requestPayload.getId());
+        // book.setId(requestPayload.getId());
         book.setTitle(requestPayload.getTitle());
         book.setContent(requestPayload.getContent());
         book.setUserId(requestPayload.getUserId());
@@ -41,7 +41,7 @@ public class BookController {
         return book;
     }
 
-    @PostMapping
+    @PostMapping("/{id}")
     public void requestPublication(@PathVariable(value = "id") Long id) throws Exception {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new Exception("No Entity Found"));
