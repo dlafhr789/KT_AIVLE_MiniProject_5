@@ -39,9 +39,7 @@ public class Subscribe {
     public void borrowBook() {
         //implement business logic here:
 
-        SubscriptionAccepted subscriptionAccepted = new SubscriptionAccepted(
-            this
-        );
+        SubscriptionAccepted subscriptionAccepted = new SubscriptionAccepted(this);
         subscriptionAccepted.publishAfterCommit();
         SubscriptionDenied subscriptionDenied = new SubscriptionDenied(this);
         subscriptionDenied.publishAfterCommit();
