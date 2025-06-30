@@ -39,10 +39,10 @@ import java.util.List;
 import java.util.Base64;
 
 // itextpdf
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
+// import com.itextpdf.kernel.pdf.PdfWriter;
+// import com.itextpdf.kernel.pdf.PdfDocument;
+// import com.itextpdf.layout.Document;
+// import com.itextpdf.layout.element.Paragraph;
 
 // dotenv
 import io.github.cdimascio.dotenv.Dotenv;
@@ -206,21 +206,25 @@ public class PolicyHandler {
         System.out.println("Generated Book Category : " + categoryAnswer);
 
         // =======================
-        // 4. ai 카테고리 선정
+        // 5. PDF 생성
         // =======================
 
-        String pdfPath = "bookpublish/covers/" + name + ".pdf";  // ← 점 추가!!!
+        // String pdfPath = "bookpublish/covers/" + name + ".pdf";  // ← 점 추가!!!
 
-        // 안전하게 폴더도 보장 + 자원 자동 close
-        Files.createDirectories(Paths.get("bookpublish", "covers"));
-        try (   PdfWriter   writer = new PdfWriter(pdfPath);
-                PdfDocument pdf    = new PdfDocument(writer);
-                Document    doc    = new Document(pdf) ) {
+        // // 안전하게 폴더도 보장 + 자원 자동 close
+        // Files.createDirectories(Paths.get("bookpublish", "covers"));
+        // try (   PdfWriter   writer = new PdfWriter(pdfPath);
+        //         PdfDocument pdf    = new PdfDocument(writer);
+        //         Document    doc    = new Document(pdf) ) {
 
-            doc.add(new Paragraph(bookContent));
-        }
+        //     doc.add(new Paragraph(bookContent));
+        // }
 
-        genData.setDownloadUrl(pdfPath);
+        // genData.setDownloadUrl(pdfPath);
+
+        // =======================
+        // 6. 레포 저장
+        // =======================
 
         genDataRepository.save(genData);
 
