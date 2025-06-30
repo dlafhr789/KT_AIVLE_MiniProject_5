@@ -45,6 +45,10 @@ export default {
           link: "/subscribes",
       },
       {
+          text: "도서 포인트 조회",
+          link: "/bookPoints",
+      },
+      {
           text: "GenData",
           link: "/genData",
       },

@@ -18,8 +18,11 @@ public class SubscriptionAccepted extends AbstractEvent {
     private String state;
     private Date expiredAt;
 
+    private Integer pointToDeduct;
+
     public SubscriptionAccepted(Subscribe aggregate) {
         super(aggregate);
+        this.pointToDeduct = pointToDeduct;
     }
 
     public SubscriptionAccepted() {

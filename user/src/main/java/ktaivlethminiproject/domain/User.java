@@ -89,9 +89,7 @@ public class User {
     //>>> Clean Arch / Port Method
 
     //<<< Clean Arch / Port Method
-    public static void decreasePoint(
-        SubscriptionAccepted subscriptionAccepted
-    ) {
+    public static void decreasePoint(SubscriptionAccepted SubscriptionAccepted) {
         //implement business logic here:
 
         /** Example 1:  new item 
@@ -99,19 +97,16 @@ public class User {
         repository().save(user);
 
         */
+        if (SubscriptionAccepted.getUserId() == null) {
+            throw new RuntimeException("잘못된 유저 접근입니다.");
+        }
+        repository().findById(SubscriptionAccepted.getUserId()).ifPresent(user -> {
+        Integer currentPoint = user.getPoint() != null ? user.getPoint() : 0;
+        Integer toDeduct = SubscriptionAccepted.getPointToDeduct() != null ? SubscriptionAccepted.getPointToDeduct() : 0;
 
-        /** Example 2:  finding and process
-        
-
-        repository().findById(subscriptionAccepted.get???()).ifPresent(user->{
-            
-            user // do something
-            repository().save(user);
-
-
-         });
-        */
-
+        user.setPoint(currentPoint - toDeduct);
+        repository().save(user);
+        });
     }
 
     //>>> Clean Arch / Port Method
@@ -125,18 +120,18 @@ public class User {
 
         */
 
-        /** Example 2:  finding and process
-        
+        Long userId;
+        try {
+            userId = Long.valueOf(authorApproved.getUserId());
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("잘못된 유저 접근입니다.");
+        }
 
-        repository().findById(authorApproved.get???()).ifPresent(user->{
-            
-            user // do something
+        repository().findById(userId).ifPresent(user -> {
+            user.setRole("author");
             repository().save(user);
-
-
-         });
-        */
-
+            System.out.println(user.getName() + "님의 작가 등록이 승인 되었습니다 ");
+        });
     }
     //>>> Clean Arch / Port Method
 
