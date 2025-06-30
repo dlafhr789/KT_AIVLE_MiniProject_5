@@ -32,10 +32,18 @@ import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Base64;
+
+// itextpdf
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+
 // dotenv
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -57,18 +65,13 @@ public class PolicyHandler {
     )
     public void wheneverPublicationRequested_RequireAccepted(
         @Payload PublicationRequested publicationRequested
-    ) {
+    ) throws IOException {
         PublicationRequested event = publicationRequested;
         System.out.println(
             "\n\n##### listener RequireAccepted : " +
             publicationRequested +
             "\n\n"
         );
-
-
-        // REST Request Sample
-
-        // bookService.getBook(/** mapping value needed */);
 
         // Comments //
         //출간 요청 받을 시, 아래 기능을 수행
@@ -80,7 +83,7 @@ public class PolicyHandler {
 
         // Sample Logic //
 
-        // final GenDataRepository genDataRepository;
+        // GenDataRepository genDataRepository;
 
         final Long bookId = event.getId();
         final String bookTitle = event.getTitle();
@@ -146,7 +149,8 @@ public class PolicyHandler {
 
         // 저장 경로 + 이미지 이름
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        String createdImagePath = "bookpublish/book_covers/" + userId + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + ".png";
+        String name = userId + now.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        String createdImagePath = "bookpublish/book_covers/" + name + ".png";
 
         for (int i = 0; i < images.size(); i++) {
             // B64 문자열 -> PNG 바이트
@@ -200,6 +204,26 @@ public class PolicyHandler {
 
         genData.setCategory(categoryAnswer);
         System.out.println("Generated Book Category : " + categoryAnswer);
+
+        // =======================
+        // 4. ai 카테고리 선정
+        // =======================
+
+        String pdfPath = "bookpublish/covers/" + name + ".pdf";  // ← 점 추가!!!
+
+        // 안전하게 폴더도 보장 + 자원 자동 close
+        Files.createDirectories(Paths.get("bookpublish", "covers"));
+        try (   PdfWriter   writer = new PdfWriter(pdfPath);
+                PdfDocument pdf    = new PdfDocument(writer);
+                Document    doc    = new Document(pdf) ) {
+
+            doc.add(new Paragraph(bookContent));
+        }
+
+        genData.setDownloadUrl(pdfPath);
+
+        genDataRepository.save(genData);
+
 
         GenData.requireAccepted(event);
     }
