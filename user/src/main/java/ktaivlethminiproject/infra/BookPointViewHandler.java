@@ -27,7 +27,7 @@ public class BookPointViewHandler {
             // view 객체 생성
             BookPoint bookPoint = new BookPoint();
             // view 객체에 이벤트의 Value 를 set 함
-            bookPoint.setId(generateRequestCompleted.getBookId());
+            bookPoint.setId(generateRequestCompleted.getBook_id());
             bookPoint.setPoint(generateRequestCompleted.getPoint());
             // view 레파지 토리에 save
             bookPointRepository.save(bookPoint);

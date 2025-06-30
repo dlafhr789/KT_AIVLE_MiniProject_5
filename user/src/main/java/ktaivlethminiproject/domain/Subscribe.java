@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
 import ktaivlethminiproject.UserApplication;
+import ktaivlethminiproject.infra.BookPointRepository;
 import lombok.Data;
 
 @Entity
@@ -37,6 +38,10 @@ public class Subscribe {
             SubscribeRepository.class
         );
         return subscribeRepository;
+    }
+
+    public static BookPointRepository bookPointRepository() {
+        return UserApplication.applicationContext.getBean(BookPointRepository.class);
     }
 
     //<<< Clean Arch / Port Method
@@ -66,12 +71,12 @@ public class Subscribe {
         //implement business logic here:
         User user = User.repository().findById(this.userId).orElseThrow(() -> new RuntimeException("User not found"));
         // 책 포인트를 어떻게 가져옴? 새로운 읽기모델?
-        Book book = Book.repository().findById(this.bookId).orElseThrow(() -> new RuntimeException("Book not found"));
-
+        BookPoint bookPoint = bookPointRepository().findById(bookId).orElseThrow(() -> new RuntimeException("BookPoint not found"));
+        
         int userPoint = user.getPoint() != null ? user.getPoint() : 0;
-        int bookPoint = book.getPoint() != null ? book.getPoint() : 0;
+        int bookPointValue = bookPoint.getPoint() != null ? bookPoint.getPoint() : 0;
 
-        if (userPoint < bookPoint) {
+        if (userPoint < bookPointValue) {
             this.state = "거부";
             SubscriptionDenied denied = new SubscriptionDenied(this);
             denied.publishAfterCommit();
@@ -82,7 +87,7 @@ public class Subscribe {
         this.expiredAt = null;
 
         SubscriptionAccepted accepted = new SubscriptionAccepted(this);
-        accepted.setPointToDeduct(bookPoint);
+        accepted.setPointToDeduct(bookPointValue);
         accepted.publishAfterCommit();
     }
     //>>> Clean Arch / Port Method
