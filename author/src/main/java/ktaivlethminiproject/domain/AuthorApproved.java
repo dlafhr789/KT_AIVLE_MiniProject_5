@@ -9,12 +9,16 @@ import lombok.*;
 //<<< DDD / Domain Event
 @Data
 @ToString
+@Getter
 public class AuthorApproved extends AbstractEvent {
 
     private String userId;
+    private AuthorState state;
 
     public AuthorApproved(Author aggregate) {
         super(aggregate);
+        this.userId = aggregate.getUserId();
+        this.state = aggregate.getState();
     }
 
     public AuthorApproved() {
