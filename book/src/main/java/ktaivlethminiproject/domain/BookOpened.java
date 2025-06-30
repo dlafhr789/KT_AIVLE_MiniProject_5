@@ -1,14 +1,16 @@
 package ktaivlethminiproject.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import ktaivlethminiproject.domain.*;
 import ktaivlethminiproject.infra.AbstractEvent;
 import lombok.*;
 
-//<<< DDD / Domain Event
-@Data
+//@Data
+@Getter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookOpened extends AbstractEvent {
 
     /**
@@ -16,17 +18,19 @@ public class BookOpened extends AbstractEvent {
      * super(aggregate) 호출로 메타정보 초기화 후
      * id/view를 복사합니다.
      */
+    private Long id;
+    private Integer view;
+
     public BookOpened(Book aggregate) {
-        super(aggregate);
+        super();
         this.id = aggregate.getId();
         this.view = aggregate.getView();
     }
 
-    /**
-     * 역직렬화 라이브러리를 위한 기본 생성자
-     */
-    public BookOpened() {
-        super();
-    }
+//    /**
+//     * 역직렬화 라이브러리를 위한 기본 생성자
+//     */
+//    public BookOpened() {
+//        super();
+//    }
 }
-//>>> DDD / Domain Event
