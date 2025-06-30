@@ -27,4 +27,11 @@ public class BookController {
         book.open();
         return book;
     }
+
+    @PostMapping
+    public void requestPublication(@PathVariable(value = "id") Long id) throws Exception {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new Exception("No Entity Found"));
+        book.requestPublication();
+    }
 }
