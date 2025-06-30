@@ -1,8 +1,6 @@
 package ktaivlethminiproject.infra;
 import ktaivlethminiproject.domain.*;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
@@ -20,24 +18,34 @@ public class SubscribeController {
     @Autowired
     SubscribeRepository subscribeRepository;
 
-    @RequestMapping(value = "/subscribes/borrowbook",
+    @RequestMapping(value = "/subscribes/borrowbook/{bookId}",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public Subscribe borrowBook(HttpServletRequest request, HttpServletResponse response
+    public Subscribe borrowBook(@PathVariable Long bookId, HttpServletRequest request, HttpServletResponse response
         ) throws Exception {
             System.out.println("##### /subscribe/borrowBook  called #####");
+            
+            Long userId = Long.valueOf(request.getHeader("userId"));
+            
             Subscribe subscribe = new Subscribe();
+            subscribe.setUserId(userId);
+            subscribe.setBookId(bookId);
             subscribe.borrowBook();
             subscribeRepository.save(subscribe);
             return subscribe;
     }
-    @RequestMapping(value = "/subscribes/ownbook",
+    @RequestMapping(value = "/subscribes/ownbook/{bookId}",
             method = RequestMethod.POST,
             produces = "application/json;charset=UTF-8")
-    public Subscribe ownBook(HttpServletRequest request, HttpServletResponse response
+    public Subscribe ownBook(@PathVariable Long bookId, HttpServletRequest request, HttpServletResponse response
         ) throws Exception {
             System.out.println("##### /subscribe/ownBook  called #####");
+            
+            Long userId = Long.valueOf(request.getHeader("userId"));
+            
             Subscribe subscribe = new Subscribe();
+            subscribe.setUserId(userId);
+            subscribe.setBookId(bookId);
             subscribe.ownBook();
             subscribeRepository.save(subscribe);
             return subscribe;

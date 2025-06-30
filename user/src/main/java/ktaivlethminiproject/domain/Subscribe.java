@@ -2,6 +2,7 @@ package ktaivlethminiproject.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -38,26 +39,46 @@ public class Subscribe {
     //<<< Clean Arch / Port Method
     public void borrowBook() {
         //implement business logic here:
+        User user = User.repository().findById(this.userId).orElseThrow(() -> new RuntimeException("User not found"));
+        
+        if (user.getPlan() == null) {
+            this.state = "거부";
+            SubscriptionDenied denied = new SubscriptionDenied(this);
+            denied.publishAfterCommit();
+            
+            return;
+        }
 
-        SubscriptionAccepted subscriptionAccepted = new SubscriptionAccepted(
-            this
-        );
-        subscriptionAccepted.publishAfterCommit();
-        SubscriptionDenied subscriptionDenied = new SubscriptionDenied(this);
-        subscriptionDenied.publishAfterCommit();
+        this.state = "대여";
+        this.expiredAt = Date.from(LocalDate.now().plusDays(30).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        SubscriptionAccepted accepted = new SubscriptionAccepted(this);
+        accepted.publishAfterCommit();
     }
 
     //>>> Clean Arch / Port Method
     //<<< Clean Arch / Port Method
     public void ownBook() {
         //implement business logic here:
+        User user = User.repository().findById(this.userId).orElseThrow(() -> new RuntimeException("User not found"));
+        // 책 포인트를 어떻게 가져옴? 새로운 읽기모델?
+        Book book = Book.repository().findById(this.bookId).orElseThrow(() -> new RuntimeException("Book not found"));
 
-        SubscriptionAccepted subscriptionAccepted = new SubscriptionAccepted(
-            this
-        );
-        subscriptionAccepted.publishAfterCommit();
-        SubscriptionDenied subscriptionDenied = new SubscriptionDenied(this);
-        subscriptionDenied.publishAfterCommit();
+        int userPoint = user.getPoint() != null ? user.getPoint() : 0;
+        int bookPoint = book.getPoint() != null ? book.getPoint() : 0;
+
+        if (userPoint < bookPoint) {
+            this.state = "거부";
+            SubscriptionDenied denied = new SubscriptionDenied(this);
+            denied.publishAfterCommit();
+            return;
+        }
+
+        this.state = "소장"; 
+        this.expiredAt = null;
+
+        SubscriptionAccepted accepted = new SubscriptionAccepted(this);
+        accepted.publishAfterCommit();
     }
     //>>> Clean Arch / Port Method
 
