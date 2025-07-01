@@ -31,6 +31,7 @@ public class Book {
     private Boolean state = false;
     private Integer view = 0;
     private Integer subscribers = 0;
+    private String summary;
     private String imageUrl;
 
     @ElementCollection
@@ -51,6 +52,7 @@ public class Book {
     }
 
     public void publish(String imageUrl) {
+        this.summary = summary;
         this.imageUrl = imageUrl;
         this.state = true;
         this.publishedAt = LocalDateTime.now();

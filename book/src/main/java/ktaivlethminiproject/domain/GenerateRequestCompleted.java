@@ -12,8 +12,8 @@ import lombok.*;
 public class GenerateRequestCompleted extends AbstractEvent {
 
     private Long id;
-    private String imageUrl;
     private String summary;
+    private String imageUrl;
 //    private String downloadUrl;
 //    private Integer point;
 //    private Integer category;
