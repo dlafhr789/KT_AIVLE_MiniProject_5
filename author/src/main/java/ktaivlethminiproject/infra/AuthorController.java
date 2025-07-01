@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 //<<< Clean Arch / Inbound Adaptor
 
 @RestController
@@ -80,6 +82,12 @@ public class AuthorController {
 
         authorRepository.save(author);
         return author;
+    }
+
+    //ppt 8페이지 관리자 구현
+    @GetMapping("/authors/pending")
+    public List<Author> getPendingAuthors() {
+        return authorRepository.findByState(AuthorState.PENDING);
     }
 }
 //>>> Clean Arch / Inbound Adaptor
