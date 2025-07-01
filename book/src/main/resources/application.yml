@@ -1,9 +1,9 @@
 server:
-  port: 8080
+  port: 8080  # book 서비스 포트
 
 spring:
   application:
-    name: book
+    name: book  # 애플리케이션 이름
 ---
 
 spring:
@@ -18,7 +18,7 @@ spring:
     stream:
       kafka:
         binder:
-          brokers: localhost:9092
+          brokers: localhost:9092  # 로컬에 실행된 Kafka 서버 주소
         streams:
           binder:
             configuration:
@@ -80,5 +80,3 @@ spring:
         event-out:
           destination: ktaivlethminiproject
           contentType: application/json
-
-

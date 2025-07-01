@@ -1,123 +1,205 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>ktaivlethminiproject</groupId>
-	<artifactId>bookpublish</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>bookpublish</name>
-	<description>Demo project for Spring Boot</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<properties>
-		<java.version>11</java.version>
-		<spring-cloud.version>Hoxton.SR12</spring-cloud.version>
-		<spring-cloud-stream.version>Germantown.SR1</spring-cloud-stream.version>
-		<cucumber.version>6.8.1</cucumber.version>
-	</properties>
+    <!-- ========================================================= -->
+    <!-- 기본 메타                                                  -->
+    <!-- ========================================================= -->
+    <modelVersion>4.0.0</modelVersion>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-hateoas</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-      <!-- lombok -->
-		<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>1.18.12</version>
-				<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.3.1.RELEASE</version>
+        <relativePath/>
+    </parent>
 
-		<!-- kafka streams -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-stream-kafka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+    <groupId>ktaivlethminiproject</groupId>
+    <artifactId>bookpublish</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>bookpublish</name>
+    <description>Demo project for Spring Boot</description>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+    <!-- ========================================================= -->
+    <!-- 프로퍼티                                                   -->
+    <!-- ========================================================= -->
+    <properties>
+        <java.version>11</java.version>
 
-		<!-- cucumber test -->
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-java</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-spring</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+        <!-- Spring Cloud & Stream -->
+        <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
+        <spring-cloud-stream.version>Germantown.SR1</spring-cloud-stream.version>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-stream-dependencies</artifactId>
-				<version>${spring-cloud-stream.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+        <!-- 서드파티 라이브러리 -->
+        <cucumber.version>6.8.1</cucumber.version>
+        <jackson.version>2.13.5</jackson.version>
+        <kotlin.version>1.8.22</kotlin.version>
+   		<okhttp3.version>4.11.0</okhttp3.version>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+        <!-- OkHttp 4.x 버전( openai-java 2.3.0 과 호환 ) -->
+        <okhttp.version>4.11.0</okhttp.version>
+    </properties>
+
+    <!-- ========================================================= -->
+    <!-- 의존성                                                     -->
+    <!-- ========================================================= -->
+    <dependencies>
+        <!--  Spring Boot  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--  DB / 환경  -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
+        </dependency>
+
+        <!--  Lombok  -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--  Spring Cloud  -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+
+        <!--  Kafka -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
+        <!--  Cucumber  -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-spring</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--  OpenAI SDK  -->
+        <dependency>
+            <groupId>com.openai</groupId>
+            <artifactId>openai-java</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
+        <!--  OkHttp 4.x (BOM에서 버전 일치)  -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp-sse</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- ========================================================= -->
+    <!-- BOM / 버전 통일                                           -->
+    <!-- ========================================================= -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Cloud BOM -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud Stream BOM -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-stream-dependencies</artifactId>
+                <version>${spring-cloud-stream.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Jackson BOM -->
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- OkHttp 4.x BOM : openai-java 2.3.0 호환 -->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp-bom</artifactId>
+                <version>${okhttp.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- ========================================================= -->
+    <!-- 플러그인                                                  -->
+    <!-- ========================================================= -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
