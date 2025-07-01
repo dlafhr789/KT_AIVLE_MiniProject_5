@@ -19,17 +19,11 @@ const { state: auth } = useAuth()
                 to: '/books',
             }"
         />
-        <VerticalNavSectionTitle :item="{ heading: '요금제 및 포인트 메뉴' }" />
+        <VerticalNavSectionTitle :item="{ heading: '개인 정보 관리 메뉴' }" />
         <VerticalNavLink
             :item="{
-                title: '구독 관리',
-                to: '/subscribes',
-            }"
-        />
-        <VerticalNavLink
-            :item="{
-                title: '도서 포인트 조회',
-                to: '/bookPoints',
+                title: '마이페이지',
+                to: '/mypage',
             }"
         />
         <template v-if="auth.user?.role === 'author'">
