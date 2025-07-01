@@ -88,16 +88,17 @@ export default {
     console.log(`${serverip_book}/${this.id}/openbook`)
     axios.put(`${serverip_book}/books/${this.id}/openbook`)
         .then(res => {
-            data = res.data
-            this.title = data.title
+            const data = res.data
+            this.book.title = data.title
         }).catch(err => console.error(err))
     
     axios.get(`${serverip_bookpublish}/genData/${this.id}`)
         .then(res => {
-            book.coverUrl = `${serverip_bookpublish}/${res.coverUrl}`
-            console.log(book.coverUrl)
-            book.summary = res.summary
-            book.points = res.point
+            const data = res.data
+            this.book.coverUrl = `${serverip_bookpublish}/${data.coverUrl}`
+            console.log(this.book.coverUrl)
+            this.book.summary = data.summary
+            this.book.points = data.point
         })
   },
   methods: {
