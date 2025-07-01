@@ -6,6 +6,12 @@ const router = createRouter({
     {
       path: '/',
       component: () => import('../components/pages/Index.vue'),
+      meta: { layout: 'home' },
+    },
+    {
+      path: '/signup',
+      component: () => import('../components/ui/SignUp.vue'),
+      meta: { layout: 'home'},
     },
     {
       path: '/books',
