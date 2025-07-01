@@ -12,6 +12,8 @@ import org.springframework.transaction.support.TransactionSynchronizationAdapter
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.MimeTypeUtils;
 
+import ktaivlethminiproject.config.ApplicationContextProvider;
+
 public class AbstractEvent {
 
     String eventType;
@@ -28,12 +30,15 @@ public class AbstractEvent {
     }
 
     public void publish() {
-        /**
-         * spring streams 방식
-         */
-        KafkaProcessor processor = BookApplication.applicationContext.getBean(
+
+        // KafkaProcessor processor = BookApplication.applicationContext.getBean(
+        //     KafkaProcessor.class
+        // );
+
+        KafkaProcessor processor = ApplicationContextProvider.getContext().getBean(
             KafkaProcessor.class
         );
+
         MessageChannel outputChannel = processor.outboundTopic();
 
         outputChannel.send(
