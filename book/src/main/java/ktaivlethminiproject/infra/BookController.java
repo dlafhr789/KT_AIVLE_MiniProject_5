@@ -164,6 +164,11 @@ public class BookController {
         book.requestPublication();
     }
     
+    @GetMapping // 저장된 책 확인
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll();
+    }
+
     @GetMapping("/search/my-subscriptions")
     public List<Book> getSubscribedBooks(@RequestParam("userId") Long userId) {
         // 👇 새로 만든 Repository 메소드를 호출합니다.
