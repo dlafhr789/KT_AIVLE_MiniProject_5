@@ -138,6 +138,9 @@ public class BookController {
         book.setContent(requestPayload.getContent());
         book.setUserId(requestPayload.getUserId());
         bookRepository.save(book);
+
+        System.out.println("### Book" + book.getBookId() + "saved ###");
+
         return book;
     }
 
