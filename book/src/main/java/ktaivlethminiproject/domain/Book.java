@@ -3,6 +3,8 @@ package ktaivlethminiproject.domain;
 import java.time.LocalDateTime;
 import javax.persistence.*;
 import lombok.*;
+import java.util.List;
+import java.util.ArrayList;
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import java.util.Collections;
 //import java.util.List;
@@ -31,6 +33,11 @@ public class Book {
     private Integer subscribers = 0;
     private String imageUrl;
 
+    @ElementCollection
+    @CollectionTable(name="book_subscribers", joinColumns=@JoinColumn(name="book_id"))
+    @Column(name="user_id")
+    private List<Long> subscriberIds = new ArrayList<>();
+
     @PostPersist
     public void onPostPersist() {
         BookSaved bookSaved = new BookSaved(this);
@@ -51,8 +58,11 @@ public class Book {
         published.publishAfterCommit();
     }
 
-    public void subscribed() {
+    public void subscribed(Long userId) {
         this.subscribers++;
+
+        this.subscriberIds.add(userId);
+
         IncreasedSubscriber increasedSubscriber = new IncreasedSubscriber(this);
         increasedSubscriber.publishAfterCommit();
     }

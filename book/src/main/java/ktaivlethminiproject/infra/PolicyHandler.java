@@ -54,7 +54,7 @@ public class PolicyHandler {
         );
 
         bookRepository.findById(subscriptionAccepted.getId()).ifPresent(book -> {
-            book.subscribed();
+            book.subscribed(subscriptionAccepted.getUserId());  // book.subscribed();
         });
     }
 }

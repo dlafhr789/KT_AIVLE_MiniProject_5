@@ -164,6 +164,12 @@ public class BookController {
         book.requestPublication();
     }
     
+    @GetMapping("/search/my-subscriptions")
+    public List<Book> getSubscribedBooks(@RequestParam("userId") Long userId) {
+        // 👇 새로 만든 Repository 메소드를 호출합니다.
+        return bookRepository.findBySubscriberIdsContaining(userId);
+    }
+
     /**
      * 임시 테스트용 API: SubscriptionAccepted 이벤트를 강제로 발행
      */
