@@ -44,27 +44,26 @@ public class GenData {
     ) {
         //implement business logic here:
 
-        /** Example 1:  new item 
-        GenData genData = new GenData();
-        repository().save(genData);
-
-        GenerateRequestCompleted generateRequestCompleted = new GenerateRequestCompleted(genData);
-        generateRequestCompleted.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
+        // Example 2:  finding and process
         
 
-        repository().findById(publicationRequested.get???()).ifPresent(genData->{
-            
-            genData // do something
-            repository().save(genData);
+        repository().findById(publicationRequested.getId()).ifPresent(genData->{
 
-            GenerateRequestCompleted generateRequestCompleted = new GenerateRequestCompleted(genData);
-            generateRequestCompleted.publishAfterCommit();
+            GenerateRequestCompleted evt = new GenerateRequestCompleted(genData); // 생성자에 aggregate 넘겨도 OK
+            evt.setBookId(genData.getBookId());
+            // evt.setCategory(genData.getCategory());
+            evt.setCategory(1);
+            evt.setCoverUrl(genData.getCoverUrl());
+            evt.setSummary(genData.getSummary());
+            evt.setDownloadUrl(genData.getDownloadUrl());
+            evt.setPoint(genData.getPoint());
+            evt.setRequestSuccessful(true);
+
+            evt.publishAfterCommit();
 
          });
-        */
+
+        
 
     }
     //>>> Clean Arch / Port Method

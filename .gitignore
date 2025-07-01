@@ -17,6 +17,7 @@ lerna-debug.log
 
 kubectl
 init.sh
+.vscode
 
 # build artifacts
 .terraform/
