@@ -13,7 +13,7 @@ public class Published extends AbstractEvent {
 
     private Long id;
     private LocalDateTime publishedAt;
-    private String imageUrl;
+    private String coverUrl;
 //    private String title;
 //    private String content;
 //    private Long userId;
@@ -25,7 +25,7 @@ public class Published extends AbstractEvent {
 
         this.id = aggregate.getId();
         this.publishedAt = aggregate.getPublishedAt();
-        this.imageUrl = aggregate.getImageUrl();
+        this.coverUrl = aggregate.getCoverUrl();
 //        this.title = aggregate.getTitle();
 //        this.content = aggregate.getContent();
 //        this.userId = aggregate.getUserId();

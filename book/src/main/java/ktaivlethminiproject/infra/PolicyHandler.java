@@ -38,7 +38,7 @@ public class PolicyHandler {
 
         bookRepository.findById(generateRequestCompleted.getId()).ifPresent(book -> {
             book.publish(
-                generateRequestCompleted.getImageUrl(),
+                generateRequestCompleted.getCoverUrl(),
                 generateRequestCompleted.getSummary()
             );
         });

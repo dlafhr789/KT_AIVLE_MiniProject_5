@@ -32,7 +32,7 @@ public class Book {
     private Integer view = 0;
     private Integer subscribers = 0;
     private String summary;
-    private String imageUrl;
+    private String coverUrl;
 
     @ElementCollection
     @CollectionTable(name="book_subscribers", joinColumns=@JoinColumn(name="book_id"))
@@ -51,9 +51,9 @@ public class Book {
         bookOpened.publishAfterCommit();
     }
 
-    public void publish(String imageUrl, String summary) {
+    public void publish(String coverUrl, String summary) {
         this.summary = summary;
-        this.imageUrl = imageUrl;
+        this.coverUrl = coverUrl;
         this.state = true;
         this.publishedAt = LocalDateTime.now();
         Published published = new Published(this);

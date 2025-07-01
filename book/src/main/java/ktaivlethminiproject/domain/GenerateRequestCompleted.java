@@ -13,7 +13,7 @@ public class GenerateRequestCompleted extends AbstractEvent {
 
     private Long id;
     private String summary;
-    private String imageUrl;
+    private String coverUrl;
 //    private String downloadUrl;
 //    private Integer point;
 //    private Integer category;
