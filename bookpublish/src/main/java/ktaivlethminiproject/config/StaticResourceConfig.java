@@ -20,7 +20,7 @@ public class StaticResourceConfig implements WebMvcConfigurer {
         System.out.println("📂 정적 리소스 위치 = " + location);
 
         // 2) /images/** 로 매핑
-        registry.addResourceHandler("/images/**")
+        registry.addResourceHandler("/book_covers/**")
                 .addResourceLocations(location);
                 // .setCacheControl(CacheControl.noCache()); // 캐시 끄기(선택)
 
