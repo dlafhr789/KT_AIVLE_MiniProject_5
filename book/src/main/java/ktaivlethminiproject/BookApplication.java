@@ -11,9 +11,7 @@ import org.springframework.context.ApplicationContext;
 @EnableBinding(KafkaProcessor.class)
 @EnableFeignClients
 public class BookApplication {
-
     public static ApplicationContext applicationContext;
-
     public static void main(String[] args) {
         applicationContext = SpringApplication.run(BookApplication.class, args);
     }

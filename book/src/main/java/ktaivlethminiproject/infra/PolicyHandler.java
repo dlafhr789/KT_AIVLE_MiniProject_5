@@ -2,8 +2,7 @@ package ktaivlethminiproject.infra;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javax.naming.NameParser;
-import javax.naming.NameParser;
+//import javax.naming.NameParser;
 import javax.transaction.Transactional;
 import ktaivlethminiproject.config.kafka.KafkaProcessor;
 import ktaivlethminiproject.domain.*;
@@ -12,7 +11,8 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
-//<<< Clean Arch / Inbound Adaptor
+//import java.awt.print.Book;
+
 @Service
 @Transactional
 public class PolicyHandler {
@@ -23,6 +23,7 @@ public class PolicyHandler {
     @StreamListener(KafkaProcessor.INPUT)
     public void whatever(@Payload String eventString) {}
 
+    // AI 생성 완료 시 책을 (생성하고) 출간 상태로 만듦
     @StreamListener(
         value = KafkaProcessor.INPUT,
         condition = "headers['type']=='GenerateRequestCompleted'"
@@ -35,10 +36,15 @@ public class PolicyHandler {
             "\n\n##### listener Publish : " + generateRequestCompleted + "\n\n"
         );
 
-        // Sample Logic //
-        Book.publish(event);
+        bookRepository.findById(generateRequestCompleted.getId()).ifPresent(book -> {
+            book.publish(
+                generateRequestCompleted.getImageUrl(),
+                generateRequestCompleted.getSummary()
+            );
+        });
     }
 
+    // 구독 이벤트 수신 시 구독자 수 증가시킴
     @StreamListener(
         value = KafkaProcessor.INPUT,
         condition = "headers['type']=='SubscriptionAccepted'"
@@ -46,13 +52,12 @@ public class PolicyHandler {
     public void wheneverSubscriptionAccepted_Subscribed(
         @Payload SubscriptionAccepted subscriptionAccepted
     ) {
-        SubscriptionAccepted event = subscriptionAccepted;
         System.out.println(
             "\n\n##### listener Subscribed : " + subscriptionAccepted + "\n\n"
         );
 
-        // Sample Logic //
-        Book.subscribed(event);
+        bookRepository.findById(subscriptionAccepted.getId()).ifPresent(book -> {
+            book.subscribed(subscriptionAccepted.getUserId());  // book.subscribed();
+        });
     }
 }
-//>>> Clean Arch / Inbound Adaptor
