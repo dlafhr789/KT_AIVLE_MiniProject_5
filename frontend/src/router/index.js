@@ -49,6 +49,12 @@ const router = createRouter({
       path: '/mypage',
       component: () => import('../components/ui/MyPage.vue'),
     },
+    // BookInfo 추가
+    {
+      path: '/books/:id',
+      component: () => import('../components/ui/BookInfo.vue'),
+      props: route => ({ id: route.params.id })
+    },
   ],
 })
 
