@@ -7,7 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component  // 테스트X -> 주석 처리
+// @Component  // 테스트X -> 주석 처리
 public class DataInitializer implements CommandLineRunner {
 
     @Autowired
