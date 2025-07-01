@@ -170,6 +170,12 @@ public class BookController {
         return bookRepository.findBySubscriberIdsContaining(userId);
     }
 
+    // 베스트셀러(구독자 수 TOP 5) 목록 조회 API
+    @GetMapping("/bestsellers")
+    public List<Book> getBestsellers() {
+        return bookRepository.findTop5ByOrderBySubscribersDesc();
+    }
+
     /**
      * 임시 테스트용 API: SubscriptionAccepted 이벤트를 강제로 발행
      */

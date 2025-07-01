@@ -33,3 +33,13 @@ export const requestPublication = (id) => {
 export const openBook = (id) => {
     return apiClient.put(`/books/${id}/open`);
 };
+
+// 내가 구독한 책 목록 조회 API
+export const getSubscribedBooks = (userId) => {
+  return apiClient.get(`/books/search/my-subscriptions`, { params: { userId } });
+};
+
+// 베스트셀러 목록 조회 API
+export const getBestsellers = () => {
+  return apiClient.get('/books/bestsellers');
+};
