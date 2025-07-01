@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class Published extends AbstractEvent {
 
-    private Long id;
+    private Long bookId;
     private LocalDateTime publishedAt;
     private String coverUrl;
 //    private String title;
@@ -23,7 +23,7 @@ public class Published extends AbstractEvent {
     public Published(Book aggregate) {
         super();
 
-        this.id = aggregate.getId();
+        this.bookId = aggregate.getBookId();
         this.publishedAt = aggregate.getPublishedAt();
         this.coverUrl = aggregate.getCoverUrl();
 //        this.title = aggregate.getTitle();

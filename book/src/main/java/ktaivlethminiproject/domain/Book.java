@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long bookId;
 
     private String title;
     private String content;
