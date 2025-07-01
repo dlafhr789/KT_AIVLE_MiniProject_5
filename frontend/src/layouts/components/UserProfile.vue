@@ -1,16 +1,3 @@
-<script setup>
-const avatarBadgeProps = {
-  dot: true,
-  location: 'bottom right',
-  offsetX: 3,
-  offsetY: 3,
-  color: 'success',
-  bordered: true,
-}
-
-const userName = "USER"
-</script>
-
 <template>
   <VBadge v-bind="avatarBadgeProps">
     <VAvatar
@@ -45,22 +32,25 @@ const userName = "USER"
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              
+              {{ userName }}
             </VListItemTitle>
           </VListItem>
 
           <VDivider class="my-2" />
-          
-          <!-- 👉 Logout -->
+
+          <!-- 🟦 마이페이지 추가 -->
+          <VListItem to="/mypage" link>
+            <template #prepend>
+              <VIcon class="me-2" icon="mdi-account-circle-outline" size="22" />
+            </template>
+            <VListItemTitle>마이페이지</VListItemTitle>
+          </VListItem>
+
+          <!-- 🔸 Logout -->
           <VListItem to="/login">
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="mdi-logout-variant"
-                size="22"
-              />
+              <VIcon class="me-2" icon="mdi-logout-variant" size="22" />
             </template>
-
             <VListItemTitle>Logout</VListItemTitle>
           </VListItem>
         </VList>
