@@ -8,7 +8,7 @@
       <v-card-text>
         <v-text-field
           v-model="form.id"
-          label="이메일"
+          label="아이디"
           density="comfortable"
           outlined
           hide-details
@@ -45,28 +45,12 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { useAuth } from '@/components/useAuth'
-=======
->>>>>>> e395a4b (feat: 홈, 로그인, 회원가입)
-=======
-import { useAuth } from '@/components/useAuth'
->>>>>>> 88eb146 (default layout, drawcontent 역할따라 수정)
 import axios from 'axios'      
 
 /* -------- props / emits -------- */
 const props = defineProps({ modelValue: { type: Boolean, default: false } })
 const emit  = defineEmits(['update:modelValue', 'login'])
-<<<<<<< HEAD
-<<<<<<< HEAD
-const { setUser } = useAuth() 
-=======
 
->>>>>>> e395a4b (feat: 홈, 로그인, 회원가입)
-=======
-const { setUser } = useAuth() 
->>>>>>> 88eb146 (default layout, drawcontent 역할따라 수정)
 /* -------- 다이얼로그 열림 상태 (local copy) -------- */
 const router = useRouter()
 const localOpen = ref(props.modelValue)
@@ -79,15 +63,7 @@ const canSubmit = computed(() => form.id && form.pw)
 const loading     = ref(false)   
 /* -------- 메소드 -------- */
 function close()  { localOpen.value = false }
-<<<<<<< HEAD
-<<<<<<< HEAD
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
-=======
 axios.defaults.baseURL = 'https://literate-sniffle-vr4947x5g54cw7rp-8088.app.github.dev'
->>>>>>> e395a4b (feat: 홈, 로그인, 회원가입)
-=======
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
->>>>>>> 88eb146 (default layout, drawcontent 역할따라 수정)
 async function submit() {
   if (!canSubmit.value || loading.value) return
   loading.value = true
@@ -99,25 +75,8 @@ async function submit() {
     })
     const user = res.data  // { id, name, telecom, ... }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 71e2a14 (마이페이지 수정 및 요금제 연동)
-    // ✅ 여기 추가!
-    sessionStorage.setItem("userId", user.id);
-
     // ② 유저 정보 저장 (예: localStorage)
-    //localStorage.setItem('user', JSON.stringify(user))
-    setUser(user)
-=======
-    // ② 유저 정보 저장 (예: localStorage)
-<<<<<<< HEAD
     localStorage.setItem('user', JSON.stringify(user))
->>>>>>> e395a4b (feat: 홈, 로그인, 회원가입)
-=======
-    //localStorage.setItem('user', JSON.stringify(user))
-    setUser(user)
->>>>>>> 88eb146 (default layout, drawcontent 역할따라 수정)
 
     // ③ 상위 컴포넌트로 성공 알림(선택)
     emit('login-success', user)
