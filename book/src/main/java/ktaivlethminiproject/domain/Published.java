@@ -12,24 +12,16 @@ import lombok.*;
 public class Published extends AbstractEvent {
 
     private Long bookId;
-    private LocalDateTime publishedAt;
+    private String summary;
     private String coverUrl;
-//    private String title;
-//    private String content;
-//    private Long userId;
-//    private Boolean state;
-//    private Integer view;
+    private LocalDateTime publishedAt;    
 
     public Published(Book aggregate) {
         super();
 
         this.bookId = aggregate.getBookId();
-        this.publishedAt = aggregate.getPublishedAt();
+        this.summary = aggregate.getSummary();
         this.coverUrl = aggregate.getCoverUrl();
-//        this.title = aggregate.getTitle();
-//        this.content = aggregate.getContent();
-//        this.userId = aggregate.getUserId();
-//        this.state = aggregate.getState();
-//        this.view = aggregate.getView();
+        this.publishedAt = aggregate.getPublishedAt();
     }
 }

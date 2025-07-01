@@ -41,6 +41,10 @@ public class PolicyHandler {
                 generateRequestCompleted.getCoverUrl(),
                 generateRequestCompleted.getSummary()
             );
+
+            // 추가
+            bookRepository.save(book); 
+            System.out.println("Book " + book.getBookId() + " published.");
         });
     }
 
