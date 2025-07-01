@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     BaseGrid: typeof import('./src/components/base-ui/BaseGrid.vue')['default']
     BasePicker: typeof import('./src/components/base-ui/BasePicker.vue')['default']
     BaseSecurity: typeof import('./src/components/base-ui/BaseSecurity.vue')['default']
+    book: bookgrid 수정)
     Book: typeof import('./src/components/Book.vue')['default']
     BookGrid: typeof import('./src/components/ui/BookGrid.vue')['default']
     BookInfo: typeof import('./src/components/ui/BookInfo.vue')['default']
