@@ -20,7 +20,7 @@ public class ViewHandler {
     @StreamListener(condition = "headers['type']=='BookSaved'")
     public void whenBookSaved_createBookList(@Payload BookSaved bookSaved) {
         try {
-            if (bookSaved.isMe()) {
+            if (bookSaved.getId() != null) {
                 BookList bookList = new BookList();
                 bookList.setId(bookSaved.getId());
                 bookList.setTitle(bookSaved.getTitle());
@@ -37,8 +37,8 @@ public class ViewHandler {
     @StreamListener(condition = "headers['type']=='BookOpened'")
     public void whenBookOpened_updateView(@Payload BookOpened bookOpened) {
         try {
-            if (bookOpened.isMe()) {
-                bookListRepository.findById(bookOpened.getBookId()).ifPresent(bookList -> {
+            if (bookOpened.getId() != null) {
+                bookListRepository.findById(bookOpened.getId()).ifPresent(bookList -> {
                     bookList.setView(bookOpened.getView());
                     bookListRepository.save(bookList);
                 });
@@ -51,9 +51,9 @@ public class ViewHandler {
     @StreamListener(condition = "headers['type']=='Published'")
     public void whenPublished_updateBookList(@Payload Published published) {
         try {
-            if (published.isMe()) {
+            if (published.getId() != null) {
                 // id로 기존에 생성된 리드 모델 데이터를 찾습니다.
-                bookListRepository.findById(published.getBookId()).ifPresent(bookList -> {
+                bookListRepository.findById(published.getId()).ifPresent(bookList -> {
                     // AI가 생성한 imageUrl과 summary로 리드 모델을 업데이트합니다.
                     bookList.setImageUrl(published.getImageUrl());
                     bookList.setSummary(published.getSummary());
