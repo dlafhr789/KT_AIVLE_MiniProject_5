@@ -51,7 +51,7 @@ public class Book {
         bookOpened.publishAfterCommit();
     }
 
-    public void publish(String imageUrl) {
+    public void publish(String imageUrl, String summary) {
         this.summary = summary;
         this.imageUrl = imageUrl;
         this.state = true;
