@@ -8,11 +8,11 @@ import lombok.Data;
 @Data
 public class GenerateRequestCompleted extends AbstractEvent {
 
-    private Long book_id;
-    private String cover_url;
+    private Long bookId;
+    private String coverUrl;
     private String summary;
-    private String download_url;
+    private String downloadUrl;
     private Integer point;
     private Integer category;
-    private Boolean request_successful;
+    private Boolean requestSuccessful;
 }
