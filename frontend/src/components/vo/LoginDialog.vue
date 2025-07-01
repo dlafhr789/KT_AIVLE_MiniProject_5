@@ -8,7 +8,7 @@
       <v-card-text>
         <v-text-field
           v-model="form.id"
-          label="아이디"
+          label="이메일"
           density="comfortable"
           outlined
           hide-details
