@@ -18,7 +18,7 @@
                 <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="openEditDialog()" class="contrast-primary-text" small color="primary">
                     <v-icon small>mdi-pencil</v-icon>수정
                 </v-btn>
-                <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="openBookDialog = true" class="contrast-primary-text" small color="primary" :disabled="!hasRole('User')">
+                <v-btn :disabled="!selectedRow || !hasRole('User')" style="margin-left: 5px;" @click="openBookDialog = true" class="contrast-primary-text" small color="primary">
                     <v-icon small>mdi-minus-circle-outline</v-icon>도서 열람
                 </v-btn>
                 <v-dialog v-model="openBookDialog" width="500">

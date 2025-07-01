@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     BaseSecurity: typeof import('./src/components/base-ui/BaseSecurity.vue')['default']
     Book: typeof import('./src/components/Book.vue')['default']
     BookGrid: typeof import('./src/components/ui/BookGrid.vue')['default']
+    BookList: typeof import('./src/components/BookList.vue')['default']
     BooklistView: typeof import('./src/components/BooklistView.vue')['default']
     BookPointView: typeof import('./src/components/BookPointView.vue')['default']
     Boolean: typeof import('./src/components/primitives/Boolean.vue')['default']
