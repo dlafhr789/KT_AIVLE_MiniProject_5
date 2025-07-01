@@ -10,6 +10,15 @@ import UserProfile from '@/layouts/components/UserProfile.vue'
 
 <template>
   <VerticalNavLayout>
+    <template #vertical-nav-header>
+      <RouterLink
+        to="/"
+        class="d-flex align-center pa-4 gap-x-2 text-decoration-none"
+      >
+        <VIcon icon="mdi-book-multiple" />
+        <span class="text-h6 font-weight-medium">KT 걷다가 서재</span>
+      </RouterLink>
+    </template>
     <!-- 👉 navbar -->
     <template #navbar="{ toggleVerticalOverlayNavActive }">
       <div class="d-flex h-100 align-center">
