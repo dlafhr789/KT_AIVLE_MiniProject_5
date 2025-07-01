@@ -27,7 +27,7 @@ public class BooklistViewHandler {
             // view 객체에 이벤트의 Value 를 set 함
             booklist.setId(bookSaved.getId());
             booklist.setTitle(bookSaved.getTitle());
-            booklist.setAuthor(String.valueOf(bookSaved.getUserId()));
+            booklist.setAuthor(String.valueOf(bookSaved.getUser_id()));
             booklist.setView(Integer.parseInt(bookSaved.getView()));
             booklist.setContent(bookSaved.getContent());
             // view 레파지 토리에 save
@@ -45,20 +45,20 @@ public class BooklistViewHandler {
             if (!generateRequestCompleted.validate()) return;
             // view 객체 조회
             Optional<Booklist> booklistOptional = booklistRepository.findById(
-                generateRequestCompleted.getBookId()
+                generateRequestCompleted.getBook_id()
             );
 
             if (booklistOptional.isPresent()) {
                 Booklist booklist = booklistOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                booklist.setCoverUrl(generateRequestCompleted.getCoverUrl());
+                booklist.setCoverUrl(generateRequestCompleted.getCover_url());
                 booklist.setSummary(generateRequestCompleted.getSummary());
                 booklist.setCategory(
                     String.valueOf(generateRequestCompleted.getCategory())
                 );
                 booklist.setPoint(generateRequestCompleted.getPoint());
                 booklist.setDownloadUrl(
-                    generateRequestCompleted.getDownloadUrl()
+                    generateRequestCompleted.getDownload_url()
                 );
                 // view 레파지 토리에 save
                 booklistRepository.save(booklist);
@@ -101,7 +101,7 @@ public class BooklistViewHandler {
             if (booklistOptional.isPresent()) {
                 Booklist booklist = booklistOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                booklist.setPublishedAt(published.getPublishedAt());
+                booklist.setPublishedAt(published.getPublished_at());
                 // view 레파지 토리에 save
                 booklistRepository.save(booklist);
             }
