@@ -26,15 +26,10 @@ export const createBook = (bookData) => {
 
 // 출간을 요청하는 API
 export const requestPublication = (id) => {
-    return apiClient.post(`/books/${id}`);
+    return apiClient.post(`/books/${id}/request-publication`);
 };
 
 // 책을 열람하는 API
 export const openBook = (id) => {
-    return apiClient.put(`/books/${id}/openbook`);
-};
-
-// 구독 모니터링
-export const getMySubscriptions = (userId) => {
-    return apiClient.get(`/my-subscriptions/search/findByUserId`, { params: { userId } });
+    return apiClient.put(`/books/${id}/open`);
 };

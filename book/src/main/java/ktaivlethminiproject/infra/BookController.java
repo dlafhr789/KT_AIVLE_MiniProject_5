@@ -107,8 +107,6 @@ package ktaivlethminiproject.infra;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ktaivlethminiproject.config.kafka.KafkaProcessor;
 import ktaivlethminiproject.domain.*;
-import ktaivlethminiproject.service.Subscription;
-import ktaivlethminiproject.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
@@ -126,9 +124,6 @@ public class BookController {
 
     @Autowired
     BookRepository bookRepository;
-
-    @Autowired(required = false)
-    SubscriptionService subscriptionService;
 
     @Autowired
     KafkaProcessor kafkaProcessor;
@@ -167,14 +162,6 @@ public class BookController {
         Book book = bookRepository.findById(id)
             .orElseThrow(() -> new Exception("No Entity Found"));
         book.requestPublication();
-    }
-    
-    /**
-     * 외부 구독 서비스의 API를 호출하는 중계 API
-     */
-    @GetMapping("/{id}/subscriptions")
-    public List<Subscription> getBookSubscriptions(@PathVariable("id") Long id) {
-        return subscriptionService.getSubscriptionsByBookId(id);
     }
     
     /**
