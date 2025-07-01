@@ -39,6 +39,16 @@ const router = createRouter({
       path: '/booklists',
       component: () => import('../components/BooklistView.vue'),
     },
+    //ppt8페이지
+    {
+      path: '/manage',
+      component: () => import('../components/ui/ManageAuthorRequests.vue'),
+    },
+    //myPage 추가
+    {
+      path: '/mypage',
+      component: () => import('../components/ui/MyPage.vue'),
+    },
   ],
 })
 
