@@ -82,20 +82,21 @@ export default {
     }
   },
   created() {
-    const serverip_book = 'https://8082-dlafhr789-ktaivleminipr-a4oyes7yb9k.ws-us120.gitpod.io'
-    const serverip_bookpublish = 'https://8084-dlafhr789-ktaivleminipr-a4oyes7yb9k.ws-us120.gitpod.io'
+    
+    axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io'
 
-    console.log(`${serverip_book}/${this.id}/openbook`)
-    axios.put(`${serverip_book}/books/${this.id}/openbook`)
+    axios.put(`/books/${this.id}/openbook`)
         .then(res => {
             const data = res.data
             this.book.title = data.title
         }).catch(err => console.error(err))
-    
-    axios.get(`${serverip_bookpublish}/genData/${this.id}`)
+
+
+    axios.get(`/genData/${this.id}`)
         .then(res => {
             const data = res.data
-            this.book.coverUrl = `${serverip_bookpublish}/${data.coverUrl}`
+            console.log(data.coverURL)
+            this.book.coverUrl = `https://8084-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io/${data.coverUrl}`
             console.log(this.book.coverUrl)
             this.book.summary = data.summary
             this.book.points = data.point
