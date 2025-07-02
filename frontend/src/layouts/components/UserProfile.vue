@@ -47,7 +47,7 @@
           </VListItem>
 
           <!-- 🔸 Logout -->
-          <VListItem to="/login">
+          <VListItem to="/">
             <template #prepend>
               <VIcon class="me-2" icon="mdi-logout-variant" size="22" />
             </template>

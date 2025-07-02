@@ -34,6 +34,7 @@ declare module '@vue/runtime-core' {
     GenDataGrid: typeof import('./src/components/ui/GenDataGrid.vue')['default']
     Index: typeof import('./src/components/pages/Index.vue')['default']
     LargeObject: typeof import('./src/components/primitives/LargeObject.vue')['default']
+    LoginDialog: typeof import('./src/components/vo/LoginDialog.vue')['default']
     ManageAuthorRequests: typeof import('./src/components/ui/ManageAuthorRequests.vue')['default']
     Money: typeof import('./src/components/vo/Money.vue')['default']
     MyPage: typeof import('./src/components/ui/MyPage.vue')['default']

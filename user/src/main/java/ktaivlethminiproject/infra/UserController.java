@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import javax.servlet.http.HttpSession; 
 //<<< Clean Arch / Inbound Adaptor
 
 @RestController
@@ -78,6 +80,24 @@ public class UserController {
 
         userRepository.save(user);
         return user;
+    }
+
+    @RequestMapping(
+        value = "/users/login",
+        consumes = "application/json",
+        produces = "application/json;charset=UTF-8"
+    )
+    public ResponseEntity<User> login(
+        @RequestBody LoginRequest req,
+        HttpSession session) {
+
+        return userRepository
+                .findByEmailAndPassword(req.getEmail(), req.getPassword())
+                .map(user -> {
+                    session.setAttribute("userId", user.getId());
+                    return ResponseEntity.ok(user);
+                })
+                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 }
 //>>> Clean Arch / Inbound Adaptor
