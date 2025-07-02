@@ -5,16 +5,6 @@ import javax.persistence.*;
 import lombok.*;
 import java.util.List;
 import java.util.ArrayList;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import java.util.Collections;
-//import java.util.List;
-//import java.util.Map;
-//import ktaivlethminiproject.BookApplication;
-//import ktaivlethminiproject.domain.BookOpenFailed;
-//import ktaivlethminiproject.domain.BookSaved;
-//import ktaivlethminiproject.domain.IncreasedSubscriber;
-//import ktaivlethminiproject.domain.PublicationRequested;
-//import ktaivlethminiproject.domain.Published;
 
 @Entity
 @Table(name = "Book_table")

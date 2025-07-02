@@ -41,6 +41,15 @@ public class BookController {
         return book;
     }
 
+    // 도서 삭제 API
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable(value = "id") Long id) throws Exception {
+        Book book = bookRepository.findById(id)
+            .orElseThrow(() -> new Exception("No Entity Found"));
+        bookRepository.delete(book);
+        System.out.println("### Book" + id + "deleted ###");
+    }
+
     // 도서 열람 API
     @PutMapping("/{id}/openbook")
     public Book openBook(@PathVariable(value = "id") Long id) throws Exception {
