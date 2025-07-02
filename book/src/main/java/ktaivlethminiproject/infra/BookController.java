@@ -12,6 +12,10 @@ import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/books")
@@ -41,6 +45,15 @@ public class BookController {
         return book;
     }
 
+    // 도서 삭제 API
+    @DeleteMapping("/{id}")
+    public void deleteBook(@PathVariable(value = "id") Long id) throws Exception {
+        Book book = bookRepository.findById(id)
+            .orElseThrow(() -> new Exception("No Entity Found"));
+        bookRepository.delete(book);
+        System.out.println("### Book" + id + "deleted ###");
+    }
+
     // 도서 열람 API
     @PutMapping("/{id}/openbook")
     public Book openBook(@PathVariable(value = "id") Long id) throws Exception {
@@ -48,8 +61,21 @@ public class BookController {
             .orElseThrow(() -> new Exception("No Entity Found"));
         
         book.openBook();
-        
-        return book;
+        return bookRepository.save(book);
+    }
+
+    // 도서 읽기 API
+    @GetMapping("/{id}/read")
+    public Map<String, Object> readBook(@PathVariable Long id) {
+        Book book = bookRepository.findById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("title", book.getTitle());
+        result.put("content", book.getContent());
+        result.put("userId", book.getUserId());
+
+        return result;
     }
 
     // 출간 요청 API

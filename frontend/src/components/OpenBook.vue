@@ -49,7 +49,9 @@ export default {
     },
     methods: {
         openBook() {
-            this.$emit('openBook', this.value);
+            // this.$emit('openBook', this.value);
+            this.$emit('openBook', { userId: this.value.userId });
+            this.$emit('closeDialog');
         },
         close() {
             this.$emit('closeDialog');

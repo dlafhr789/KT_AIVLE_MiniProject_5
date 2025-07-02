@@ -5,6 +5,7 @@
             :timeout="snackbar.timeout"
             :color="snackbar.color"
         >
+            {{ snackbar.text }}
             <v-btn style="margin-left: 80px;" text @click="snackbar.status = false">
                 Close
             </v-btn>
@@ -46,7 +47,7 @@
                     <tbody>
                         <tr v-for="(val, idx) in value" 
                             @click="selectedRow = val"
-                            :key="val.id"  
+                            :key="val.bookId"  
                             :style="val === selectedRow ? 'background-color: rgb(var(--v-theme-primary), 0.2) !important;':''"
                         >
                             <td class="font-semibold">{{ idx + 1 }}</td>
@@ -119,6 +120,7 @@ export default {
             status: false,
             timeout: 3000,
             color: 'success',
+            text: ''
         },
     }),
     created() {
@@ -151,19 +153,34 @@ export default {
         },
         async deleteRow(book) {
             try {
-                await axios.delete(`/${this.path}/${book.id}`);
-                this.value = this.value.filter(v => v.id !== book.id);
+                await axios.delete(`/${this.path}/${book.bookId}`);
+                this.value = this.value.filter(v => v.bookId !== book.bookId);
                 this.selectedRow = null;
+                this.snackbar = {
+                    status: true,
+                    timeout: 3000,
+                    color: 'success',
+                    text: '삭제되었습니다.'
+                };
             } catch (e) {
                 console.error('삭제 실패:', e);
             }
         },
-        async openBook(params){
+        async openBook({ userId }) {
+            if (!this.selectedRow) {
+                this.snackbar = {
+                    status: true,
+                    timeout: 3000,
+                    color: 'error',
+                    text: '도서를 선택해주세요.'
+                };
+                return;
+            }
             try{
-                const response = await axios.post('/openBook', { ...this.selectedRow, ...params });
-                const updatedBook = response.data;
-                const index = this.value.findIndex(b => b.id === this.selectedRow.id);
-                if(index !== -1) this.value[index] = updatedBook;
+                await axios.put(`/books/${this.selectedRow.bookId}/openbook`, {
+                    userId: userId
+                });
+                this.$router.push(`/books/${this.selectedRow.bookId}/read`);
                 this.openBookDialog = false;
             } catch(e) {
                 console.log(e);
