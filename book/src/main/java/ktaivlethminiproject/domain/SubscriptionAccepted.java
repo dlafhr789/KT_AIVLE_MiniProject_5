@@ -24,7 +24,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SubscriptionAccepted {
-    private Long id;
+    private Long bookId;
     private Long userId;
     private Boolean state;
 }

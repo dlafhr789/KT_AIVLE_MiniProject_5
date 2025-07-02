@@ -11,12 +11,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookOpened extends AbstractEvent {
-    private Long id;
+    private Long bookId;
     private Integer view;
 
     public BookOpened(Book aggregate) {
         super();
-        this.id = aggregate.getId();
+        this.bookId = aggregate.getBookId();
         this.view = aggregate.getView();
     }
 }

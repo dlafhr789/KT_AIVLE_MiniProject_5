@@ -36,11 +36,15 @@ public class PolicyHandler {
             "\n\n##### listener Publish : " + generateRequestCompleted + "\n\n"
         );
 
-        bookRepository.findById(generateRequestCompleted.getId()).ifPresent(book -> {
+        bookRepository.findById(generateRequestCompleted.getBookId()).ifPresent(book -> {
             book.publish(
                 generateRequestCompleted.getCoverUrl(),
                 generateRequestCompleted.getSummary()
             );
+
+            // 추가
+            bookRepository.save(book); 
+            System.out.println("Book " + book.getBookId() + " published.");
         });
     }
 
@@ -56,7 +60,7 @@ public class PolicyHandler {
             "\n\n##### listener Subscribed : " + subscriptionAccepted + "\n\n"
         );
 
-        bookRepository.findById(subscriptionAccepted.getId()).ifPresent(book -> {
+        bookRepository.findById(subscriptionAccepted.getBookId()).ifPresent(book -> {
             book.subscribed(subscriptionAccepted.getUserId());  // book.subscribed();
         });
     }

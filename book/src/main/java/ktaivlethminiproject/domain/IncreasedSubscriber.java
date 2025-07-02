@@ -12,13 +12,13 @@ import lombok.*;
 @AllArgsConstructor
 public class IncreasedSubscriber extends AbstractEvent {
 
-    private Long id;
+    private Long bookId;
 //    private Long userId;
     private Integer subscribers;
 
     public IncreasedSubscriber(Book aggregate) {
         super();
-        this.id = aggregate.getId();
+        this.bookId = aggregate.getBookId();
 //        this.userId = aggregate.getUserId();
         this.subscribers = aggregate.getSubscribers();
     }

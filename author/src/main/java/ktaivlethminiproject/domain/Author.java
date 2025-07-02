@@ -12,11 +12,14 @@ import ktaivlethminiproject.domain.AuthorRegistrationRequested;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
 @Entity
 @Table(name = "Author_table")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor  
 //<<< DDD / Aggregate Root
 public class Author {
 

@@ -26,12 +26,19 @@ const { state: auth } = useAuth()
                 to: '/mypage',
             }"
         />
+        <VerticalNavLink
+            v-if="auth.user?.role !== 'author'"
+            :item="{
+                title: '작가 등록 요청',
+                to: '/authors',
+            }"
+        />
         <template v-if="auth.user?.role === 'author'">
         <VerticalNavSectionTitle :item="{ heading: '도서 출간 메뉴' }" />
         <VerticalNavLink
             :item="{
                 title: '도서 출간 요청',
-                to: '/authors',
+                to: '/authors', // 수정해야함
             }"
         />
         </template>

@@ -85,7 +85,7 @@ public class PolicyHandler {
 
         // GenDataRepository genDataRepository;
 
-        final Long bookId = event.getId();
+        final Long bookId = event.getBookId();
         final String bookTitle = event.getTitle();
         final String bookContent = event.getContent();
         
