@@ -31,25 +31,31 @@
         </div>
 
         <!-- 액션 버튼 -->
-        <div class="actions" style="display: flex; gap: 1rem;">
-          <button
-            v-if="!book.isSubscribed"
-            @click="subscribe"
-            style="padding: 0.75rem 1.5rem; background:#3b82f6; color:#fff; border:none; border-radius:4px;"
-          >
+        <div class="actions" style="display:flex;gap:1rem;">
+          <!-- 1) 출간하기 -->
+          <button v-if="showPublish"
+                  @click="publishBook"
+                  style="padding:.75rem 1.5rem;background:#f59e0b;color:#fff;border:none;border-radius:4px;">
+            출간하기
+          </button>
+
+          <!-- 2) 구독하기 -->
+          <button v-else-if="showSubscribe"
+                  @click="subscribe"
+                  style="padding:.75rem 1.5rem;background:#3b82f6;color:#fff;border:none;border-radius:4px;">
             구독하기 (소장/대여)
           </button>
-          <button
-            v-else
-            @click="readBook"
-            style="padding: 0.75rem 1.5rem; background:#10b981; color:#fff; border:none; border-radius:4px;"
-          >
+
+          <!-- 3) 책 읽기 -->
+          <button v-else-if="showRead"
+                  @click="readBook"
+                  style="padding:.75rem 1.5rem;background:#10b981;color:#fff;border:none;border-radius:4px;">
             책 읽기
           </button>
-          <button
-            @click="goBack"
-            style="padding: 0.75rem 1.5rem; background:#6b7280; color:#fff; border:none; border-radius:4px;"
-          >
+
+          <!-- 언제나 목록 버튼 -->
+          <button @click="goBack"
+                  style="padding:.75rem 1.5rem;background:#6b7280;color:#fff;border:none;border-radius:4px;">
             책 목록 보기
           </button>
         </div>
@@ -87,12 +93,23 @@ export default {
         authorName: '',      // 작가명
         summary: '',     // 줄거리 요약
         points: 0,       // 포인트
-        isSubscribed: false
+        isSubscribed: false,
+        isMyBook: false,
+        isPublished: false
       },
     }
   },
+  computed: {
+    showPublish()  { return this.book.isMyBook && !this.book.isPublished },
+    showSubscribe(){ return !this.book.isMyBook && !this.book.isSubscribed },
+    showRead()     { return (this.book.isMyBook   && this.book.isPublished) ||
+                            (!this.book.isMyBook && this.book.isSubscribed) },
+  },
   created() {
-    
+    console.log('asdf')
+
+    const user = JSON.parse(localStorage.getItem('user'))
+    console.log("유저 아이디 : ", user.id)
     // axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io'
 
     api.put(`/books/${this.id}/openbook`)
@@ -100,31 +117,40 @@ export default {
             const data = res.data
             this.book.title = data.title
             this.book.authorId = data.userId
+
+            console.log(this.book.authorId)
+            console.log(user.id)
+
+            this.book.isMyBook = Number(data.userId) === Number(user.id)
+            console.log(this.book.isMyBook)
         }).catch(err => console.error(err))
 
 
     api.get(`/genData/${this.id}`)
         .then(res => {
+
             const data = res.data
+            this.book.isPublished = !!data.coverUrl
+            console.log('isPublished : ', this.book.isPublished)
             console.log(data.coverURL)
+            
             const gatewayBase = import.meta.env.VITE_API_BASE_URL
             const bookPublishBase = swapPort(gatewayBase, '8084')
             this.book.coverUrl = `${bookPublishBase}/${data.coverUrl}`
             console.log(this.book.coverUrl)
             this.book.summary = data.summary
             this.book.points = data.point
+            
+            
         })
     
-    api.get(`/users/${this.id}`)
+    api.get(`/users/${this.book.authorId}`)
         .then(res => {
           const data = res.data
           console.log('작가 정보 : ', data)
           this.book.authorName = data.name
         })
 
-
-    const user = JSON.parse(localStorage.getItem('user'))
-    console.log("유저 아이디 : ", user.id)
 
     api.get('/subscribes',)
       .then(res => {
