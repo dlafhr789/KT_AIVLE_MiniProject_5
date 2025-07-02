@@ -47,6 +47,7 @@ declare module '@vue/runtime-core' {
     PlanCancel: typeof import('./src/components/PlanCancel.vue')['default']
     PlanPurchase: typeof import('./src/components/PlanPurchase.vue')['default']
     Rating: typeof import('./src/components/vo/Rating.vue')['default']
+    ReadBook: typeof import('./src/components/ui/ReadBook.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SignUp: typeof import('./src/components/SignUp.vue')['default']
