@@ -10,12 +10,12 @@
             v-model="value.content"
             :editMode="editMode"
         />
-        <Number
+        <!-- <Number
             label="UserId"
             v-model="value.userId"
             :editMode="editMode"
-        />
-        <Date
+        /> -->
+        <!-- <Date
             label="PublishedAt"
             v-model="value.publishedAt"
             :editMode="editMode"
@@ -34,7 +34,7 @@
             label="Subscribers"
             v-model="value.subscribers"
             :editMode="editMode"
-        />
+        /> -->
         <v-row class="ma-0 pa-0">
             <v-spacer></v-spacer>
             <v-btn width="64px" color="primary" @click="save">
@@ -47,6 +47,7 @@
 
 <script>
 import BaseEntity from './base-ui/BaseEntity.vue'
+import axios from 'axios';
 
 export default {
     name: 'Book',
@@ -57,6 +58,9 @@ export default {
     data: () => ({
         path: "books",
         value: {
+            title: '',
+            content: '',
+            userId: 1, // 임시로 사용자 ID 1을 사용
         }
     }),
     created(){
@@ -64,6 +68,24 @@ export default {
     computed:{
     },
     methods: {
+        async save() {
+            try {
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'X-User-Id': this.value.userId // 임시로 사용자 ID 1을 헤더에 추가
+                };
+
+                const response = await axios.post('/books', this.value, { headers: headers });
+                
+                this.$emit('add', response.data);
+
+                alert('성공');
+
+            } catch (error) {
+                console.error('도서 저장 실패', error);
+                alert('실패');
+            }
+        }
     },
 }
 </script>

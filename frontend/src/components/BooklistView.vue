@@ -43,7 +43,8 @@ export default {
 
         onMounted(async () => {
             try {
-                const response = await axios.get('/booklists');
+                // const response = await axios.get('/booklists');
+                const response = await axios.get('/books');
                 const data = response.data._embedded.booklists;
                 data.forEach(obj => {
                     obj.id = obj._links.self.href.split("/").pop();
