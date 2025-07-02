@@ -145,6 +145,7 @@ export default {
     },
     readBook() {
       // TODO: 읽기 페이지로 이동, e.g. this.$router.push(`/books/${this.id}/read`)
+      this.$router.push(`/readbook/${this.id}`)
     },
     goBack() {
       // 책 목록으로 돌아가기
