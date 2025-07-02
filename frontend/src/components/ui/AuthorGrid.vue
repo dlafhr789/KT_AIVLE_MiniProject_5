@@ -2,15 +2,6 @@
   <v-container>
     <h3>작가 정보 입력하기</h3>
 
-    <!-- 이메일 주소 -->
-    <v-text-field
-      v-model="form.userId"
-      label="이메일 주소"
-      outlined
-      dense
-      class="my-4"
-    />
-
     <!-- 포트폴리오 주소 -->
     <v-text-field
       v-model="form.portfolio"
@@ -53,6 +44,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
+import { useAuth } from '@/components/useAuth'
 export default {
   name: 'AuthorFormSimple',
   data() {
@@ -66,20 +60,61 @@ export default {
         show: false,
         text: '',
       },
-    };
+      authorId: null, // 저장용 ID 필드 추가
+    }
+  },
+  setup() {
+    const { state } = useAuth()     // 로그인 사용자 접근
+    return { state }
   },
   methods: {
-    registerAuthor() {
-      console.log('등록:', this.form);
-      // 실제 등록 API 호출
-      this.snackbar.text = '등록되었습니다.';
-      this.snackbar.show = true;
+    async registerAuthor() {
+      try {
+        // POST
+        const res = await axios.post('/authors-requests',
+          {
+            portfolio: this.form.portfolio,
+            profile: this.form.profile,
+          },
+          {
+            headers: {
+              'X-User-Id': this.state.user.id,
+            },
+          }
+        )
+
+        // ② authorId 저장 (필요 시)
+        this.authorId = res.data.id
+
+        // ② 알림
+        this.snackbar.text = '등록되었습니다.';
+        this.snackbar.show = true;
+
+      } catch (err) {
+        console.error(err);
+        this.$toast?.error('등록에 실패했습니다');
+      }
     },
-    updateAuthor() {
-      console.log('수정:', this.form);
-      // 실제 수정 API 호출
-      this.snackbar.text = '수정되었습니다.';
-      this.snackbar.show = true;
+    async updateAuthor() {
+      try {
+        const authorId = this.authorId
+        await axios.put(`/authors/${authorId}`, {
+          portfolio: this.form.portfolio,
+          profile:   this.form.profile,
+        },
+        {
+          headers: {
+          'X-User-Id': this.state.user.id,
+          },
+        }
+      );
+
+        this.snackbar.text = '수정되었습니다.';
+        this.snackbar.show = true;
+      } catch (err) {
+        console.error(err);
+        this.$toast?.error('수정에 실패했습니다');
+      }
     },
   },
 };

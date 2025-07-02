@@ -5,9 +5,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.*;
 
 @Data
-public class AuthorRegisterCommand {
-
-    //private Long userId;
+public class AuthorUpdateCommand {
     private String portfolio;
     private String profile;
 }
