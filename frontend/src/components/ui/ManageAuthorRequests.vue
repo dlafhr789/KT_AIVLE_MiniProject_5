@@ -86,7 +86,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 // 주소 확인 후 변경 필요 @@@@@@@@
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
+axios.defaults.baseURL = 'https://congenial-garbanzo-vr4947x5p6p3j9p-8088.app.github.dev'
 
 // 반응형 데이터 선언
 const authors = ref([]) // 작가 목록을 저장할 배열
