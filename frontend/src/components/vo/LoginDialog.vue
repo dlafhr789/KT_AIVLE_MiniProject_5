@@ -77,7 +77,7 @@ async function submit() {
     const user = res.data  // { id, name, telecom, ... }
 
     // ② 유저 정보 저장 (예: localStorage)
-    localStorage.setItem('user', JSON.stringify(user))
+    // localStorage.setItem('user', JSON.stringify(user))
     setUser(user)
 
     // ③ 상위 컴포넌트로 성공 알림(선택)

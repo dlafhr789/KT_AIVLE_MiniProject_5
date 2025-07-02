@@ -60,6 +60,7 @@
 
 <script>
 import axios from 'axios';   // ← 이걸 꼭 추가!
+// import BookGrid from './BookGrid.vue';
 
 export default {
   name: 'BookDetail',
@@ -78,7 +79,7 @@ export default {
         summary: '',     // 줄거리 요약
         points: 0,       // 포인트
         isSubscribed: false
-      }
+      },
     }
   },
   created() {
@@ -101,10 +102,38 @@ export default {
             this.book.summary = data.summary
             this.book.points = data.point
         })
+
+    const user = JSON.parse(localStorage.getItem('user'))
+    console.log("유저 아이디 : ", user.id)
+
+    axios.get('/subscribes', {
+      userId: user.id,
+      bookId: this.id
+    }).then(res => {
+      const result = res.data._embedded.subscribes.length
+      console.log('구독 여부 결과 : ', result)
+      
+      if (result > 0) {
+        this.book.isSubscribed = true
+      }
+    })
+
+    // axios.get(`/subscribes userId==${}`)
   },
   methods: {
     subscribe() {
       // TODO: 구독 요청 처리
+      const user = JSON.parse(localStorage.getItem('user'))
+      axios.post(`/subscribes/ownbook/${this.id}`, {}, {
+        headers: { 'userId': user.id }
+      })
+        .then(res => {
+          alert('구독 성공')
+          window.location.reload()
+        }).catch(err => {
+          console.error('구독 요청 실패 : ', err)
+          alert('구독 실패')
+        })
     },
     readBook() {
       // TODO: 읽기 페이지로 이동, e.g. this.$router.push(`/books/${this.id}/read`)
