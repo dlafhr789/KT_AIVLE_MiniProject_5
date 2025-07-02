@@ -26,11 +26,14 @@ public class BookController {
 
     // 도서 저장 API
     @PostMapping
-    public Book saveBook(@RequestBody BookSaved requestPayload) {
+    public Book saveBook(
+        @RequestHeader("X-User-Id") Long userId,
+        @RequestBody BookSaved requestPayload
+    ) {
         Book book = new Book();
         book.setTitle(requestPayload.getTitle());
         book.setContent(requestPayload.getContent());
-        book.setUserId(requestPayload.getUserId());
+        book.setUserId(userId);
         bookRepository.save(book);
 
         System.out.println("### Book" + book.getBookId() + "saved ###");

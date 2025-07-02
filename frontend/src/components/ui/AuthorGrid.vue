@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h3>작가 정보 입력하기</h3>
+    <h3 class="text-h5 font-weight-bold mb-6">작가 정보 입력하기</h3>
 
     <!-- 포트폴리오 주소 -->
     <v-text-field

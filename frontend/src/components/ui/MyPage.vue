@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h3>마이페이지</h3>
+    <h3 class="text-h5 font-weight-bold mb-6">마이페이지</h3>
 
     <!-- 아이디 -->
     <v-text-field

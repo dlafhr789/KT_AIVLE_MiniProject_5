@@ -94,7 +94,7 @@ const canSubmit = computed(() =>
 
 /* ───────── 제출 ───────── */
 import axios from 'axios'
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io'
+axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
 async function onSubmit () {
   if (!canSubmit.value) return
 

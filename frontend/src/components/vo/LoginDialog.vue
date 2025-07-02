@@ -64,7 +64,7 @@ const canSubmit = computed(() => form.id && form.pw)
 const loading     = ref(false)   
 /* -------- 메소드 -------- */
 function close()  { localOpen.value = false }
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io'
+axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
 async function submit() {
   if (!canSubmit.value || loading.value) return
   loading.value = true

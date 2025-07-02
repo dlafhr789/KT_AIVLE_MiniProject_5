@@ -66,7 +66,13 @@ const router = createRouter({
       path: '/readbook/:id',
       component: () => import('../components/ui/ReadBook.vue'),
       props: route => ({ id: route.params.id })
-    }
+    },
+    // boookregister 추가
+    {
+      path: '/books/register',
+      component: () => import('../components/ui/BookRegister.vue'),
+      meta: { layout: 'default' },
+    },
   ],
 })
 

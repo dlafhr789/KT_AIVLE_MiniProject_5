@@ -38,7 +38,7 @@ const { state: auth } = useAuth()
         <VerticalNavLink
             :item="{
                 title: '도서 출간 요청',
-                to: '/authors', // 수정해야함
+                to: '/books/register',
             }"
         />
         </template>
