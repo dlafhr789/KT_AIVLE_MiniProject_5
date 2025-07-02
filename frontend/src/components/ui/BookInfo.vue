@@ -106,17 +106,17 @@ export default {
     const user = JSON.parse(localStorage.getItem('user'))
     console.log("유저 아이디 : ", user.id)
 
-    axios.get('/subscribes', {
-      userId: user.id,
-      bookId: this.id
-    }).then(res => {
-      const result = res.data._embedded.subscribes.length
-      console.log('구독 여부 결과 : ', result)
-      
-      if (result > 0) {
-        this.book.isSubscribed = true
-      }
-    })
+    axios.get('/subscribes',)
+      .then(res => {
+        const all = res.data._embedded.subscribes
+        
+          const filtered = all.filter(item => Number(item.userId) === Number(user.id) && Number(item.bookId) === Number(this.id))
+          console.log(filtered.length)
+
+          this.book.isSubscribed = filtered.length > 0 ? true : false
+      }).catch(err => {
+        console.error('리스트 불러오기 실패: ', err)
+      })
 
     // axios.get(`/subscribes userId==${}`)
   },
