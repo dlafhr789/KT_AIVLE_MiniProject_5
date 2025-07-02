@@ -47,7 +47,7 @@ public class GenData {
         // Example 2:  finding and process
         
 
-        repository().findById(publicationRequested.getId()).ifPresent(genData->{
+        repository().findById(publicationRequested.getBookId()).ifPresent(genData->{
 
             GenerateRequestCompleted evt = new GenerateRequestCompleted(genData); // 생성자에 aggregate 넘겨도 OK
             evt.setBookId(genData.getBookId());

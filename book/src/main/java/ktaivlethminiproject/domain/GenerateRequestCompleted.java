@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 public class GenerateRequestCompleted extends AbstractEvent {
 
-    private Long id;
+    private Long bookId;
     private String summary;
     private String coverUrl;
 //    private String downloadUrl;

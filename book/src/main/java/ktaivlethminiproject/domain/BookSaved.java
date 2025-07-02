@@ -12,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 public class BookSaved extends AbstractEvent {
 
-    private Long id;
+    private Long bookId;
     private Long userId;
     private String title;
     private String content;
@@ -20,7 +20,7 @@ public class BookSaved extends AbstractEvent {
 
     public BookSaved(Book aggregate) {
         super();
-        this.id = aggregate.getId();
+        this.bookId = aggregate.getBookId();
         this.userId = aggregate.getUserId();
         this.title = aggregate.getTitle();
         this.content = aggregate.getContent();
