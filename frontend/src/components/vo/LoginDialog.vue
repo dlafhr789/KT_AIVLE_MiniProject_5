@@ -46,7 +46,8 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/components/useAuth'
-import axios from 'axios'      
+import axios from 'axios'  
+import api from '@/plugins/axios'    
 
 /* -------- props / emits -------- */
 const props = defineProps({ modelValue: { type: Boolean, default: false } })
@@ -64,13 +65,13 @@ const canSubmit = computed(() => form.id && form.pw)
 const loading     = ref(false)   
 /* -------- 메소드 -------- */
 function close()  { localOpen.value = false }
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
+// axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-5kdrzy60pir.ws-us120.gitpod.io'
 async function submit() {
   if (!canSubmit.value || loading.value) return
   loading.value = true
   try {
     // ① 로그인 요청
-    const res = await axios.post('/users/login', {
+    const res = await api.post('/users/login', {
       email: form.id,
       password: form.pw,
     })

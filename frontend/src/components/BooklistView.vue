@@ -10,6 +10,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import api from '@/plugins/axios'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 
 export default {
@@ -43,7 +44,7 @@ export default {
 
         onMounted(async () => {
             try {
-                const response = await axios.get('/booklists');
+                const response = await api.get('/booklists');
                 const data = response.data._embedded.booklists;
                 data.forEach(obj => {
                     obj.id = obj._links.self.href.split("/").pop();

@@ -48,6 +48,7 @@
 <script>
 import BaseEntity from './base-ui/BaseEntity.vue'
 import axios from 'axios';
+import api from '@/plugins/axios'
 
 export default {
     name: 'Book',
@@ -75,7 +76,7 @@ export default {
                     'X-User-Id': this.value.userId // 임시로 사용자 ID 1을 헤더에 추가
                 };
 
-                const response = await axios.post('/books', this.value, { headers: headers });
+                const response = await api.post('/books', this.value, { headers: headers });
                 
                 this.$emit('add', response.data);
 

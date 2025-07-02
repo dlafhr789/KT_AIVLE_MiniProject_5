@@ -21,6 +21,7 @@
 
 <script>
     const axios = require('axios').default;
+    import api from '@/plugins/axios'
 
     export default {
         name:"EventViewer",
@@ -42,7 +43,7 @@
         methods:{
 
             async load(){
-                var result = await axios.get(axios.fixUrl(this.src));
+                var result = await api.get(api.fixUrl(this.src));
                 this.events = result.data._embedded.genericDomainEventMessageList
               
                 this.events.forEach(event => {

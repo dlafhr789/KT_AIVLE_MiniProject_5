@@ -69,6 +69,7 @@
 <script setup>
 import { reactive, computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import api from '@/plugins/axios'
 
 const router = useRouter()
 const form   = ref(null)
@@ -94,7 +95,7 @@ const canSubmit = computed(() =>
 
 /* ───────── 제출 ───────── */
 import axios from 'axios'
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
+// axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-5kdrzy60pir.ws-us120.gitpod.io'
 async function onSubmit () {
   if (!canSubmit.value) return
 
@@ -108,7 +109,7 @@ async function onSubmit () {
 
   try {
     // 2. 회원가입 요청
-    await axios.post('/users/signup', signupPayload)
+    await api.post('/users/signup', signupPayload)
 
     // 4. 가입 성공 시 라우팅
     router.push('/')

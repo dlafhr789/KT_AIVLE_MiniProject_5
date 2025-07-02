@@ -45,8 +45,9 @@
 
 <script>
 import axios from 'axios';
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
+// axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
 import { useAuth } from '@/components/useAuth'
+import api from '@/plugins/axios'
 export default {
   name: 'AuthorFormSimple',
   data() {
@@ -71,7 +72,7 @@ export default {
     async registerAuthor() {
       try {
         // POST
-        const res = await axios.post('/authors-requests',
+        const res = await api.post('/authors-requests',
           {
             portfolio: this.form.portfolio,
             profile: this.form.profile,
@@ -98,7 +99,7 @@ export default {
     async updateAuthor() {
       try {
         const authorId = this.authorId
-        await axios.put(`/authors/${authorId}`, {
+        await api.put(`/authors/${authorId}`, {
           portfolio: this.form.portfolio,
           profile:   this.form.profile,
         },

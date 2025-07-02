@@ -91,10 +91,11 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import api from '@/plugins/axios'
 import { useRouter } from 'vue-router'
 
 // 주소 확인 후 변경 필요 @@@@@@@@
-axios.defaults.baseURL = 'https://humble-rotary-phone-9x4vx569j7fx95v-8088.app.github.dev'
+// axios.defaults.baseURL = 'https://humble-rotary-phone-9x4vx569j7fx95v-8088.app.github.dev'
 
 // 반응형 데이터 선언
 const authors = ref([]) // 작가 목록을 저장할 배열
@@ -105,7 +106,7 @@ const showConfirmationPopup = ref(false) // 확인 팝업 표시 여부
 // 보류 중인 작가 목록을 API에서 가져오는 함수
 const fetchPendingAuthors = async () => {
   try {
-    const res = await axios.get('/authors/pending')
+    const res = await api.get('/authors/pending')
     // API 응답 구조에 따라 데이터 추출: _embedded.authors 또는 직접 데이터
     authors.value = res.data._embedded?.authors || res.data || []
   } catch (e) {
@@ -132,7 +133,7 @@ const closeConfirmationPopup = () => {
 // 작가 등록 요청을 승인하는 함수
 const approve = async (id) => {
   try {
-    await axios.put(`/authors/${id}/authorapprove`) // 승인 API 호출
+    await api.put(`/authors/${id}/authorapprove`) // 승인 API 호출
     await fetchPendingAuthors() // 목록 새로고침
     closePopup() // 상세 팝업 닫기
     confirmationMessage.value = '승인되었습니다.'; // 확인 메시지 설정
@@ -147,7 +148,7 @@ const approve = async (id) => {
 // 작가 등록 요청을 거절하는 함수
 const deny = async (id) => {
   try {
-    await axios.put(`/authors/${id}/authordeny`) // 거절 API 호출
+    await api.put(`/authors/${id}/authordeny`) // 거절 API 호출
     await fetchPendingAuthors() // 목록 새로고침
     closePopup() // 상세 팝업 닫기
     confirmationMessage.value = '거절되었습니다.'; // 확인 메시지 설정
@@ -175,7 +176,7 @@ const selectedSubscribeMonitor = ref(null) // 구독 모니터링 팝업에 표�
 const fetchSubscribeMonitors = async () => {
   try {
     // Spring Data REST가 자동 생성한 모든 구독 모니터 조회 API 호출
-    const res = await axios.get('/subscribeMonitors');
+    const res = await api.get('/subscribeMonitors');
     // Spring Data REST 응답 구조 (_embedded.subscribeMonitors)에 따라 데이터 추출
     subscribeMonitors.value = res.data._embedded?.subscribeMonitors || res.data || [];
     console.log('구독 모니터링 데이터 불러오기 성공:', subscribeMonitors.value);

@@ -60,7 +60,15 @@
 
 <script>
 import axios from 'axios';   // ← 이걸 꼭 추가!
+import api from '@/plugins/axios'
 // import BookGrid from './BookGrid.vue';
+
+function swapPort (baseUrl, newPort) {
+  const url = new URL(baseUrl)                 // 전체 URL 파싱
+  const [, ...rest] = url.hostname.split('-')  // 첫 부분(포트) 제외하고 보존
+  url.hostname = `${newPort}-${rest.join('-')}`// 포트 갈아끼운 새 호스트
+  return `${url.protocol}//${url.hostname}`    // origin(프로토콜+호스트) 반환
+}
 
 export default {
   name: 'BookDetail',
@@ -85,9 +93,9 @@ export default {
   },
   created() {
     
-    axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io'
+    // axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io'
 
-    axios.put(`/books/${this.id}/openbook`)
+    api.put(`/books/${this.id}/openbook`)
         .then(res => {
             const data = res.data
             this.book.title = data.title
@@ -95,17 +103,19 @@ export default {
         }).catch(err => console.error(err))
 
 
-    axios.get(`/genData/${this.id}`)
+    api.get(`/genData/${this.id}`)
         .then(res => {
             const data = res.data
             console.log(data.coverURL)
-            this.book.coverUrl = `https://8084-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io/${data.coverUrl}`
+            const gatewayBase = import.meta.env.VITE_API_BASE_URL
+            const bookPublishBase = swapPort(gatewayBase, '8084')
+            this.book.coverUrl = `${bookPublishBase}/${data.coverUrl}`
             console.log(this.book.coverUrl)
             this.book.summary = data.summary
             this.book.points = data.point
         })
     
-    axios.get(`/users/${this.id}`)
+    api.get(`/users/${this.id}`)
         .then(res => {
           const data = res.data
           console.log('작가 정보 : ', data)
@@ -116,7 +126,7 @@ export default {
     const user = JSON.parse(localStorage.getItem('user'))
     console.log("유저 아이디 : ", user.id)
 
-    axios.get('/subscribes',)
+    api.get('/subscribes',)
       .then(res => {
         const all = res.data._embedded.subscribes
         
@@ -132,7 +142,7 @@ export default {
     subscribe() {
       // TODO: 구독 요청 처리
       const user = JSON.parse(localStorage.getItem('user'))
-      axios.post(`/subscribes/ownbook/${this.id}`, {}, {
+      api.post(`/subscribes/ownbook/${this.id}`, {}, {
         headers: { 'userId': user.id }
       })
         .then(res => {
@@ -145,7 +155,7 @@ export default {
     },
     readBook() {
       // TODO: 읽기 페이지로 이동, e.g. this.$router.push(`/books/${this.id}/read`)
-      this.$router.push(`/readbook/${this.id}`)
+      this.$router.push(`/books/${this.id}/read`)
     },
     goBack() {
       // 책 목록으로 돌아가기

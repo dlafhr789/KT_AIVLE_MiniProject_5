@@ -89,9 +89,10 @@
 
 <script>
 import axios from 'axios'
+import api from '@/plugins/axios'
 
 // ✅ Gitpod Gateway 주소
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-mcnl0299kxi.ws-us120.gitpod.io'
+// axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-mcnl0299kxi.ws-us120.gitpod.io'
 
 export default {
   name: 'MyPage',
@@ -122,7 +123,7 @@ export default {
           return;
         }
 
-        const res = await axios.get(`/users/${userId}`);
+        const res = await api.get(`/users/${userId}`);
         const user = res.data;
 
         this.form.dbId = user.id;

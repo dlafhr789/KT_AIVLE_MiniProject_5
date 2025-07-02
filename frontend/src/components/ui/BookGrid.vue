@@ -102,6 +102,7 @@ import BaseGrid from '../base-ui/BaseGrid.vue'
 import Book from '../Book.vue';
 import OpenBook from '../OpenBook.vue'
 import axios from 'axios';
+import api from '@/plugins/axios'
 
 export default {
     name: 'bookGrid',
@@ -130,7 +131,7 @@ export default {
     methods: {
         async search() {
             try {
-                const response = await axios.get(`/${this.path}`);
+                const response = await api.get(`/${this.path}`);
                 this.value = response.data;
             } catch (error) {
                 console.error('데이터 로드 실패:', error);
@@ -154,7 +155,7 @@ export default {
         },
         async deleteRow(book) {
             try {
-                await axios.delete(`/${this.path}/${book.bookId}`);
+                await api.delete(`/${this.path}/${book.bookId}`);
                 this.value = this.value.filter(v => v.bookId !== book.bookId);
                 this.selectedRow = null;
                 this.snackbar = {
@@ -181,7 +182,7 @@ export default {
                 return;
             }
             try{
-                await axios.put(`/books/${this.selectedRow.bookId}/openbook`, {
+                await api.put(`/books/${this.selectedRow.bookId}/openbook`, {
                     userId: userId
                 });
                 this.$router.push(`/books/${this.selectedRow.bookId}/read`);

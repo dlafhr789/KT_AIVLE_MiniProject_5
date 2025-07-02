@@ -10,6 +10,7 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import axios from 'axios';
 import { Icon } from '@iconify/vue';
+import api from './plugins/axios'
 
 loadFonts()
 
@@ -19,6 +20,7 @@ const app = createApp(App)
 // Setting Config
 axios.defaults.baseURL = '';
 app.config.globalProperties.$axios = axios;
+app.config.globalProperties.$api = api;
 
 // Component
 app.component('Icon',Icon)

@@ -48,7 +48,7 @@
 import axios from 'axios'
 import { useAuth } from '@/components/useAuth'
 // Gateway 주소
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-mcnl0299kxi.ws-us120.gitpod.io'
+// axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-mcnl0299kxi.ws-us120.gitpod.io'
 
 export default {
   name: 'BookRegister',
@@ -89,7 +89,7 @@ export default {
 
       try {
         // this.isSubmitting = true
-        await axios.post('/books',
+        await api.post('/books',
         {
           title: this.form.title,
           content: this.form.content,
@@ -119,7 +119,7 @@ export default {
         let bookId = this.form.bookId 
         // 1) bookId 가 없으면 먼저 저장
         if (!bookId) {
-          const { data } = await axios.post('/books', {
+          const { data } = await api.post('/books', {
             title: this.form.title,
             content: this.form.content,
           }, {
@@ -130,7 +130,7 @@ export default {
         }
 
         // 2) AI 도메인에 출간 요청
-        await axios.post(`/books/${bookId}`, {
+        await api.post(`/books/${bookId}`, {
           title: this.form.title,
           content: this.form.content,
         },
