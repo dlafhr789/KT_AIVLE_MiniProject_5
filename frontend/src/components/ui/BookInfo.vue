@@ -25,7 +25,7 @@
         <!-- 책 메타 정보 -->
         <div>
           <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem;">{{ book.title }}</h1>
-          <p style="color: #555; margin-bottom: 1rem;">작가: {{ book.author }}</p>
+          <p style="color: #555; margin-bottom: 1rem;">작가: {{ book.authorName }}</p>
           <p style="line-height: 1.6; margin-bottom: 1rem;">{{ book.summary }}</p>
           <p style="font-weight: bold;">포인트: {{ book.points }}</p>
         </div>
@@ -75,7 +75,8 @@ export default {
       book: {
         coverUrl: '',    // 책 표지 URL
         title: '',       // 제목
-        author: '',      // 작가명
+        authorId: '',
+        authorName: '',      // 작가명
         summary: '',     // 줄거리 요약
         points: 0,       // 포인트
         isSubscribed: false
@@ -90,6 +91,7 @@ export default {
         .then(res => {
             const data = res.data
             this.book.title = data.title
+            this.book.authorId = data.userId
         }).catch(err => console.error(err))
 
 
@@ -102,6 +104,14 @@ export default {
             this.book.summary = data.summary
             this.book.points = data.point
         })
+    
+    axios.get(`/users/${this.id}`)
+        .then(res => {
+          const data = res.data
+          console.log('작가 정보 : ', data)
+          this.book.authorName = data.name
+        })
+
 
     const user = JSON.parse(localStorage.getItem('user'))
     console.log("유저 아이디 : ", user.id)
@@ -117,8 +127,6 @@ export default {
       }).catch(err => {
         console.error('리스트 불러오기 실패: ', err)
       })
-
-    // axios.get(`/subscribes userId==${}`)
   },
   methods: {
     subscribe() {
