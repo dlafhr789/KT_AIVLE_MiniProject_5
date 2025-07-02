@@ -35,7 +35,7 @@ import axios from 'axios';
 export default {
   name: 'BookRead',
   props: {
-    id: {
+    bookId: {
       type: [String, Number],
       required: true,
     },
@@ -50,14 +50,12 @@ export default {
     };
   },
   created() {
-    axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io';
-    // GET /books/:id/read → { title, author, content }
     axios
-      .put(`/books/${this.id}/openbook`)
+      .get(`/books/${this.bookId}/read`)
       .then(res => {
         const data = res.data;
         this.book.title = data.title;
-        this.book.author = data.author;
+        this.book.userId = data.userId;
         this.book.content = data.content; // 단순 텍스트
       })
       .catch(err => {
@@ -66,7 +64,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push(`/books/${this.id}`);
+      this.$router.push(`/books/${this.bookId}`);
     },
   },
 };

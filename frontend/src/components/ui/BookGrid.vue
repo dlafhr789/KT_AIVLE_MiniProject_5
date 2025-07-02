@@ -166,12 +166,21 @@ export default {
                 console.error('삭제 실패:', e);
             }
         },
-        async openBook(params){
+        async openBook({ userId }) {
+            if (!this.selectedRow) {
+                this.snackbar = {
+                    status: true,
+                    timeout: 3000,
+                    color: 'error',
+                    text: '도서를 선택해주세요.'
+                };
+                return;
+            }
             try{
-                const response = await axios.post('/openBook', { ...this.selectedRow, ...params });
-                const updatedBook = response.data;
-                const index = this.value.findIndex(b => b.bookId === this.selectedRow.bookId);
-                if(index !== -1) this.value[index] = updatedBook;
+                await axios.put(`/books/${this.selectedRow.bookId}/openbook`, {
+                    userId: userId
+                });
+                this.$router.push(`/books/${this.selectedRow.bookId}/read`);
                 this.openBookDialog = false;
             } catch(e) {
                 console.log(e);
