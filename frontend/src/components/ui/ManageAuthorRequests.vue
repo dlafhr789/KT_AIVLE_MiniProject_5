@@ -1,6 +1,12 @@
 <template>
   <div class="admin-dashboard">
-    <h2 class="dashboard-title">관리자 대시보드</h2>
+    <button @click="goBackToBooks" class="back-to-books-button">
+      Back
+    </button>
+
+    <div class="dashboard-title-wrapper">
+      <h2 class="dashboard-title">관리자 대시보드</h2>
+    </div>
 
     <div class="section-vertical-stack">
       <section class="author-request-section">
@@ -13,7 +19,7 @@
             @click="openPopup(author)"
             class="author-item"
           >
-            <div class="author-id">🧑 User ID: {{ author.userId }}</div>
+            <div class="author-id">👤 User ID: {{ author.userId }}</div>
             <div class="author-profile">🧾 {{ author.profile }}</div>
           </div>
         </div>
@@ -31,8 +37,8 @@
             @click="openSubscribeMonitorPopup(monitor)"
             class="monitor-item"
           >
-            <div class="monitor-book-title">📚 {{ monitor.bookTitle || '제목 없음' }}</div>
-            <div class="monitor-user-name">🧑 {{ monitor.userName }}</div>
+            <div class="monitor-book-title">📖 Book ID:{{ monitor.bookId }}</div>
+            <div class="monitor-user-name">👤 User ID: {{ monitor.userId }}</div>
             <div class="monitor-state">✅ {{ monitor.state }}</div>
           </div>
         </div>
@@ -43,7 +49,7 @@
       <div class="popup-content">
         <button @click="closePopup" class="popup-close-button">×</button>
         <h3 class="popup-title">작가 등록 요청 상세</h3>
-        <div class="popup-detail"><strong>🧑 User ID:</strong> {{ selectedAuthor.userId }}</div>
+        <div class="popup-detail"><strong>👤 User ID:</strong> {{ selectedAuthor.userId }}</div>
         <div class="popup-detail"><strong>🧾 Profile:</strong> {{ selectedAuthor.profile }}</div>
         <div class="popup-detail"><strong>📁 Portfolio:</strong> {{ selectedAuthor.portfolio }}</div>
         <div class="popup-actions">
@@ -58,9 +64,12 @@
         <button @click="closeSubscribeMonitorPopup" class="popup-close-button">×</button>
         <h3 class="popup-title">구독 모니터링 상세</h3>
 
-        <div class="popup-detail"><strong>📖 책 제목:</strong> {{ selectedSubscribeMonitor.bookTitle || '정보 없음' }}</div>
-        <div class="popup-detail"><strong>🧑 사용자 ID:</strong> {{ selectedSubscribeMonitor.userId }}</div>
+        <!--
+        <div class="popup-detail"><strong>📖 도서 제목:</strong> {{ selectedSubscribeMonitor.bookTitle || '정보 없음' }}</div>
         <div class="popup-detail"><strong>👤 사용자 이름:</strong> {{ selectedSubscribeMonitor.userName }}</div>
+        -->
+        <div class="popup-detail"><strong>📖 도서 ID:</strong> {{ selectedSubscribeMonitor.bookId}}</div>
+        <div class="popup-detail"><strong>👤 사용자 ID:</strong> {{ selectedSubscribeMonitor.userId }}</div>
         <div class="popup-detail"><strong>✅ 상태:</strong> {{ selectedSubscribeMonitor.state }}</div>
         <div class="popup-detail"><strong>📅 만료일:</strong> {{ selectedSubscribeMonitor.expiredAt ? new Date(selectedSubscribeMonitor.expiredAt).toLocaleDateString() : '정보 없음' }}</div>
         
@@ -82,6 +91,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 // 주소 확인 후 변경 필요 @@@@@@@@
 axios.defaults.baseURL = 'https://humble-rotary-phone-9x4vx569j7fx95v-8088.app.github.dev'
@@ -152,6 +162,7 @@ const deny = async (id) => {
 // 컴포넌트가 마운트될 때 작가 목록을 가져오도록 설정
 onMounted(fetchPendingAuthors)
 
+
 // @@@@@@@@@@@@@@@@@@@ 구독 모니터링 부분 @@@@@@@@@@@@@@@@@@@@@@
 
 // --- 구독 모니터링 관련 데이터 추가 ---
@@ -193,56 +204,58 @@ onMounted(() => {
   fetchPendingAuthors(); // 기존 작가 목록 가져오기
   fetchSubscribeMonitors(); // 새로 추가된 구독 모니터링 목록 가져오기
 });
+
+// 새로운 뒤로가기 함수
+const router = useRouter()
+
+const goBackToBooks = () => {
+  router.push('/books'); // '/books' 경로로 이동
+};
 </script>
 
 <style scoped>
-/* CSS 변수 정의 (:root 또는 body에 선언) */
-/* 기본값은 현재 스크린샷과 같이 어두운 배경에 적합한 색상 */
-:root {
-  --color-text-primary: #ffffff; /* 메인 제목, 중요 텍스트 (다크 모드 기본) */
-  --color-text-secondary: #e0e0e0; /* 일반 텍스트, 섹션 제목 (다크 모드 기본) */
-  --color-text-tertiary: #a0a0a0; /* 보조 텍스트, 플레이스홀더 (다크 모드 기본) */
-  --color-border-primary: #666; /* 제목 및 팝업 구분선 (다크 모드 기본) */
-  --color-border-secondary: #000000; /* 섹션/아이템 테두리 (다크 모드 기본) */
-  --color-section-bg: #ffffff; /* 섹션 배경 (항상 흰색 유지) */
-  --color-item-bg: #f9f9f9; /* 아이템 배경 (항상 밝은 회색 유지) */
-  --color-item-hover-bg: #e6e6e6; /* 아이템 호버 배경 (항상 중간 회색 유지) */
-  --color-popup-close-button: #666; /* 팝업 닫기 버튼 색상 (다크 모드 기본) */
-  --color-popup-close-button-hover: #333; /* 팝업 닫기 버튼 호버 색상 (다크 모드 기본) */
-}
-
-/* 라이트 모드 테마 변수 오버라이드 (body에 .light-mode 클래스 적용 시 활성화) */
-body.light-mode {
-  --color-text-primary: #333333;
-  --color-text-secondary: #555555;
-  --color-text-tertiary: #888888;
-  --color-border-primary: #cccccc;
-  --color-border-secondary: #d0d0d0;
-  /* 섹션, 아이템, 팝업 배경은 라이트 모드에서도 흰색 계열로 유지 */
-  --color-popup-close-button: #555;
-  --color-popup-close-button-hover: #000;
-}
-
 
 /* 전체 대시보드 컨테이너 스타일 */
 .admin-dashboard {
   padding: 1.5rem;
   position: relative;
   min-height: 100vh;
-  /* 배경색을 투명으로 변경하여 상위 페이지의 배경이 보이도록 함 */
   background-color: transparent; /* 컴포넌트 자체 배경 투명 */
   color: var(--color-text-secondary); /* 기본 텍스트 색상 적용 (어두운 배경용) */
 }
 
+/* 대시보드 제목을 감싸는 새로운 컨테이너 */
+.dashboard-title-wrapper {
+  width: 100%;
+}
+
 /* 대시보드 제목 스타일 */
 .dashboard-title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
   color: var(--color-text-primary); /* 메인 제목 색상 적용 */
-  text-align: center;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid;
+}
+
+/* 뒤로가기 버튼 스타일 */
+.back-to-books-button {
+  background-color: #9155FD; /* 보라색 */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.15s ease-in-out;
+
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem; 
+  z-index: 10; 
+}
+
+.back-to-books-button:hover {
+  background-color: #6A1EB8; /* 약간 더 진한 보라색 */
 }
 
 /* 섹션들을 상하로 배치하기 위한 플렉스 컨테이너 */
@@ -253,11 +266,10 @@ body.light-mode {
 }
 
 /* 각 섹션(작가 요청, 구독 모니터링)의 공통 스타일 */
-/* 배경색은 흰색을 유지하여 카드 형태로 명확하게 보임 */
 .author-request-section,
 .subscription-monitoring-section {
   flex: 1;
-  background-color: var(--color-section-bg); /* 섹션 배경색 적용 */
+  background-color: var(--color-section-bg); 
   border-radius: 0.5rem;
   padding: 1rem;
   border: 0.5px solid; 
@@ -315,7 +327,6 @@ body.light-mode {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 아이템 호버 시 그림자 강화 */
 }
 
-/* --- 구독 모니터링 섹션 아이템 스타일 추가/수정 --- */
 
 /* 구독 모니터링 목록 가로 스크롤 컨테이너 - 작가 목록과 동일한 스타일 적용 */
 .monitor-items-horizontal-scroll-container {
@@ -350,15 +361,14 @@ body.light-mode {
 
 /* 구독 모니터 아이템에 마우스 오버 시 배경색 변경 */
 .monitor-item:hover {
-  background-color: #e6e6e6; /* 아이템 호버 배경색 직접 설정 */
+  background-color: var(--color-item-hover-bg); /* 아이템 호버 배경색 적용 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 아이템 호버 시 그림자 강화 */
 }
-
 /* 팝업 오버레이 (화면 전체를 덮음) */
 .popup-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.7); /* 반투명 검정 배경 고정 */
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 검정 배경 고정 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -438,22 +448,22 @@ body.light-mode {
 
 /* 승인 버튼 고유 스타일 */
 .approve-button {
-  background-color: #28a745; /* Green */
-  border-color: #1e7e34;
+  background-color: #9155FD;
+  border-color: #9155FD;
 }
 
 .approve-button:hover {
-  background-color: #218838;
+  background-color: #6A1EB8;
 }
 
 /* 거절 버튼 고유 스타일 */
 .deny-button {
-  background-color: #dc3545; /* Red */
-  border-color: #bd2130;
+  background-color: #9155FD;
+  border-color: #9155FD;
 }
 
 .deny-button:hover {
-  background-color: #c82333;
+  background-color: #6A1EB8;
 }
 
 /* 확인 팝업 메시지 스타일 */

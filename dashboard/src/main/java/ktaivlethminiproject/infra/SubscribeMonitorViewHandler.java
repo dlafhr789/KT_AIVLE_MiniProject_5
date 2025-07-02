@@ -39,26 +39,26 @@ public class SubscribeMonitorViewHandler {
         }
     }
 
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whenIncreasedSubscriber_then_UPDATE_1(
-        @Payload IncreasedSubscriber increasedSubscriber
-    ) {
-        try {
-            if (!increasedSubscriber.validate()) return;
-            // view 객체 조회
+    // @StreamListener(KafkaProcessor.INPUT)
+    // public void whenIncreasedSubscriber_then_UPDATE_1(
+    //     @Payload IncreasedSubscriber increasedSubscriber
+    // ) {
+    //     try {
+    //         if (!increasedSubscriber.validate()) return;
+    //         // view 객체 조회
 
-            List<SubscribeMonitor> subscribeMonitorList = subscribeMonitorRepository.findByBookId(
-                increasedSubscriber.getId()
-            );
-            for (SubscribeMonitor subscribeMonitor : subscribeMonitorList) {
-                // view 객체에 이벤트의 eventDirectValue 를 set 함
-                subscribeMonitor.setBookTitle(increasedSubscriber.getTitle());
-                // view 레파지 토리에 save
-                subscribeMonitorRepository.save(subscribeMonitor);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    //         List<SubscribeMonitor> subscribeMonitorList = subscribeMonitorRepository.findByBookId(
+    //             increasedSubscriber.getId()
+    //         );
+    //         for (SubscribeMonitor subscribeMonitor : subscribeMonitorList) {
+    //             // view 객체에 이벤트의 eventDirectValue 를 set 함
+    //             subscribeMonitor.setBookTitle(increasedSubscriber.getTitle());
+    //             // view 레파지 토리에 save
+    //             subscribeMonitorRepository.save(subscribeMonitor);
+    //         }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
     //>>> DDD / CQRS
 }
