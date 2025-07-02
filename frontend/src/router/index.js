@@ -61,6 +61,12 @@ const router = createRouter({
       component: () => import('../components/ui/BookInfo.vue'),
       props: route => ({ id: route.params.id })
     },
+    // readbook 추가
+    {
+      path: '/readbook/:id',
+      component: () => import('../components/ui/ReadBook.vue'),
+      props: route => ({ id: route.params.id })
+    }
   ],
 })
 
