@@ -60,6 +60,7 @@
 
 <script>
 import axios from 'axios';   // ← 이걸 꼭 추가!
+// import BookGrid from './BookGrid.vue';
 
 export default {
   name: 'BookDetail',
@@ -78,32 +79,61 @@ export default {
         summary: '',     // 줄거리 요약
         points: 0,       // 포인트
         isSubscribed: false
-      }
+      },
     }
   },
   created() {
-    const serverip_book = 'https://8082-dlafhr789-ktaivleminipr-a4oyes7yb9k.ws-us120.gitpod.io'
-    const serverip_bookpublish = 'https://8084-dlafhr789-ktaivleminipr-a4oyes7yb9k.ws-us120.gitpod.io'
+    
+    axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io'
 
-    console.log(`${serverip_book}/${this.id}/openbook`)
-    axios.put(`${serverip_book}/books/${this.id}/openbook`)
+    axios.put(`/books/${this.id}/openbook`)
         .then(res => {
             const data = res.data
             this.book.title = data.title
         }).catch(err => console.error(err))
-    
-    axios.get(`${serverip_bookpublish}/genData/${this.id}`)
+
+
+    axios.get(`/genData/${this.id}`)
         .then(res => {
             const data = res.data
-            this.book.coverUrl = `${serverip_bookpublish}/${data.coverUrl}`
+            console.log(data.coverURL)
+            this.book.coverUrl = `https://8084-dlafhr789-ktaivleminipr-rcoxip60nbj.ws-us120.gitpod.io/${data.coverUrl}`
             console.log(this.book.coverUrl)
             this.book.summary = data.summary
             this.book.points = data.point
         })
+
+    const user = JSON.parse(localStorage.getItem('user'))
+    console.log("유저 아이디 : ", user.id)
+
+    axios.get('/subscribes',)
+      .then(res => {
+        const all = res.data._embedded.subscribes
+        
+          const filtered = all.filter(item => Number(item.userId) === Number(user.id) && Number(item.bookId) === Number(this.id))
+          console.log(filtered.length)
+
+          this.book.isSubscribed = filtered.length > 0 ? true : false
+      }).catch(err => {
+        console.error('리스트 불러오기 실패: ', err)
+      })
+
+    // axios.get(`/subscribes userId==${}`)
   },
   methods: {
     subscribe() {
       // TODO: 구독 요청 처리
+      const user = JSON.parse(localStorage.getItem('user'))
+      axios.post(`/subscribes/ownbook/${this.id}`, {}, {
+        headers: { 'userId': user.id }
+      })
+        .then(res => {
+          alert('구독 성공')
+          window.location.reload()
+        }).catch(err => {
+          console.error('구독 요청 실패 : ', err)
+          alert('구독 실패')
+        })
     },
     readBook() {
       // TODO: 읽기 페이지로 이동, e.g. this.$router.push(`/books/${this.id}/read`)
