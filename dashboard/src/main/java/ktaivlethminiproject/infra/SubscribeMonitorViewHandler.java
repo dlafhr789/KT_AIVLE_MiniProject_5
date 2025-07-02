@@ -28,10 +28,10 @@ public class SubscribeMonitorViewHandler {
             SubscribeMonitor subscribeMonitor = new SubscribeMonitor();
             // view 객체에 이벤트의 Value 를 set 함
             subscribeMonitor.setState(subscriptionAccepted.getState());
-            subscribeMonitor.setUserId(subscriptionAccepted.getUser_id());
-            subscribeMonitor.setBookId(subscriptionAccepted.getBook_id());
-            subscribeMonitor.setUserName(subscriptionAccepted.getUser_name());
-            subscribeMonitor.setExpiredAt(subscriptionAccepted.getExpired_at());
+            subscribeMonitor.setUserId(subscriptionAccepted.getUserId());
+            subscribeMonitor.setBookId(subscriptionAccepted.getBookId());
+            subscribeMonitor.setUserName(subscriptionAccepted.getUserName());
+            subscribeMonitor.setExpiredAt(subscriptionAccepted.getExpiredAt());
             // view 레파지 토리에 save
             subscribeMonitorRepository.save(subscribeMonitor);
         } catch (Exception e) {

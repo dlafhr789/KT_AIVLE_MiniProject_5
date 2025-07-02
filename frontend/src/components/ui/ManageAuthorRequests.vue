@@ -21,56 +21,54 @@
 
       <section class="subscription-monitoring-section">
         <h3 class="section-title">구독 모니터링</h3>
-        <div class="monitoring-placeholder">구독 모니터링 컴포넌트 영역</div>
+        <div v-if="subscribeMonitors.length === 0" class="no-subscribers-message">
+          현재 구독 모니터링 데이터가 없습니다.
+        </div>
+        <div v-else class="monitor-items-horizontal-scroll-container">
+          <div
+            v-for="monitor in subscribeMonitors"
+            :key="monitor.id"
+            @click="openSubscribeMonitorPopup(monitor)"
+            class="monitor-item"
+          >
+            <div class="monitor-book-title">📚 {{ monitor.bookTitle || '제목 없음' }}</div>
+            <div class="monitor-user-name">🧑 {{ monitor.userName }}</div>
+            <div class="monitor-state">✅ {{ monitor.state }}</div>
+          </div>
+        </div>
       </section>
-    </div>
+      </div>
 
-    <div
-      v-if="selectedAuthor"
-      class="popup-overlay"
-    >
+    <div v-if="selectedAuthor" class="popup-overlay">
       <div class="popup-content">
-        <button
-          @click="closePopup"
-          class="popup-close-button"
-        >
-          ×
-        </button>
-
+        <button @click="closePopup" class="popup-close-button">×</button>
         <h3 class="popup-title">작가 등록 요청 상세</h3>
-
         <div class="popup-detail"><strong>🧑 User ID:</strong> {{ selectedAuthor.userId }}</div>
         <div class="popup-detail"><strong>🧾 Profile:</strong> {{ selectedAuthor.profile }}</div>
         <div class="popup-detail"><strong>📁 Portfolio:</strong> {{ selectedAuthor.portfolio }}</div>
-
         <div class="popup-actions">
-          <button
-            @click="approve(selectedAuthor.id)"
-            class="approve-button"
-          >
-            ✅ 승인
-          </button>
-          <button
-            @click="deny(selectedAuthor.id)"
-            class="deny-button"
-          >
-            ❌ 거절
-          </button>
+          <button @click="approve(selectedAuthor.id)" class="approve-button">✅ 승인</button>
+          <button @click="deny(selectedAuthor.id)" class="deny-button">❌ 거절</button>
         </div>
       </div>
     </div>
 
-    <div
-      v-if="showConfirmationPopup"
-      class="popup-overlay"
-    >
+    <div v-if="selectedSubscribeMonitor" class="popup-overlay">
+      <div class="popup-content">
+        <button @click="closeSubscribeMonitorPopup" class="popup-close-button">×</button>
+        <h3 class="popup-title">구독 모니터링 상세</h3>
+
+        <div class="popup-detail"><strong>📖 책 제목:</strong> {{ selectedSubscribeMonitor.bookTitle || '정보 없음' }}</div>
+        <div class="popup-detail"><strong>🧑 사용자 ID:</strong> {{ selectedSubscribeMonitor.userId }}</div>
+        <div class="popup-detail"><strong>👤 사용자 이름:</strong> {{ selectedSubscribeMonitor.userName }}</div>
+        <div class="popup-detail"><strong>✅ 상태:</strong> {{ selectedSubscribeMonitor.state }}</div>
+        <div class="popup-detail"><strong>📅 만료일:</strong> {{ selectedSubscribeMonitor.expiredAt ? new Date(selectedSubscribeMonitor.expiredAt).toLocaleDateString() : '정보 없음' }}</div>
+        
+        </div>
+    </div>
+    <div v-if="showConfirmationPopup" class="popup-overlay">
       <div class="popup-content confirmation-popup">
-        <button
-          @click="closeConfirmationPopup"
-          class="popup-close-button"
-        >
-          ×
-        </button>
+        <button @click="closeConfirmationPopup" class="popup-close-button">×</button>
         <h3 class="popup-title">알림</h3>
         <p class="confirmation-message">{{ confirmationMessage }}</p>
         <div class="popup-actions-center">
@@ -86,7 +84,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 // 주소 확인 후 변경 필요 @@@@@@@@
-axios.defaults.baseURL = 'https://congenial-garbanzo-vr4947x5p6p3j9p-8088.app.github.dev'
+axios.defaults.baseURL = 'https://humble-rotary-phone-9x4vx569j7fx95v-8088.app.github.dev'
 
 // 반응형 데이터 선언
 const authors = ref([]) // 작가 목록을 저장할 배열
@@ -153,6 +151,48 @@ const deny = async (id) => {
 
 // 컴포넌트가 마운트될 때 작가 목록을 가져오도록 설정
 onMounted(fetchPendingAuthors)
+
+// @@@@@@@@@@@@@@@@@@@ 구독 모니터링 부분 @@@@@@@@@@@@@@@@@@@@@@
+
+// --- 구독 모니터링 관련 데이터 추가 ---
+const subscribeMonitors = ref([]) // 구독 모니터링 목록을 저장할 배열
+const selectedSubscribeMonitor = ref(null) // 구독 모니터링 팝업에 표시될 선택된 객체
+
+/**
+ * 모든 구독 모니터링 정보를 API에서 가져오는 함수
+ */
+const fetchSubscribeMonitors = async () => {
+  try {
+    // Spring Data REST가 자동 생성한 모든 구독 모니터 조회 API 호출
+    const res = await axios.get('/subscribeMonitors');
+    // Spring Data REST 응답 구조 (_embedded.subscribeMonitors)에 따라 데이터 추출
+    subscribeMonitors.value = res.data._embedded?.subscribeMonitors || res.data || [];
+    console.log('구독 모니터링 데이터 불러오기 성공:', subscribeMonitors.value);
+  } catch (e) {
+    console.error('구독 모니터링 목록 조회 실패:', e); // 오류 발생 시 콘솔에 출력
+  }
+};
+
+/**
+ * 특정 구독 모니터 항목 클릭 시 팝업을 열고 선택된 정보를 설정하는 함수
+ */
+const openSubscribeMonitorPopup = (monitor) => {
+  selectedSubscribeMonitor.value = monitor;
+};
+
+/**
+ * 구독 모니터 상세 팝업을 닫는 함수
+ */
+const closeSubscribeMonitorPopup = () => {
+  selectedSubscribeMonitor.value = null;
+};
+
+
+// 컴포넌트가 마운트될 때 데이터들을 가져오도록 설정
+onMounted(() => {
+  fetchPendingAuthors(); // 기존 작가 목록 가져오기
+  fetchSubscribeMonitors(); // 새로 추가된 구독 모니터링 목록 가져오기
+});
 </script>
 
 <style scoped>
@@ -272,6 +312,45 @@ body.light-mode {
 /* 작가 아이템에 마우스 오버 시 배경색 변경 */
 .author-item:hover {
   background-color: var(--color-item-hover-bg); /* 아이템 호버 배경색 적용 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 아이템 호버 시 그림자 강화 */
+}
+
+/* --- 구독 모니터링 섹션 아이템 스타일 추가/수정 --- */
+
+/* 구독 모니터링 목록 가로 스크롤 컨테이너 - 작가 목록과 동일한 스타일 적용 */
+.monitor-items-horizontal-scroll-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.75rem; /* 작가 아이템과 동일한 간격 */
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  overflow-y: hidden;
+  max-height: 120px; /* 스크롤바가 생기면 컨텐츠 높이를 제한 */
+}
+
+/* 각 구독 모니터 아이템 스타일 (작가 아이템과 유사하게 카드 형태) */
+.monitor-item {
+  background-color: var(--color-item-bg); /* 아이템 배경색 적용 */
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 150px;
+  height: 100px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 1px solid; /* 테두리 색상 적용 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 아이템 그림자 유지 */
+  color: var(--color-text-secondary); /* 아이템 텍스트 색상 적용 */
+}
+
+/* 구독 모니터 아이템에 마우스 오버 시 배경색 변경 */
+.monitor-item:hover {
+  background-color: #e6e6e6; /* 아이템 호버 배경색 직접 설정 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 아이템 호버 시 그림자 강화 */
 }
 

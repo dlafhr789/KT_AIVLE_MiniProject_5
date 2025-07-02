@@ -9,9 +9,9 @@ import lombok.Data;
 public class SubscriptionAccepted extends AbstractEvent {
 
     private Long id;
-    private Long book_id;
-    private Long user_id;
-    private String user_name;
+    private Long bookId;
+    private Long userId;
+    private String userName;
     private String state;
-    private Date expired_at;
+    private Date expiredAt;
 }
