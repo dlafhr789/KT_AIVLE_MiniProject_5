@@ -100,6 +100,9 @@ async function submit() {
     const user = res.data  // { id, name, telecom, ... }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 71e2a14 (마이페이지 수정 및 요금제 연동)
     // ✅ 여기 추가!
     sessionStorage.setItem("userId", user.id);
 
