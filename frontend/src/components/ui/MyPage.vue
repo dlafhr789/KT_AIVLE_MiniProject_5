@@ -65,11 +65,10 @@
     <v-dialog v-model="subscribeDialog" max-width="500px">
       <v-card>
         <v-card-title>요금제 가입</v-card-title>
-        <v-card-text>요금제를 가입하시겠습니까?</v-card-text>
+        <v-card-text>요금제 가입 기능은 현재 사용할 수 없습니다.</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn text @click="subscribeDialog = false">아니요</v-btn>
-          <v-btn color="primary" @click="handleSubscribe">예</v-btn>
+          <v-btn text @click="subscribeDialog = false">닫기</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -78,11 +77,10 @@
     <v-dialog v-model="unsubscribeDialog" max-width="500px">
       <v-card>
         <v-card-title>요금제 해지</v-card-title>
-        <v-card-text>정말로 해지하시겠습니까?</v-card-text>
+        <v-card-text>요금제 해지 기능은 현재 사용할 수 없습니다.</v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn text @click="unsubscribeDialog = false">아니요</v-btn>
-          <v-btn color="error" @click="handleUnsubscribe">예</v-btn>
+          <v-btn text @click="unsubscribeDialog = false">닫기</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -92,7 +90,7 @@
 <script>
 import axios from 'axios'
 
-// ✅ Gateway 주소로 설정 (반드시 8088 포트의 Gitpod public 주소)
+// ✅ Gitpod Gateway 주소
 axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-mcnl0299kxi.ws-us120.gitpod.io'
 
 export default {
@@ -117,55 +115,45 @@ export default {
   methods: {
     async fetchUser() {
       try {
-        const res = await axios.get('/users');
-        const users = res.data._embedded?.users || [];
+        const userId = sessionStorage.getItem('userId');
 
-        if (users.length > 0) {
-          const user = users[0]; // 로그인 사용자 1명 가정
-
-          this.form.dbId = user.id;
-          this.form.userId = user.email;
-          this.form.userName = user.name;
-          this.form.point = user.point;
-          this.form.plan = user.plan;
-          this.form.isSubscribed = !!user.plan;
+        if (!userId) {
+          alert('로그인 정보가 없습니다.');
+          return;
         }
+
+        const res = await axios.get(`/users/${userId}`);
+        const user = res.data;
+
+        this.form.dbId = user.id;
+        this.form.userId = user.email;
+        this.form.userName = user.name;
+        this.form.point = user.point;
+        this.form.plan = user.plan;
+        this.form.isSubscribed = !!user.plan;
       } catch (err) {
-        console.error('유저 정보 조회 실패:', err);
-        alert('유저 정보를 불러오는 중 오류가 발생했습니다.');
+        console.error('개별 사용자 정보 조회 실패:', err);
+        alert('로그인된 사용자 정보를 불러오는 중 오류가 발생했습니다.');
       }
     },
 
     async handleSubscribe() {
       try {
-        // ✅ POST → PUT, 경로 소문자
-        await axios.put(`/users/${this.form.dbId}/planpurchase`, {
-          plan: 'basic'
-        });
-
-        this.form.isSubscribed = true;
+        // 실제 요청 제거
         this.subscribeDialog = false;
-        alert('요금제 가입 완료');
+        alert('요금제 가입 기능은 현재 사용할 수 없습니다.');
       } catch (err) {
         console.error('요금제 가입 실패:', err);
-        alert('가입 중 오류가 발생했습니다');
       }
     },
 
     async handleUnsubscribe() {
       try {
-        console.log('해지 버튼 클릭 시 form:', this.form);
-        console.log('해지 요청 ID:', this.form?.dbId);
-        // 해지 경로도 PUT 방식
-        await axios.put(`/users/${this.form.dbId}/plancancel`, {});
-
-        this.form.isSubscribed = false;
-        this.form.plan = null;
+        // 실제 요청 제거
         this.unsubscribeDialog = false;
-        alert('요금제 해지 완료');
+        alert('요금제 해지 기능은 현재 사용할 수 없습니다.');
       } catch (err) {
         console.error('요금제 해지 실패:', err);
-        alert('해지 중 오류가 발생했습니다');
       }
     },
   },
