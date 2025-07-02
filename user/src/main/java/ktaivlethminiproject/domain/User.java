@@ -83,6 +83,8 @@ public class User {
         this.plan = planPurchaseCommand.getPlan();
 
         PlanPurchased planPurchased = new PlanPurchased(this);
+        // 추가부분
+        planPurchased.setPlan(this.plan);
         planPurchased.publishAfterCommit();
     }
 

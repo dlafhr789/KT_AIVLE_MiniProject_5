@@ -2,9 +2,7 @@
   <div class="admin-dashboard">
     <h2 class="dashboard-title">관리자 대시보드</h2>
 
-    <!-- 상하 배치 영역 -->
     <div class="section-vertical-stack">
-      <!-- 작가 등록 요청 관리 -->
       <section class="author-request-section">
         <h3 class="section-title">작가 등록 요청 관리</h3>
         <div v-if="authors.length === 0" class="no-authors-message">현재 보류 중인 작가가 없습니다.</div>
@@ -21,20 +19,17 @@
         </div>
       </section>
 
-      <!-- 구독 모니터링 (예시) -->
       <section class="subscription-monitoring-section">
         <h3 class="section-title">구독 모니터링</h3>
         <div class="monitoring-placeholder">구독 모니터링 컴포넌트 영역</div>
       </section>
     </div>
 
-    <!-- 작가 등록 요청 상세 팝업 오버레이 -->
     <div
       v-if="selectedAuthor"
       class="popup-overlay"
     >
       <div class="popup-content">
-        <!-- 닫기 버튼 -->
         <button
           @click="closePopup"
           class="popup-close-button"
@@ -65,7 +60,6 @@
       </div>
     </div>
 
-    <!-- 승인/거절 확인 팝업 오버레이 -->
     <div
       v-if="showConfirmationPopup"
       class="popup-overlay"
@@ -92,7 +86,7 @@ import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 // 주소 확인 후 변경 필요 @@@@@@@@
-axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-1sra693swsb.ws-us120.gitpod.io'
+axios.defaults.baseURL = 'https://congenial-garbanzo-vr4947x5p6p3j9p-8088.app.github.dev'
 
 // 반응형 데이터 선언
 const authors = ref([]) // 작가 목록을 저장할 배열
@@ -162,15 +156,42 @@ onMounted(fetchPendingAuthors)
 </script>
 
 <style scoped>
-/* 모든 스타일을 라이트 모드 기준으로 고정 */
+/* CSS 변수 정의 (:root 또는 body에 선언) */
+/* 기본값은 현재 스크린샷과 같이 어두운 배경에 적합한 색상 */
+:root {
+  --color-text-primary: #ffffff; /* 메인 제목, 중요 텍스트 (다크 모드 기본) */
+  --color-text-secondary: #e0e0e0; /* 일반 텍스트, 섹션 제목 (다크 모드 기본) */
+  --color-text-tertiary: #a0a0a0; /* 보조 텍스트, 플레이스홀더 (다크 모드 기본) */
+  --color-border-primary: #666; /* 제목 및 팝업 구분선 (다크 모드 기본) */
+  --color-border-secondary: #000000; /* 섹션/아이템 테두리 (다크 모드 기본) */
+  --color-section-bg: #ffffff; /* 섹션 배경 (항상 흰색 유지) */
+  --color-item-bg: #f9f9f9; /* 아이템 배경 (항상 밝은 회색 유지) */
+  --color-item-hover-bg: #e6e6e6; /* 아이템 호버 배경 (항상 중간 회색 유지) */
+  --color-popup-close-button: #666; /* 팝업 닫기 버튼 색상 (다크 모드 기본) */
+  --color-popup-close-button-hover: #333; /* 팝업 닫기 버튼 호버 색상 (다크 모드 기본) */
+}
+
+/* 라이트 모드 테마 변수 오버라이드 (body에 .light-mode 클래스 적용 시 활성화) */
+body.light-mode {
+  --color-text-primary: #333333;
+  --color-text-secondary: #555555;
+  --color-text-tertiary: #888888;
+  --color-border-primary: #cccccc;
+  --color-border-secondary: #d0d0d0;
+  /* 섹션, 아이템, 팝업 배경은 라이트 모드에서도 흰색 계열로 유지 */
+  --color-popup-close-button: #555;
+  --color-popup-close-button-hover: #000;
+}
+
 
 /* 전체 대시보드 컨테이너 스타일 */
 .admin-dashboard {
   padding: 1.5rem;
   position: relative;
   min-height: 100vh;
-  background-color: #f0f2f5; /* 밝은 회색 배경 */
-  color: #333; /* 어두운 글자색 */
+  /* 배경색을 투명으로 변경하여 상위 페이지의 배경이 보이도록 함 */
+  background-color: transparent; /* 컴포넌트 자체 배경 투명 */
+  color: var(--color-text-secondary); /* 기본 텍스트 색상 적용 (어두운 배경용) */
 }
 
 /* 대시보드 제목 스타일 */
@@ -178,6 +199,10 @@ onMounted(fetchPendingAuthors)
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: 1rem;
+  color: var(--color-text-primary); /* 메인 제목 색상 적용 */
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid;
 }
 
 /* 섹션들을 상하로 배치하기 위한 플렉스 컨테이너 */
@@ -188,14 +213,14 @@ onMounted(fetchPendingAuthors)
 }
 
 /* 각 섹션(작가 요청, 구독 모니터링)의 공통 스타일 */
+/* 배경색은 흰색을 유지하여 카드 형태로 명확하게 보임 */
 .author-request-section,
 .subscription-monitoring-section {
   flex: 1;
-  background-color: #ffffff; /* 흰색 섹션 배경 */
-  border-radius: 1rem;
+  background-color: var(--color-section-bg); /* 섹션 배경색 적용 */
+  border-radius: 0.5rem;
   padding: 1rem;
-  border: 1px solid #000000; /* 검은색 테두리 고정 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 명확한 그림자 */
+  border: 0.5px solid; 
   min-width: 300px;
 }
 
@@ -204,12 +229,13 @@ onMounted(fetchPendingAuthors)
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 1rem;
+  color: var(--color-text-secondary); /* 섹션 제목 색상 적용 */
 }
 
 /* 작가가 없거나 모니터링 영역의 플레이스홀더 메시지 스타일 */
 .no-authors-message,
 .monitoring-placeholder {
-  color: #666; /* 중간 회색 보조 글자색 */
+  color: var(--color-text-tertiary); /* 보조 텍스트 색상 적용 */
 }
 
 /* 작가 목록 가로 스크롤 컨테이너 */
@@ -225,7 +251,7 @@ onMounted(fetchPendingAuthors)
 
 /* 각 작가 아이템 스타일 (네모난 형태) */
 .author-item {
-  background-color: #f9f9f9; /* 아주 밝은 회색 아이템 배경 */
+  background-color: var(--color-item-bg); /* 아이템 배경색 적용 */
   border-radius: 0.5rem;
   padding: 0.75rem;
   cursor: pointer;
@@ -238,13 +264,14 @@ onMounted(fetchPendingAuthors)
   justify-content: center;
   align-items: center;
   text-align: center;
-  border: 1px solid #000000; /* 검은색 테두리 고정 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 아이템 그림자 */
+  border: 1px solid; /* 테두리 색상 적용 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 아이템 그림자 유지 */
+  color: var(--color-text-secondary); /* 아이템 텍스트 색상 적용 */
 }
 
 /* 작가 아이템에 마우스 오버 시 배경색 변경 */
 .author-item:hover {
-  background-color: #e6e6e6; /* 아이템 호버 시 더 어두운 회색 */
+  background-color: var(--color-item-hover-bg); /* 아이템 호버 배경색 적용 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 아이템 호버 시 그림자 강화 */
 }
 
@@ -261,11 +288,10 @@ onMounted(fetchPendingAuthors)
 
 /* 팝업 내용 컨테이너 */
 .popup-content {
-  background-color: #fcfcfc; /* 팝업 배경 (섹션보다 더 밝게) */
-  color: #333; /* 팝업 글자색 */
+  background-color: rgb(159, 155, 160); /* 팝업 배경색 적용 */
+  color: var(--color-text-secondary); /* 팝업 글자색 적용 */
   border-radius: 1rem;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* 팝업 그림자 강화 */
-  border: 1px solid #000000; /* 검은색 테두리 고정 */
+  border: 1px solid; /* 테두리 색상 적용 */
   padding: 1.5rem;
   width: 90%;
   max-width: 28rem;
@@ -277,7 +303,7 @@ onMounted(fetchPendingAuthors)
   position: absolute;
   top: 0.75rem;
   right: 1rem;
-  color: #666; /* 팝업 닫기 버튼 색상 */
+  color: var(--color-popup-close-button); /* 팝업 닫기 버튼 색상 적용 */
   font-size: 2rem;
   font-weight: bold;
   background: none;
@@ -286,7 +312,7 @@ onMounted(fetchPendingAuthors)
 }
 
 .popup-close-button:hover {
-  color: #333; /* 팝업 닫기 버튼 호버 색상 */
+  color: var(--color-popup-close-button-hover); /* 팝업 닫기 버튼 호버 색상 적용 */
 }
 
 /* 팝업 제목 스타일 */
@@ -295,12 +321,18 @@ onMounted(fetchPendingAuthors)
   font-weight: bold;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #666; /* 구분선 검은색 계열로 고정 */
+  border-bottom: 1px solid var(--color-border-primary); /* 구분선 색상 적용 */
+  color: var(--color-text-primary); /* 팝업 제목 색상 적용 */
 }
 
 /* 팝업 상세 정보 항목 스타일 */
 .popup-detail {
   margin-bottom: 0.5rem;
+  color: var(--color-text-secondary); /* 텍스트 색상 적용 */
+}
+
+.popup-detail strong {
+  color: var(--color-text-primary); /* 볼드 텍스트 색상 적용 */
 }
 
 /* 팝업 내 버튼 그룹 (승인/거절) */
@@ -310,18 +342,19 @@ onMounted(fetchPendingAuthors)
   gap: 1.5rem;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #666; /* 구분선 검은색 계열로 고정 */
+  border-top: 1px solid var(--color-border-primary); /* 구분선 색상 적용 */
 }
 
 /* 승인/거절 버튼 공통 스타일 */
 .approve-button,
 .deny-button {
-  color: white; /* 버튼 내부 글자는 항상 흰색 */
+  color: white; /* 버튼 내부 글자는 항상 흰색 (버튼 배경색이 이미 대비를 제공) */
   padding: 0.5rem 1.5rem;
   border-radius: 0.375rem;
   border: 1px solid;
   cursor: pointer;
   transition: background-color 0.15s ease-in-out;
+  text-transform: none;
 }
 
 /* 승인 버튼 고유 스타일 */
@@ -350,6 +383,7 @@ onMounted(fetchPendingAuthors)
   font-size: 1.1rem;
   margin-bottom: 1.5rem;
   margin-top: 1rem;
+  color: var(--color-text-secondary); /* 텍스트 색상 적용 */
 }
 
 /* 확인 팝업 버튼 중앙 정렬 */
@@ -358,7 +392,7 @@ onMounted(fetchPendingAuthors)
   justify-content: center;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid #666; /* 구분선 검은색 계열로 고정 */
+  border-top: 1px solid var(--color-border-primary); /* 구분선 색상 적용 */
 }
 
 .confirm-button {
@@ -369,6 +403,7 @@ onMounted(fetchPendingAuthors)
   border: none;
   cursor: pointer;
   transition: background-color 0.15s ease-in-out;
+  text-transform: none;
 }
 
 .confirm-button:hover {
@@ -397,7 +432,7 @@ onMounted(fetchPendingAuthors)
   }
 
   .popup-content {
-      max-width: 95%;
+    max-width: 95%;
   }
 }
 </style>
