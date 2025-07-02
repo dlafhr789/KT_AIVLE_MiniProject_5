@@ -47,6 +47,7 @@
                     <tbody>
                         <tr v-for="(val, idx) in value" 
                             @click="selectedRow = val"
+                            @dblclick="goDetail(val)"
                             :key="val.bookId"  
                             :style="val === selectedRow ? 'background-color: rgb(var(--v-theme-primary), 0.2) !important;':''"
                         >
@@ -165,6 +166,9 @@ export default {
             } catch (e) {
                 console.error('삭제 실패:', e);
             }
+        },
+        goDetail(book) {
+            this.$router.push(`/books/${book.bookId}`)
         },
         async openBook({ userId }) {
             if (!this.selectedRow) {
