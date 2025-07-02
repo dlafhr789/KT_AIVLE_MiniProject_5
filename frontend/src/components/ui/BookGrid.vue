@@ -144,40 +144,72 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import { useTheme } from 'vuetify';
-import BaseGrid from '../base-ui/BaseGrid.vue'
-
+import { ref, onMounted } from 'vue'; // ref, onMounted를 import 합니다.
+import axios from 'axios';
+import BaseGrid from '../base-ui/BaseGrid.vue';
+import Book from '../Book.vue';
+import OpenBook from '../OpenBook.vue';
 
 export default {
-    name: 'bookGrid',
-    mixins:[BaseGrid],
-    components:{
-    },
-    data: () => ({
-        path: 'books',
-        openBookDialog: false,
-    }),
-    watch: {
-    },
-    methods:{
-        async openBook(params){
-            try{
-                var path = "openBook".toLowerCase();
-                var temp = await this.repository.invoke(this.selectedRow, path, params)
-                // 스넥바 관련 수정 필요
-                // this.$EventBus.$emit('show-success','openBook 성공적으로 처리되었습니다.')
-                for(var i = 0; i< this.value.length; i++){
-                    if(this.value[i] == this.selectedRow){
-                        this.value[i] = temp.data
-                    }
-                }
-                this.openBookDialog = false
-            }catch(e){
-                console.log(e)
-            }
-        },
-    }
-}
+  name: 'bookGrid',
+  mixins: [BaseGrid],
+  components: {
+    Book,
+    OpenBook
+  },
+  // setup() 함수를 사용하여 Vue 3 Composition API 스타일로 데이터를 관리합니다.
+  setup() {
+    // 1. 테이블에 표시될 데이터를 담을 변수를 빈 배열로 초기화합니다.
+    const items = ref([]); 
+    const openDialog = ref(false);
+    const editDialog = ref(false);
+    const selectedRow = ref(null);
+    const newValue = ref({});
 
+    // 2. 컴포넌트가 로드될 때, 백엔드에서 데이터를 가져와 items에 저장합니다.
+    onMounted(async () => {
+      try {
+        const response = await axios.get('/books');
+        if (response.data && response.data._embedded && response.data._embedded.books) {
+          const data = response.data._embedded.books;
+          data.forEach(obj => {
+            if (obj._links && obj._links.self && obj._links.self.href) {
+              obj.id = obj._links.self.href.split("/").pop();
+            }
+          });
+          items.value = data;
+        }
+      } catch (e) {
+        console.error("데이터 로딩 실패:", e);
+      }
+    });
+
+    // 3. '등록' 버튼을 누르면 팝업창을 엽니다.
+    const addNewRow = () => {
+      newValue.value = { userId: 1 }; // 새 책을 위한 기본값
+      openDialog.value = true;
+    };
+
+    // 4. 자식(Book.vue)으로부터 'add' 이벤트를 받았을 때 실행될 append 함수
+    const append = (newBook) => {
+      // 이제 items는 항상 배열이므로 .unshift가 안전하게 동작합니다.
+      items.value.unshift(newBook);
+      openDialog.value = false;
+    };
+    
+    // ... 다른 메소드들(openEditDialog, closeDialog, openBook 등)도
+    // ref 변수를 사용하도록 여기에 함께 정의해야 합니다.
+
+    return {
+      items,
+      headers: ref([ /* 헤더 정의 */ ]),
+      openDialog,
+      editDialog,
+      selectedRow,
+      newValue,
+      addNewRow,
+      append,
+    };
+  }
+}
 </script>

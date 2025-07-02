@@ -40,11 +40,18 @@ spring:
 #>>> EDA / Topic Name
           contentType: application/json
 
+# logging:
+#   level:
+#     org.hibernate.type: trace
+#     org.springframework.cloud: debug
 logging:
   level:
-    org.hibernate.type: trace
-    org.springframework.cloud: debug
-
+    # Spring Web과 관련된 모든 로그를 DEBUG 레벨로 출력하여
+    # 요청 처리 과정의 상세한 정보를 확인합니다.
+    org.springframework.web: DEBUG
+    
+    # (선택) Hibernate가 실행하는 SQL의 변수 값까지 보고 싶을 때 사용합니다.
+    org.hibernate.type.descriptor.sql: trace
 
 server:
   port: 8082
