@@ -95,8 +95,23 @@ public class PolicyHandler {
         GenData genData = new GenData();
         genData.setBookId(bookId);
 
-        Dotenv dotenv = Dotenv.configure().directory("./").load();  // .env 로드
-        final String openAIApiKey = dotenv.get("OPENAI_API_KEY"); // .env에서 openai api key 가져오기
+        Dotenv dotenv = Dotenv.configure()
+                            .directory("./")   // .env 위치
+                            .ignoreIfMissing() // 로컬에 없으면 무시
+                            .load();
+
+        // 1) .env 먼저 시도
+        String openAIApiKey = dotenv.get("OPENAI_API_KEY");
+
+        // 2) 못 찾으면 시스템 환경변수 시도
+        if (openAIApiKey == null || openAIApiKey.isBlank()) {
+            openAIApiKey = System.getenv("OPENAI_API_KEY");
+        }
+
+        // 3) 그래도 없으면 즉시 예외!
+        if (openAIApiKey == null || openAIApiKey.isBlank()) {
+            throw new IllegalStateException("OPENAI_API_KEY is not set in .env or environment!");
+        }
 
         OpenAIClient client = OpenAIOkHttpClient.builder()
             .apiKey(openAIApiKey)

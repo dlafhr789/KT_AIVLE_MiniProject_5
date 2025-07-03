@@ -64,7 +64,7 @@ spring:
         - id: bookpublish
           uri: http://bookpublish:8080
           predicates:
-            - Path=/genData/**, 
+            - Path=/genData/**, /book_covers/**
         - id: author
           uri: http://author:8080
           predicates:
