@@ -46,14 +46,8 @@ const { state: auth } = useAuth()
         <VerticalNavSectionTitle :item="{ heading: '관리자 메뉴' }" />
         <VerticalNavLink
             :item="{
-                title: '작가 등록 관리',
+                title: '관리자 페이지',
                 to: '/manage',
-            }"
-        />
-        <VerticalNavLink
-            :item="{
-                title: '구독 모니터링',
-                to: '/subscribeMonitors',
             }"
         />
         </template>
