@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: bookpublish
-          image: "username/bookpublish:latest"
+          image: "a1026registry.azurecr.io/bookpublish:v1"
           ports:
             - containerPort: 8080
           readinessProbe:
