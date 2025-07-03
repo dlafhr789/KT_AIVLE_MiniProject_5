@@ -3,8 +3,11 @@ FROM node:18-alpine AS build-stage
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-COPY .env ./
 COPY . .
+
+ARG VITE_API_BASE_URL
+ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
+
 RUN npm run build
 
 # 2. Production stage

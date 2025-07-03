@@ -11,4 +11,5 @@ public class SignUpCommand {
     private String email;
     private String telecom;
     private String password;
+    private String role;
 }

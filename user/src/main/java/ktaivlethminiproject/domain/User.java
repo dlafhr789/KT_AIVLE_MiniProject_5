@@ -58,6 +58,11 @@ public class User {
         this.telecom = signUpCommand.getTelecom();
         this.password = signUpCommand.getPassword();
 
+        // 3. role 설정
+        if (signUpCommand.getRole() != null) {
+            this.role = signUpCommand.getRole();
+        }
+
         User.repository().save(this);
         
         SignedUp signedUp = new SignedUp(this);
@@ -114,18 +119,9 @@ public class User {
     //>>> Clean Arch / Port Method
     //<<< Clean Arch / Port Method
     public static void updateRole(AuthorApproved authorApproved) {
-        //implement business logic here:
+        Long userId = authorApproved.getUserId(); 
 
-        /** Example 1:  new item 
-        User user = new User();
-        repository().save(user);
-
-        */
-
-        Long userId;
-        try {
-            userId = Long.valueOf(authorApproved.getUserId());
-        } catch (NumberFormatException e) {
+        if (userId == null) {
             throw new RuntimeException("잘못된 유저 접근입니다.");
         }
 

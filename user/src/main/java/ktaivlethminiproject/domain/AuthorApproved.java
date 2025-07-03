@@ -9,5 +9,5 @@ import lombok.*;
 @ToString
 public class AuthorApproved extends AbstractEvent {
 
-    private String userId;
+    private Long userId;
 }

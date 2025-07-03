@@ -134,7 +134,7 @@ const closeConfirmationPopup = () => {
 
 const approve = async (id) => {
   try {
-    await axios.put(`/authors/${id}/authorapprove`)
+    await api.put(`/authors/${id}/authorapprove`)
     await fetchPendingAuthors()
     closePopup()
     confirmationMessage.value = '승인되었습니다.';
@@ -148,7 +148,7 @@ const approve = async (id) => {
 
 const deny = async (id) => {
   try {
-    await axios.put(`/authors/${id}/authordeny`)
+    await api.put(`/authors/${id}/authordeny`)
     await fetchPendingAuthors()
     closePopup()
     confirmationMessage.value = '거절되었습니다.';
@@ -164,7 +164,7 @@ onMounted(fetchPendingAuthors)
 
 const fetchSubscribeMonitors = async () => {
   try {
-    const res = await axios.get('/subscribeMonitors');
+    const res = await api.get('/subscribeMonitors');
     subscribeMonitors.value = res.data._embedded?.subscribeMonitors || res.data || [];
     console.log('구독 모니터링 데이터 불러오기 성공:', subscribeMonitors.value);
   } catch (e) {
