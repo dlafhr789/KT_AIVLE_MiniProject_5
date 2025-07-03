@@ -75,10 +75,10 @@ spring:
       bindings:
         event-in:
           group: author
-          destination: author-events
+          destination: ktaivlethminiproject
           contentType: application/json
         event-out:
-          destination: author-events
+          destination: ktaivlethminiproject
           contentType: application/json
 
 
