@@ -37,9 +37,9 @@
         <v-btn color="primary" variant="tonal" class="me-3" @click="handleSave">
           저장하기
         </v-btn>
-        <v-btn color="primary" @click="handlePublish">
+        <!-- <v-btn color="primary" @click="handlePublish">
           출간요청하기
-        </v-btn>
+        </v-btn> -->
       </v-row>
   </v-container>
 </template>
@@ -47,6 +47,7 @@
 <script>
 import axios from 'axios'
 import { useAuth } from '@/components/useAuth'
+import api from '@/plugins/axios'
 // Gateway 주소
 // axios.defaults.baseURL = 'https://8088-dlafhr789-ktaivleminipr-mcnl0299kxi.ws-us120.gitpod.io'
 
@@ -90,15 +91,15 @@ export default {
       try {
         // this.isSubmitting = true
         await api.post('/books',
-        {
-          title: this.form.title,
-          content: this.form.content,
-        },
-        {
-          headers: {
-            'X-User-Id': this.state.user.id,
+          {
+            title: this.form.title,
+            content: this.form.content,
+          },
+          {
+            headers: {
+              'X-User-Id': this.state.user.id,
+            }
           }
-        }
         )
         alert('책이 저장되었습니다!')
         this.$router.push('/books')

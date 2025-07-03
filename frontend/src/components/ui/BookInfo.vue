@@ -106,7 +106,6 @@ export default {
                             (!this.book.isMyBook && this.book.isSubscribed) },
   },
   created() {
-    console.log('asdf')
 
     const user = JSON.parse(localStorage.getItem('user'))
     console.log("유저 아이디 : ", user.id)
@@ -186,6 +185,16 @@ export default {
     goBack() {
       // 책 목록으로 돌아가기
       this.$router.push('/books')
+    },
+    publishBook(){
+      api.post(`/books/${this.id}`)
+        .then(res => {
+          alert('출간 요청됨')
+          this.$router.push('/books')
+        }).catch(err => {
+          console.error('출간 요청 실패 : ', err)
+          alert('출간 요청 실패')
+        })
     }
   }
 }

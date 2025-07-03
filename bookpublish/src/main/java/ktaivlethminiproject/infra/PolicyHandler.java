@@ -63,6 +63,7 @@ public class PolicyHandler {
         value = KafkaProcessor.INPUT,
         condition = "headers['type']=='PublicationRequested'"
     )
+    @Transactional
     public void wheneverPublicationRequested_RequireAccepted(
         @Payload PublicationRequested publicationRequested
     ) throws IOException {

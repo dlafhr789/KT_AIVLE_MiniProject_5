@@ -12,15 +12,20 @@
         </v-snackbar>
         <div class="panel">
             <div class="gs-bundle-of-buttons" style="max-height:10vh;">
-                <v-btn @click="addNewRow" class="contrast-primary-text" small color="primary">
-                    <v-icon small style="margin-left: -5px;">mdi-plus</v-icon>등록
-                </v-btn>
-                <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="openEditDialog()" class="contrast-primary-text" small color="primary">
+                <!-- <v-btn 
+                    @click="addNewRow"
+                    :disabled="!hasRole('author')"
+                    class="contrast-primary-text" 
+                    small 
+                    color="primary">
+                        <v-icon small style="margin-left: -5px;">mdi-plus</v-icon>등록
+                </v-btn> -->
+                <!-- <v-btn :disabled="!selectedRow" style="margin-left: 5px;" @click="openEditDialog()" class="contrast-primary-text" small color="primary">
                     <v-icon small>mdi-pencil</v-icon>수정
                 </v-btn>
                 <v-btn :disabled="!selectedRow || !hasRole('User')" style="margin-left: 5px;" @click="openBookDialog = true" class="contrast-primary-text" small color="primary">
                     <v-icon small>mdi-minus-circle-outline</v-icon>도서 열람
-                </v-btn>
+                </v-btn> -->
                 <v-dialog v-model="openBookDialog" width="500">
                     <OpenBook
                         @closeDialog="openBookDialog = false"
@@ -45,7 +50,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(val, idx) in value" 
+                        <tr v-for="(val, idx) in filteredBooks" 
                             @click="selectedRow = val"
                             @dblclick="goDetail(val)"
                             :key="val.bookId"  
@@ -104,6 +109,8 @@ import OpenBook from '../OpenBook.vue'
 import axios from 'axios';
 import api from '@/plugins/axios'
 
+const user = JSON.parse(localStorage.getItem('user'))
+
 export default {
     name: 'bookGrid',
     mixins: [BaseGrid],
@@ -116,7 +123,7 @@ export default {
         openBookDialog: false,
         openDialog: false,
         newValue: {},
-        value: [],
+        books: [],
         selectedRow: null,
         snackbar: {
             status: false,
@@ -125,6 +132,14 @@ export default {
             text: ''
         },
     }),
+    computed: {
+        filteredBooks() {
+            return this.books.filter(book =>
+                book.userId === user.id ||
+                Boolean(book.publishedAt)
+            );
+        }
+    },
     created() {
         this.search();
     },
@@ -132,14 +147,14 @@ export default {
         async search() {
             try {
                 const response = await api.get(`/${this.path}`);
-                this.value = response.data;
+                this.books = response.data;
             } catch (error) {
                 console.error('데이터 로드 실패:', error);
             }
         },
         append(newBook) {
-            if (Array.isArray(this.value)) {
-                this.value.unshift(newBook);
+            if (Array.isArray(this.books)) {
+                this.books.unshift(newBook);
             }
             this.openDialog = false;
         },
@@ -156,7 +171,7 @@ export default {
         async deleteRow(book) {
             try {
                 await api.delete(`/${this.path}/${book.bookId}`);
-                this.value = this.value.filter(v => v.bookId !== book.bookId);
+                this.books = this.books.filter(v => v.bookId !== book.bookId);
                 this.selectedRow = null;
                 this.snackbar = {
                     status: true,
@@ -167,6 +182,9 @@ export default {
             } catch (e) {
                 console.error('삭제 실패:', e);
             }
+        },
+        hasRole(role) {
+            return localStorage.getItem('user.role') === role;
         },
         goDetail(book) {
             this.$router.push(`/books/${book.bookId}`)

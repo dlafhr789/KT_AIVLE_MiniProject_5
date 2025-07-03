@@ -61,10 +61,12 @@ export default {
         value: {
             title: '',
             content: '',
-            userId: 1, // 임시로 사용자 ID 1을 사용
+            userId: 99, // 임시로 사용자 ID 1을 사용
         }
     }),
     created(){
+        const user = JSON.parse(window.localStorage.getItem('user'))
+        this.value.userId = user.id
     },
     computed:{
     },
@@ -84,6 +86,9 @@ export default {
 
             } catch (error) {
                 console.error('도서 저장 실패', error);
+                if (error.response) {
+                    console.error('error.response : ', error.response)
+                }
                 alert('실패');
             }
         }
