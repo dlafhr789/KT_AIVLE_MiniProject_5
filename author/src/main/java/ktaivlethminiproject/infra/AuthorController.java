@@ -81,13 +81,15 @@ public class AuthorController {
         produces = "application/json;charset=UTF-8"
     )
     public Author authorApprove(
-        @PathVariable(value = "id") Integer id,
+        @PathVariable Integer id,
         @RequestBody(required = false) AuthorApproveCommand authorApproveCommand,
         HttpServletRequest request,
         HttpServletResponse response
     ) throws Exception {
         System.out.println("##### /author/authorApprove  called #####");
+        System.out.println("입력 받은 아이디 : " + id);
         Optional<Author> optionalAuthor = authorRepository.findById(id);
+        System.out.println("find by id result : " + optionalAuthor.toString());
 
         optionalAuthor.orElseThrow(() -> new Exception("No Entity Found"));
         Author author = optionalAuthor.get();

@@ -94,6 +94,7 @@ public class PolicyHandler {
 
         GenData genData = new GenData();
         genData.setBookId(bookId);
+        genData.setUserId(userId);
 
         Dotenv dotenv = Dotenv.configure()
                             .directory("./")   // .env 위치

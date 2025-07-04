@@ -125,22 +125,48 @@ export default {
         }).catch(err => console.error(err))
 
 
-    api.get(`/genData/${this.id}`)
+    api.get(`/genData`)
         .then(res => {
 
-            const data = res.data
-            this.book.isPublished = !!data.coverUrl
-            console.log('isPublished : ', this.book.isPublished)
-            console.log(data.coverURL)
+            // const data = res.data
+            // this.book.isPublished = !!data.coverUrl
+            // console.log('isPublished : ', this.book.isPublished)
+            // console.log(data.coverURL)
             
-            const gatewayBase = import.meta.env.VITE_API_BASE_URL
-            const bookPublishBase = swapPort(gatewayBase, '8084')
-            this.book.coverUrl = `${bookPublishBase}/${data.coverUrl}`
-            console.log(this.book.coverUrl)
-            this.book.summary = data.summary
-            this.book.points = data.point
+            // const gatewayBase = import.meta.env.VITE_API_BASE_URL
+            // const bookPublishBase = swapPort(gatewayBase, '8084')
+            // this.book.coverUrl = `${bookPublishBase}/${data.coverUrl}`
+            // console.log(this.book.coverUrl)
+            // this.book.summary = data.summary
+            // this.book.points = data.point
+
+            console.log(res)
             
+            const genList = res.data?._embedded?.genData ?? [];
+            console.log('genList : ', genList)
+
+            const matched = genList.find(item => Number(item.bookId) === Number(this.id));
+            console.log(matched)
+            // console.log('thisbooks length : ', matched.length)
+
+            if (!matched) return;
             
+            this.book.isPublished = true
+            console.log(this.book.isPublished)
+
+            this.book.summary = matched.summary
+            this.book.points = matched.points
+
+            console.log('summary : ', this.book.summary)
+            console.log('points : ', this.book.point)
+
+            const base = import.meta.env.VITE_API_BASE_URL
+            console.log('base : ', base)
+            this.book.coverUrl = `${base}/${matched.coverUrl}`
+            console.log('coverUrl : ', this.book.coverUrl)
+
+
+
         })
     
     api.get(`/users/${this.book.authorId}`)

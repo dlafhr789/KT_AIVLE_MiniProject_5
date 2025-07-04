@@ -16,7 +16,10 @@ spec:
     spec:
       containers:
         - name: bookpublish
-          image: "a1026registry.azurecr.io/bookpublish:v1"
+          image: "a1026registry.azurecr.io/bookpublish:v4"
+          envFrom:
+            - secretRef:
+                name: openai-secret
           ports:
             - containerPort: 8080
           readinessProbe:

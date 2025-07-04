@@ -19,6 +19,8 @@ public class GenData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private Long bookId;
 
     private String coverUrl;
@@ -30,6 +32,8 @@ public class GenData {
     private Integer point;
 
     private String category;
+
+    private Long userId;
 
     public static GenDataRepository repository() {
         GenDataRepository genDataRepository = BookpublishApplication.applicationContext.getBean(
