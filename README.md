@@ -175,27 +175,26 @@
 
 ## 🔍 실행 방법 
 
-### 개발 버전
-- Node.js : v22.16.0
-- npm : v10.x.x
-- Java (JDK) : 11.0.27 (Gitpod 기본 제공, JDK 17 이상 권장 시 별도 설치 필요)
-- Maven : 3.9.10 (Gitpod 기본 제공)
+### ⚙️ 개발 버전
+- 🟢 Node.js : v22.16.0
+- 🟣 npm : v10.x.x
+- ☕ Java (JDK) : 11.0.27 (Gitpod 기본 제공, JDK 17 이상 권장 시 별도 설치 필요)
+- 🐘 Maven : 3.9.10 (Gitpod 기본 제공)
+
+### 🌐 배포 주소
+- 🖥️ **로컬 환경** : http://localhost:8088
 
 
-### 배포주소
-- 로컬 환경 : http://localhost:8088
+### 🚀 실행 절차
 
-
-### 실행 절차
-
-1. Clone the repository:
+1. Clone the repository
 
 ```bash
 git clone https://github.com/dlafhr789/KT_AIVLE_MiniProject_5.git
 cd KT_AIVLE_MiniProject_5
 ```
 
-2. Backend (Spring Boot):
+2. Backend (Spring Boot)
 
 ```bash
 # book
@@ -224,7 +223,7 @@ cd ../gateway
 mvn spring-boot:run
 ```
 
-4. Frontend (Vue.js + Vite):
+4. Frontend (Vue.js + Vite)
 
 ```bash
 cd frontend
