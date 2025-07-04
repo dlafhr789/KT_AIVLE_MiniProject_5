@@ -72,7 +72,7 @@ spring:
         - id: dashboard
           uri: http://dashboard:8080
           predicates:
-            - Path=, 
+            - Path=, /subscribeMonitors/**, /booklists/**
         - id: frontend
           uri: http://frontend:8080
           predicates:

@@ -81,7 +81,7 @@ public class AuthorController {
         produces = "application/json;charset=UTF-8"
     )
     public Author authorApprove(
-        @PathVariable(value = "id") Integer id,
+        @PathVariable Integer id,
         @RequestBody(required = false) AuthorApproveCommand authorApproveCommand,
         HttpServletRequest request,
         HttpServletResponse response

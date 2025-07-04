@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: a1026registry.azurecr.io/frontend:v1
+          image: a1026registry.azurecr.io/frontend:v3
           ports:
             - containerPort: 80
 

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: user
-          image: "a1026registry.azurecr.io/user:v3"
+          image: "a1026registry.azurecr.io/user:v2"
           ports:
             - containerPort: 8080
           readinessProbe:
