@@ -65,8 +65,83 @@
 ---
 
 ## 📁 프로젝트 구조
-수정해야함 
+```shell
+.
+├── author
+│   ├── Dockerfile
+│   ├── kubernetes
+│   ├── pom.xml
+│   ├── README.md
+│   └── src
+├── book
+│   ├── Dockerfile
+│   ├── get_helm.sh
+│   ├── kubernetes
+│   ├── pom.xml
+│   ├── README.md
+│   └── src
+├── bookpublish
+│   ├── book_covers
+│   ├── Dockerfile
+│   ├── kubernetes
+│   ├── pom.xml
+│   ├── README.md
+│   └── src
+├── build-docker-compose.yml
+├── dashboard
+│   ├── Dockerfile
+│   ├── kubernetes
+│   ├── pom.xml
+│   ├── README.md
+│   └── src
+├── directory-tree.txt
+├── dk ls
+├── frontend
+│   ├── =
+│   ├── auto-imports.d.ts
+│   ├── components.d.ts
+│   ├── Dockerfile
+│   ├── index.html
+│   ├── [internal]
+│   ├── jsconfig.json
+│   ├── kubernetes
+│   ├── node_modules
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── public
+│   ├── README.md
+│   ├── src
+│   ├── transferring
+│   ├── tsconfig.json
+│   └── vite.config.js
+├── gateway
+│   ├── cloudbuild.yaml
+│   ├── Dockerfile
+│   ├── kubernetes
+│   ├── pom.xml
+│   ├── src
+│   └── target
+├── get_helm.sh
+├── github
+│   └── workflows
+├── infra
+│   └── docker-compose.yml
+├── init.sh
+├── kubectl
+├── kubernetes
+│   ├── template.yml
+│   └── test.yml
+├── README.md
+└── user
+    ├── Dockerfile
+    ├── get_helm.sh
+    ├── kubernetes
+    ├── pom.xml
+    ├── README.md
+    └── src
 
+30 directories, 43 files
+```
 
 ---
 
@@ -97,10 +172,67 @@
 - 플랜 정보 및 결제 상태는 별도의 마이크로서비스에서 관리하며,  
   결제 상태 변경 시 Kafka 이벤트로 관련 서비스에 전달됩니다.
 
-  
 
 ---
 
+## 🔍 실행 방법 
+
+### 개발 버전
+- Node.js : v22.16.0
+- npm : v10.x.x
+- Java (JDK) : 11.0.27 (Gitpod 기본 제공, JDK 17 이상 권장 시 별도 설치 필요)
+- Maven : 3.9.10 (Gitpod 기본 제공)
+
+
+### 배포주소
+- 로컬 환경 : http://localhost:8088
+
+
+### 실행 절차
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/dlafhr789/KT_AIVLE_MiniProject_5.git
+cd KT_AIVLE_MiniProject_5
+```
+
+2. Backend (Spring Boot):
+
+```bash
+# book
+cd book
+mvn spring-boot:run
+
+# bookpublish
+cd ../bookpublish
+cp .env.example .env
+mvn spring-boot:run
+
+# user
+cd ../user
+mvn spring-boot:run
+
+# author
+cd ../author
+mvn spring-boot:run
+
+# dashboard
+cd ../dashboard
+mvn spring-boot:run
+
+# gateway
+cd ../gateway
+mvn spring-boot:run
+```
+
+4. Frontend (Vue.js + Vite):
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 
 
